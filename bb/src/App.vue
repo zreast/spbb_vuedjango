@@ -5,7 +5,7 @@
     <img class="logo" src="./assets/dj.png">
     <router-view/>
     <p>
-      Smart Pet Blood Bank
+      Welcome to your Django - Vue.js app!
     </p>
   </div>
 </template>
