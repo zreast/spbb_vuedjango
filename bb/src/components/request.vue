@@ -1,33 +1,45 @@
 <template>
-  <v-app light>
-		<router-view></router-view>
-    <v-navigation-drawer
+  <v-app light id="inspire">
+		<v-navigation-drawer
       fixed
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      :clipped="$vuetify.breakpoint.width > 1264"
       v-model="drawer"
       app
     >
       <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          value="true"
-        >
-          <v-list-tile-action>
-            <v-icon light v-html="item.icon"></v-icon>
+				<v-list>
+          <v-list-tile v-for="item in items2" :key="item.text" avatar @click="">
+            <v-list-tile-avatar>
+              <img :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`" alt="">
+            </v-list-tile-avatar>
+            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+        <v-list-tile v-for="item in items" :key="item.text" @click="">
+          <v-list-tile-action class="grey--text darken-4">
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
+          <v-list-tile-content class="black--text">
             <v-list-tile-title v-text="item.title"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="">
+          <v-list-tile-action>
+            <v-icon color="grey darken-1">settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title class="grey--text text--darken-1">Settings</v-list-tile-title>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app class="navbar">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+
+
+    <v-toolbar app class="navbar white--text">
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
+
+
     <v-content>
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
@@ -54,7 +66,7 @@
 				      <v-spacer></v-spacer>
 				    </v-card-title>
 					</v-card>
-            <v-btn block color="secondary" dark>Lab Exam</v-btn>
+            <v-btn block color="secondary" dark>Medical Record</v-btn>
 					<v-card>
 				    <v-card-title>
 				      <h2>Blood Chemistry</h2>
@@ -142,13 +154,16 @@
         clipped: false,
         drawer: true,
         fixed: false,
-        items: [
+				items: [
 					{ title: 'Dashboard', icon: 'dashboard' },
           { title: 'Do it now!', icon: 'extension' },
           { title: 'Statistic', icon: 'trending_up' },
           { title: 'Email', icon: 'email' },
           { title: 'Social', icon: 'message' }
         ],
+	      items2: [
+	        { picture: 28, text: 'โรงพยาบาลสัตว์ สวนผัก' }
+	      ],
         miniVariant: false,
         right: true,
         rightDrawer: false,
@@ -234,8 +249,12 @@
 
 
 <style>
+	.color__mdred {
+		color: #df5249 !important;
+	}
 	.navbar {
-
+		background-color: #df5249 !important;
+		color: white;
 	}
 /* html {
   height: 100%;

@@ -23,8 +23,8 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app class="navbar">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar app class="navbar white--text">
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -235,7 +235,8 @@
 
 <style>
 	.navbar {
-	  background: red !important;
+		background-color: #df5249 !important;
+		color: white;
 	}
 /* html {
   height: 100%;
