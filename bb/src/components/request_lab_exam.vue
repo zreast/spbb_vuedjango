@@ -1,129 +1,140 @@
 <template>
-  <v-app light>
-		<router-view></router-view>
-    <v-navigation-drawer
+	<v-app light id="inspire">
+		<v-navigation-drawer
       fixed
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      :clipped="$vuetify.breakpoint.width > 1264"
       v-model="drawer"
       app
     >
       <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          value="true"
-        >
-          <v-list-tile-action>
-            <v-icon light v-html="item.icon"></v-icon>
+				<v-list>
+          <v-list-tile v-for="item in items2" :key="item.text" avatar @click="">
+            <v-list-tile-avatar>
+              <img :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`" alt="">
+            </v-list-tile-avatar>
+            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+        <v-list-tile v-for="item in items" :key="item.text" @click="">
+          <v-list-tile-action class="grey--text darken-4">
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
+          <v-list-tile-content class="black--text">
             <v-list-tile-title v-text="item.title"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile @click="">
+          <v-list-tile-action>
+            <v-icon color="grey darken-1">settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title class="grey--text text--darken-1">Settings</v-list-tile-title>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
+
+
     <v-toolbar app class="navbar white--text">
       <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
+
     <v-content>
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
 					<v-layout column align-left>
-					<h1>Blood Request</h1>
-					<br>
-          <v-btn block>Recipient Profile</v-btn>
-					<v-card>
-				    <v-card-title>
-							<v-text-field
-				        append-icon="search"
-				        label="Pet Name, H.N., Owner, Address"
-				        single-line
-				        hide-details
-				        v-model="search"
-				      ></v-text-field>
-							<v-btn
-					      color="grey"
-					      class="white--text"
-					    >
-								<v-icon dark>add</v-icon>
-					      Add New Pet
-					    </v-btn>
-				      <v-spacer></v-spacer>
-				    </v-card-title>
-					</v-card>
-            <v-btn block color="secondary" dark>Lab Exam</v-btn>
-					<v-card>
-				    <v-card-title>
-				      <h2>Blood Chemistry</h2>
-				      <v-spacer></v-spacer>
-							<v-btn
-					      color="grey"
-					      class="white--text"
-					    >
-					      Refresh
-					      <v-icon right dark>refresh</v-icon>
-					    </v-btn>
-				    </v-card-title>
-				    <v-data-table
-				        v-bind:headers="headers"
-				        v-bind:items="t_items"
-				        v-bind:search="search"
-				      >
-				      <template slot="items" slot-scope="props">
-				        <td>
-				          <v-edit-dialog
-				            lazy
-				          > {{ props.item.name }}
-				            <v-text-field
-				              slot="input"
-				              label="Edit"
-				              v-model="props.item.name"
-				              single-line
-				              counter
-				              :rules="[max25chars]"
-				            ></v-text-field>
-				          </v-edit-dialog>
-				        </td>
-				        <td class="text-xs-right">{{ props.item.value }}</td>
-				        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
-				        <td class="text-xs-right">{{ props.item.critical_low }}</td>
-				        <td class="text-xs-right">{{ props.item.low }}</td>
-				        <td class="text-xs-right">{{ props.item.high }}</td>
-				        <td class="text-xs-right">{{ props.item.critical_high }}</td>
-				        <td class="text-xs-right">
-				          <v-edit-dialog
-				            @open="tmp = props.item.iron"
-				            @save="props.item.iron = tmp || props.item.iron"
-				            large
-				            lazy
-				          >
-				            <div>{{ props.item.iron }}</div>
-				            <div slot="input" class="mt-3 title">Update Iron</div>
-				            <v-text-field
-				              slot="input"
-				              label="Edit"
-				              v-model="tmp"
-				              single-line
-				              counter
-				              autofocus
-				              :rules="[max25chars]"
-				            ></v-text-field>
-				          </v-edit-dialog>
-				        </td>
-				      </template>
-				      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-				        From {{ pageStart }} to {{ pageStop }}
-				      </template>
-				    </v-data-table>
-				  </v-card>
-					<br>
-					<br>
-					<div class="text-xs-center">
-	                <v-btn color="error" dark large>Next</v-btn>
-	        </div>
+						<h1>Blood Request</h1>
+						<br>
+	          <v-btn block>Recipient Profile</v-btn>
+						<v-card>
+					    <v-card-title>
+								<v-text-field
+					        append-icon="search"
+					        label="Pet Name, H.N., Owner, Address"
+					        single-line
+					        hide-details
+					        v-model="search"
+					      ></v-text-field>
+								<v-btn
+						      color="grey"
+						      class="white--text"
+						    >
+									<v-icon dark>add</v-icon>
+						      Add New Pet
+						    </v-btn>
+					      <v-spacer></v-spacer>
+					    </v-card-title>
+						</v-card>
+	            <v-btn block color="secondary" dark>Lab Exam</v-btn>
+						<v-card>
+					    <v-card-title>
+					      <h2>Blood Chemistry</h2>
+					      <v-spacer></v-spacer>
+								<v-btn
+						      color="grey"
+						      class="white--text"
+						    >
+						      Refresh
+						      <v-icon right dark>refresh</v-icon>
+						    </v-btn>
+					    </v-card-title>
+					    <v-data-table
+					        v-bind:headers="headers"
+					        v-bind:items="t_items"
+					        v-bind:search="search"
+					      >
+					      <template slot="items" slot-scope="props">
+					        <td>
+					          <v-edit-dialog
+					            lazy
+					          > {{ props.item.name }}
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="props.item.name"
+					              single-line
+					              counter
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					        <td class="text-xs-right">{{ props.item.value }}</td>
+					        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
+					        <td class="text-xs-right">{{ props.item.low }}</td>
+					        <td class="text-xs-right">{{ props.item.high }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
+					        <td class="text-xs-right">
+					          <v-edit-dialog
+					            @open="tmp = props.item.iron"
+					            @save="props.item.iron = tmp || props.item.iron"
+					            large
+					            lazy
+					          >
+					            <div>{{ props.item.iron }}</div>
+					            <div slot="input" class="mt-3 title">Update Iron</div>
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="tmp"
+					              single-line
+					              counter
+					              autofocus
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					      </template>
+					      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+					        From {{ pageStart }} to {{ pageStop }}
+					      </template>
+					    </v-data-table>
+					  </v-card>
+						<br>
+						<br>
+						<div class="text-xs-center">
+		                <v-btn color="error" dark large>Next</v-btn>
+		        </div>
           </v-layout>
         </v-slide-y-transition>
       </v-container>

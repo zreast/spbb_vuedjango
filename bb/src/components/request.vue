@@ -39,110 +39,98 @@
       <v-spacer></v-spacer>
     </v-toolbar>
 
-
-    <v-content>
+		<v-content>
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
 					<v-layout column align-left>
-					<h1>Blood Request</h1>
-					<br>
-          <v-btn block>Recipient Profile</v-btn>
-					<v-card>
-				    <v-card-title>
-							<v-text-field
-				        append-icon="search"
-				        label="Pet Name, H.N., Owner, Address"
-				        single-line
-				        hide-details
-				        v-model="search"
-				      ></v-text-field>
-							<v-btn
-					      color="grey"
-					      class="white--text"
-					    >
-								<v-icon dark>add</v-icon>
-					      Add New Pet
-					    </v-btn>
-				      <v-spacer></v-spacer>
-				    </v-card-title>
-					</v-card>
-            <v-btn block color="secondary" dark>Medical Record</v-btn>
-					<v-card>
-				    <v-card-title>
-				      <h2>Blood Chemistry</h2>
-				      <v-spacer></v-spacer>
-							<v-btn
-					      color="grey"
-					      class="white--text"
-					    >
-					      Refresh
-					      <v-icon right dark>refresh</v-icon>
-					    </v-btn>
-				    </v-card-title>
-				    <v-data-table
-				        v-bind:headers="headers"
-				        v-bind:items="t_items"
-				        v-bind:search="search"
-				      >
-				      <template slot="items" slot-scope="props">
-				        <td>
-				          <v-edit-dialog
-				            lazy
-				          > {{ props.item.name }}
-				            <v-text-field
-				              slot="input"
-				              label="Edit"
-				              v-model="props.item.name"
-				              single-line
-				              counter
-				              :rules="[max25chars]"
-				            ></v-text-field>
-				          </v-edit-dialog>
-				        </td>
-				        <td class="text-xs-right">{{ props.item.value }}</td>
-				        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
-				        <td class="text-xs-right">{{ props.item.critical_low }}</td>
-				        <td class="text-xs-right">{{ props.item.low }}</td>
-				        <td class="text-xs-right">{{ props.item.high }}</td>
-				        <td class="text-xs-right">{{ props.item.critical_high }}</td>
-				        <td class="text-xs-right">
-				          <v-edit-dialog
-				            @open="tmp = props.item.iron"
-				            @save="props.item.iron = tmp || props.item.iron"
-				            large
-				            lazy
-				          >
-				            <div>{{ props.item.iron }}</div>
-				            <div slot="input" class="mt-3 title">Update Iron</div>
-				            <v-text-field
-				              slot="input"
-				              label="Edit"
-				              v-model="tmp"
-				              single-line
-				              counter
-				              autofocus
-				              :rules="[max25chars]"
-				            ></v-text-field>
-				          </v-edit-dialog>
-				        </td>
-				      </template>
-				      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-				        From {{ pageStart }} to {{ pageStop }}
-				      </template>
-				    </v-data-table>
-				  </v-card>
-					<br>
-					<br>
-					<div class="text-xs-center">
-	                <v-btn color="error" dark large>Next</v-btn>
-	        </div>
-          </v-layout>
-        </v-slide-y-transition>
+						<h1>Blood Request</h1>
+						<br>
+	          <v-btn block>Recipient Profile</v-btn>
+						<v-card>
+					    <v-card-title>
+								<v-text-field
+					        append-icon="search"
+					        label="Pet Name, H.N., Owner, Address"
+					        single-line
+					        hide-details
+					        v-model="search"
+					      ></v-text-field>
+								<v-btn
+						      color="grey"
+						      class="white--text"
+						    >
+									<v-icon dark>add</v-icon>
+						      Add New Pet
+						    </v-btn>
+					      <v-spacer></v-spacer>
+					    </v-card-title>
+						</v-card>
+					</v-layout>
+				</v-slide-y-transition>
+			</v-container>
+		</v-content>
+    <v-content>
+      <v-container fluid grid-list-md>
+				<v-layout row wrap>
+		      <v-flex d-flex xs12 sm6 md4>
+		        <v-card color="purple" dark>
+		          <v-card-title primary class="title">Lorem</v-card-title>
+		          <v-card-text
+		            v-text="lorem">
+		          </v-card-text>
+		        </v-card>
+		      </v-flex>
+		      <v-flex d-flex xs12 sm6 md3>
+		        <v-layout row wrap>
+		          <v-flex d-flex>
+		            <v-card color="indigo" dark>
+		              <v-card-text
+		                v-text="lorem.slice(0, 70)">
+		              </v-card-text>
+		            </v-card>
+		          </v-flex>
+		          <v-flex d-flex>
+		            <v-layout row wrap>
+		              <v-flex d-flex
+		                v-for="n in 2"
+		                :key="n"
+		                xs12
+		              >
+		                <v-card
+		                  color="red lighten-2"
+		                  dark
+		                >
+		                  <v-card-text
+		                    v-text="lorem.slice(0, 40)">
+		                  </v-card-text>
+		                </v-card>
+		              </v-flex>
+		            </v-layout>
+		          </v-flex>
+		        </v-layout>
+		      </v-flex>
+		      <v-flex d-flex xs12 sm6 md2 child-flex>
+		        <v-card color="green lighten-2" dark>
+		          <v-card-text
+		            v-text="lorem.slice(0, 90)">
+		          </v-card-text>
+		        </v-card>
+		      </v-flex>
+		      <v-flex d-flex xs12 sm6 md3>
+		        <v-card color="blue lighten-2" dark>
+		          <v-card-text
+		            v-text="lorem.slice(0, 100)">
+		          </v-card-text>
+		        </v-card>
+		      </v-flex>
+		    </v-layout>
       </v-container>
     </v-content>
+
     <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
     </v-footer>
+
   </v-app>
 </template>
 
@@ -172,76 +160,7 @@
         tmp: '',
         search: '',
         pagination: {},
-        headers: [
-          {
-            text: 'Testd',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'value', value: 'value' },
-          { text: 'value_oum_cd', value: 'value_oum_cd' },
-          { text: 'critical low', value: 'critical_low' },
-          { text: 'low', value: 'low' },
-          { text: 'high', value: 'high' },
-          { text: 'critical high', value: 'critical_high' }
-        ],
-        t_items: [
-          {
-						name: 'CREA',
-            value: 0.6,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0.0,
-            low: 0.5,
-            high: 1.8,
-            critical_high: 5.0
-          },
-          {
-						name: 'BUN',
-            value: 11,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0,
-            low: 7,
-            high: 27,
-            critical_high: 100
-          },
-          {
-						name: 'BUN/CREA',
-            value: 19,
-            value_oum_cd: '',
-            critical_low: '',
-            low: '',
-            high: '',
-            critical_high: ''
-          },
-          {
-						name: 'ALT',
-            value: 33,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 10,
-            high: 125,
-            critical_high: 2000
-          },
-          {
-						name: 'AST',
-            value: 38,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 0,
-            high: 50,
-            critical_high: 1500
-          },
-          {
-						name: 'ALKP',
-            value: 65,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 23,
-            high: 212,
-            critical_high: 5000
-          }
-        ]
+				lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
       }
     }
   }
