@@ -235,7 +235,7 @@
 
 <style>
 	.navbar {
-
+	  background: red !important;
 	}
 /* html {
   height: 100%;
