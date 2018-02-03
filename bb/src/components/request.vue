@@ -43,22 +43,39 @@
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
 					<v-layout column align-left>
+						<v-breadcrumbs>
+				      <v-icon slot="divider">chevron_right</v-icon>
+				      <v-breadcrumbs-item
+				        v-for="item in breadcrumbs" :key="item.text"
+				        :disabled="item.disabled"
+				      >
+				        {{ item.text }}
+				      </v-breadcrumbs-item>
+				    </v-breadcrumbs>
+
 						<h1>Blood Request</h1>
+
 						<div class="progress">
-						  <div class="circle active">
-						    <span class="label"></span>
-						    <span class="title">Profile</span>
-						  </div>
+							<a href='#/'>
+							  <div class="circle active">
+							    <span class="label"></span>
+							    <span class="title">Profile</span>
+							  </div>
+							</a>
 						  <span class="bar"></span>
-						  <div class="circle">
-						    <span class="label"></span>
-						    <span class="title">Lab</span>
-						  </div>
+							<a href='#/lab_exam'>
+							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Lab</span>
+							  </div>
+							</a>
 						  <span class="bar"></span>
-						  <div class="circle">
-						    <span class="label"></span>
-						    <span class="title">Request</span>
-						  </div>
+							<a href='#/suggestion'>
+							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Request</span>
+							  </div>
+							</a>
 						</div>
 						<br>
 	          <v-btn block>Recipient Profile</v-btn>
@@ -302,6 +319,16 @@
         clipped: false,
         drawer: false,
         fixed: false,
+				breadcrumbs: [
+          {
+            text: 'การเก็บเลือด',
+            disabled: false
+          },
+          {
+            text: 'การบริจาคเลือด',
+            disabled: true
+          }
+        ],
 				items: [
 					{ title: 'Dashboard', icon: 'dashboard' },
           { title: 'Do it now!', icon: 'extension' },
