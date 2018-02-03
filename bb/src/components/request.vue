@@ -44,6 +44,22 @@
         <v-slide-y-transition mode="out-in">
 					<v-layout column align-left>
 						<h1>Blood Request</h1>
+						<div class="progress">
+						  <div class="circle active">
+						    <span class="label"></span>
+						    <span class="title">Profile</span>
+						  </div>
+						  <span class="bar"></span>
+						  <div class="circle">
+						    <span class="label"></span>
+						    <span class="title">Lab</span>
+						  </div>
+						  <span class="bar"></span>
+						  <div class="circle">
+						    <span class="label"></span>
+						    <span class="title">Request</span>
+						  </div>
+						</div>
 						<br>
 	          <v-btn block>Recipient Profile</v-btn>
 						<v-card>
@@ -127,53 +143,120 @@
 						        <v-card>
 						          <v-btn block>History Taking</v-btn>
 											<v-card class='pa-2'>
-												<v-radio-group v-model="ex8" :mandatory="false">
-						              <v-radio label="ไม่เคยได้รับเลือดมาก่อน" value="radio-1"></v-radio>
-						              <v-radio label="เคยได้รับเลือดมาก่อน" value="radio-2"></v-radio>
-						            </v-radio-group>
-												<v-menu
-									        lazy
-									        :close-on-content-click="false"
-									        v-model="menu"
-									        transition="scale-transition"
-									        offset-y
-									        full-width
-									        :nudge-right="40"
-									        max-width="290px"
-									        min-width="290px"
-									      >
-									        <v-text-field
-									          slot="activator"
-									          label="Date in M/D/Y"
-									          v-model="dateFormatted"
-									          prepend-icon="event"
-									          @blur="date = parseDate(dateFormatted)"
-									        ></v-text-field>
-									        <v-date-picker v-model="date" @input="dateFormatted = formatDate($event)" no-title scrollable actions>
-									          <template slot-scope="{ save, cancel }">
-									            <v-card-actions>
-									              <v-spacer></v-spacer>
-									              <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-									              <v-btn flat color="primary" @click="save">OK</v-btn>
-									            </v-card-actions>
-									          </template>
-									        </v-date-picker>
-									      </v-menu>
+												เคยได้รับเลือดมาก่อน
+												<v-layout row>
+													<v-flex xs6>
+														<v-radio-group v-model="ex8" :mandatory="false">
+								              <v-radio label="ไม่เคย" value="radio-1"></v-radio>
+								              <v-radio label="เคย เมื่อ" value="radio-2"></v-radio>
+								            </v-radio-group>
+													</v-flex>
+													<v-flex xs6>
+														<br><br>
+														<v-menu
+											        lazy
+											        :close-on-content-click="false"
+											        v-model="menu2"
+											        transition="scale-transition"
+											        offset-y
+											        full-width
+											        :nudge-right="40"
+											        max-width="290px"
+											        min-width="290px"
+											      >
+											        <v-text-field
+											          slot="activator"
+											          label="Date in M/D/Y"
+											          v-model="dateFormatted2"
+											          prepend-icon="event"
+											          @blur="date = parseDate(dateFormatted)"
+											        ></v-text-field>
+											        <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
+											          <template slot-scope="{ save, cancel }">
+											            <v-card-actions>
+											              <v-spacer></v-spacer>
+											              <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+											              <v-btn flat color="primary" @click="save">OK</v-btn>
+											            </v-card-actions>
+											          </template>
+											        </v-date-picker>
+											      </v-menu>
+													</v-flex>
+												</v-layout>
+
+
 											</v-card>
 						        </v-card>
 						      </v-flex>
-									<v-flex>
+
+									<v-flex text-xs-left>
 						        <v-card>
 						          <v-btn block>Diagnosis</v-btn>
-											เคยได้รับเลือดมาก่อน
+											<v-card class='pa-2'>
+												สาเหตุของความต้องการเลือด / Diagnosis
+												<v-flex>
+													<v-select
+							              v-bind:items="items"
+							              v-model="e1"
+							              label="Select Diagnosis"
+							              single-line
+							              bottom
+							            ></v-select>
+							          </v-flex>
+											</v-card>
 						        </v-card>
 						      </v-flex>
-									<v-flex>
-										<v-card>
-											<v-btn block>Date Use</v-btn>
-											เคยได้รับเลือดมาก่อน
-										</v-card>
-									</v-flex>
+
+									<v-flex text-xs-left>
+						        <v-card>
+						          <v-btn block>Date Use</v-btn>
+											<v-card class='pa-2'>
+												วันที่ต้องการใช้เลือด
+												<v-layout row>
+													<v-flex xs6>
+														<v-radio-group v-model="ex8" :mandatory="false">
+								              <v-radio label="ทันที" value="radio-1"></v-radio>
+								              <v-radio label="จองใช้เมื่อ" value="radio-2"></v-radio>
+								            </v-radio-group>
+													</v-flex>
+													<v-flex xs6>
+														<br><br>
+														<v-menu
+											        lazy
+											        :close-on-content-click="false"
+											        v-model="menu"
+											        transition="scale-transition"
+											        offset-y
+											        full-width
+											        :nudge-right="40"
+											        max-width="290px"
+											        min-width="290px"
+											      >
+											        <v-text-field
+											          slot="activator"
+											          label="Date in M/D/Y"
+											          v-model="dateFormatted"
+											          prepend-icon="event"
+											          @blur="date = parseDate(dateFormatted)"
+											        ></v-text-field>
+											        <v-date-picker v-model="date" @input="dateFormatted = formatDate($event)" no-title scrollable actions>
+											          <template slot-scope="{ save, cancel }">
+											            <v-card-actions>
+											              <v-spacer></v-spacer>
+											              <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+											              <v-btn flat color="primary" @click="save">OK</v-btn>
+											            </v-card-actions>
+											          </template>
+											        </v-date-picker>
+											      </v-menu>
+													</v-flex>
+												</v-layout>
+
+
+											</v-card>
+						        </v-card>
+						      </v-flex>
+
 									<v-flex text-xs-left>
 						        <v-card>
 						          <v-btn block>Note</v-btn>
@@ -232,6 +315,9 @@
 				date: null,
 	      dateFormatted: null,
 	      menu: false,
+				date2: null,
+	      dateFormatted2: null,
+	      menu2: false,
         miniVariant: false,
         right: true,
         rightDrawer: false,
@@ -272,6 +358,71 @@
 	.navbar {
 		background-color: #df5249 !important;
 		color: white;
+	}
+
+	/* Form Progress */
+	.progress {
+	  margin: 20px auto;
+	  text-align: center;
+	}
+	.progress .circle,
+	.progress .bar {
+	  display: inline-block;
+	  background: #fff;
+	  width: 28px; height: 28px;
+	  border-radius: 40px;
+	  border: 1px solid #d5d5da;
+	}
+	.progress .bar {
+	  position: relative;
+	  width: 200px;
+	  height: 6px;
+	  top: -33px;
+	  margin-left: -5px;
+	  margin-right: -5px;
+	  border-left: none;
+	  border-right: none;
+	  border-radius: 0;
+	}
+	.progress .circle .label {
+	  display: inline-block;
+	  width: 20px;
+	  height: 20px;
+	  line-height: 32px;
+	  border-radius: 32px;
+	  margin-top: 3px;
+	  color: #b5b5ba;
+	  font-size: 17px;
+	}
+	.progress .circle .title {
+		color: #b5b5ba;
+	  font-size: 13px;
+	  line-height: 30px;
+	}
+
+	/* Done / Active */
+	.progress .bar.done,
+	.progress .circle.done {
+	  background: #eee;
+	}
+	.progress .bar.active {
+	  background: linear-gradient(to right, #EEE 40%, #FFF 60%);
+	}
+	.progress .circle.done .label {
+	  color: #FFF;
+	  background: #8bc435;
+	  box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+	}
+	.progress .circle.done .title {
+	  color: #444;
+	}
+	.progress .circle.active .label {
+	  color: #FFF;
+	  background: #0c95be;
+	  box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+	}
+	.progress .circle.active .title {
+	  color: #0c95be;
 	}
 /* html {
   height: 100%;
