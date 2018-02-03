@@ -68,81 +68,30 @@
 						<br>
 	          <v-btn block color="secondary" dark>เป้าหมายของการให้เลือด</v-btn>
 						<v-card>
-					    <v-card-title>
-					      <h2>Blood Chemistry</h2>
-					      <v-spacer></v-spacer>
-								<v-btn
-						      color="grey"
-						      class="white--text"
-						    >
-						      ล่าสุด
-						      <v-icon right dark>update</v-icon>
-						    </v-btn>
-								<v-btn
-						      color="grey"
-						      class="white--text"
-						    >
-						      ทั้งหมด
-						      <v-icon right dark>sort</v-icon>
-						    </v-btn>
-					    </v-card-title>
-					    <v-data-table
-					        v-bind:headers="headers"
-					        v-bind:items="t_items"
-					        v-bind:search="search"
-					      >
-					      <template slot="items" slot-scope="props">
-					        <td>
-					          <v-edit-dialog
-					            lazy
-					          > {{ props.item.name }}
-					            <v-text-field
-					              slot="input"
-					              label="Edit"
-					              v-model="props.item.name"
-					              single-line
-					              counter
-					              :rules="[max25chars]"
-					            ></v-text-field>
-					          </v-edit-dialog>
-					        </td>
-					        <td class="text-xs-right">{{ props.item.value }}</td>
-					        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
-					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
-					        <td class="text-xs-right">{{ props.item.low }}</td>
-					        <td class="text-xs-right">{{ props.item.high }}</td>
-					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
-					        <td class="text-xs-right">
-					          <v-edit-dialog
-					            @open="tmp = props.item.iron"
-					            @save="props.item.iron = tmp || props.item.iron"
-					            large
-					            lazy
-					          >
-					            <div>{{ props.item.iron }}</div>
-					            <div slot="input" class="mt-3 title">Update Iron</div>
-					            <v-text-field
-					              slot="input"
-					              label="Edit"
-					              v-model="tmp"
-					              single-line
-					              counter
-					              autofocus
-					              :rules="[max25chars]"
-					            ></v-text-field>
-					          </v-edit-dialog>
-					        </td>
-					      </template>
-					      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
-					        From {{ pageStart }} to {{ pageStop }}
-					      </template>
-					    </v-data-table>
+							<v-container fluid>
+        				<v-layout row>
+									<v-flex xs4>
+				          </v-flex>
+									<v-flex xs4>
+										<v-layout row>
+											<h2 style='padding-top:1.4em'>Target PCV</h2>
+				              <v-text-field
+				                name="input-1"
+				                label="Type Here"
+				                textarea
+												rows=1
+												class='pl-2'
+				              ></v-text-field>
+										</v-layout>
+			            </v-flex>
+								</v-layout>
+							</v-container>
 					  </v-card>
 						<br>
 						<br>
 						<div class="text-xs-center">
 							<a href='#/suggestion' style='text-decoration: none !important;'>
-		           <v-btn color="error" dark large>Next</v-btn>
+		           <v-btn color="error" dark large>ยืนยันการขอเลือด</v-btn>
 						 </a>
 		        </div>
           </v-layout>
@@ -195,62 +144,6 @@
           { text: 'low', value: 'low' },
           { text: 'high', value: 'high' },
           { text: 'critical high', value: 'critical_high' }
-        ],
-        t_items: [
-          {
-						name: 'CREA',
-            value: 0.6,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0.0,
-            low: 0.5,
-            high: 1.8,
-            critical_high: 5.0
-          },
-          {
-						name: 'BUN',
-            value: 11,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0,
-            low: 7,
-            high: 27,
-            critical_high: 100
-          },
-          {
-						name: 'BUN/CREA',
-            value: 19,
-            value_oum_cd: '',
-            critical_low: '',
-            low: '',
-            high: '',
-            critical_high: ''
-          },
-          {
-						name: 'ALT',
-            value: 33,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 10,
-            high: 125,
-            critical_high: 2000
-          },
-          {
-						name: 'AST',
-            value: 38,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 0,
-            high: 50,
-            critical_high: 1500
-          },
-          {
-						name: 'ALKP',
-            value: 65,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 23,
-            high: 212,
-            critical_high: 5000
-          }
         ]
       }
     }
