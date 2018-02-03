@@ -66,7 +66,7 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block color="secondary" dark>Lab Exam</v-btn>
+	          <v-btn block color="secondary" dark>เป้าหมายของการให้เลือด</v-btn>
 						<v-card>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>

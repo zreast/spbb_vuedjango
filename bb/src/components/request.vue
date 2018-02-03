@@ -94,10 +94,19 @@
 											เคยได้รับเลือดมาก่อน
 										</v-card>
 									</v-flex>
-									<v-flex>
+									<v-flex text-xs-left>
 						        <v-card>
 						          <v-btn block>Note</v-btn>
-											เคยได้รับเลือดมาก่อน
+											<v-card class='pa-2'>
+												ความคิดเห็นอื่นๆ
+												<v-flex>
+							            <v-text-field
+							              name="vet_comment"
+							              label="บันทึกเพิ่มเติม"
+							              multi-line
+							            ></v-text-field>
+							          </v-flex>
+											</v-card>
 						        </v-card>
 						      </v-flex>
 					      </v-flex>
