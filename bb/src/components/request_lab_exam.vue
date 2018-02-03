@@ -65,7 +65,8 @@
 					      <v-spacer></v-spacer>
 					    </v-card-title>
 						</v-card>
-	            <v-btn block color="secondary" dark>Lab Exam</v-btn>
+						<br>
+	          <v-btn block color="secondary" dark>Lab Exam</v-btn>
 						<v-card>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
@@ -139,6 +140,7 @@
         </v-slide-y-transition>
       </v-container>
     </v-content>
+
     <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
     </v-footer>
@@ -151,7 +153,7 @@
     data () {
       return {
         clipped: false,
-        drawer: true,
+        drawer: false,
         fixed: false,
         items: [
 					{ title: 'Dashboard', icon: 'dashboard' },

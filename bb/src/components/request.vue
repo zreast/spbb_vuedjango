@@ -65,65 +65,53 @@
 					      <v-spacer></v-spacer>
 					    </v-card-title>
 						</v-card>
-					</v-layout>
-				</v-slide-y-transition>
-			</v-container>
-		</v-content>
-    <v-content>
-      <v-container fluid grid-list-md>
-				<v-layout row wrap>
-		      <v-flex d-flex xs12 sm6 md4>
-		        <v-card color="purple" dark>
-		          <v-card-title primary class="title">Lorem</v-card-title>
-		          <v-card-text
-		            v-text="lorem">
-		          </v-card-text>
-		        </v-card>
-		      </v-flex>
-		      <v-flex d-flex xs12 sm6 md3>
-		        <v-layout row wrap>
-		          <v-flex d-flex>
-		            <v-card color="indigo" dark>
-		              <v-card-text
-		                v-text="lorem.slice(0, 70)">
-		              </v-card-text>
-		            </v-card>
-		          </v-flex>
-		          <v-flex d-flex>
-		            <v-layout row wrap>
-		              <v-flex d-flex
-		                v-for="n in 2"
-		                :key="n"
-		                xs12
-		              >
-		                <v-card
-		                  color="red lighten-2"
-		                  dark
-		                >
-		                  <v-card-text
-		                    v-text="lorem.slice(0, 40)">
-		                  </v-card-text>
-		                </v-card>
-		              </v-flex>
-		            </v-layout>
-		          </v-flex>
-		        </v-layout>
-		      </v-flex>
-		      <v-flex d-flex xs12 sm6 md2 child-flex>
-		        <v-card color="green lighten-2" dark>
-		          <v-card-text
-		            v-text="lorem.slice(0, 90)">
-		          </v-card-text>
-		        </v-card>
-		      </v-flex>
-		      <v-flex d-flex xs12 sm6 md3>
-		        <v-card color="blue lighten-2" dark>
-		          <v-card-text
-		            v-text="lorem.slice(0, 100)">
-		          </v-card-text>
-		        </v-card>
-		      </v-flex>
-		    </v-layout>
+						<br>
+	          <v-btn block color="secondary" dark>Medical Record</v-btn>
+						<v-container grid-list-md text-xs-center>
+					    <v-layout row wrap>
+					      <v-flex xs6>
+					        <v-card>
+					          <v-btn block>Physical Exam</v-btn>
+										eiei
+					        </v-card>
+					      </v-flex>
+								<v-flex xs6>
+									<v-flex>
+						        <v-card>
+						          <v-btn block>History Taking</v-btn>
+											เคยได้รับเลือดมาก่อน
+						        </v-card>
+						      </v-flex>
+									<v-flex>
+						        <v-card>
+						          <v-btn block>Diagnosis</v-btn>
+											เคยได้รับเลือดมาก่อน
+						        </v-card>
+						      </v-flex>
+									<v-flex>
+										<v-card>
+											<v-btn block>Date Use</v-btn>
+											เคยได้รับเลือดมาก่อน
+										</v-card>
+									</v-flex>
+									<v-flex>
+						        <v-card>
+						          <v-btn block>Note</v-btn>
+											เคยได้รับเลือดมาก่อน
+						        </v-card>
+						      </v-flex>
+					      </v-flex>
+					    </v-layout>
+					  </v-container>
+						<br>
+						<br>
+						<div class="text-xs-center">
+							<a href='#/lab_exam' style='text-decoration: none !important;'>
+		           <v-btn color="error" dark large>Next</v-btn>
+						 </a>
+		        </div>
+          </v-layout>
+        </v-slide-y-transition>
       </v-container>
     </v-content>
 
@@ -140,7 +128,7 @@
     data () {
       return {
         clipped: false,
-        drawer: true,
+        drawer: false,
         fixed: false,
 				items: [
 					{ title: 'Dashboard', icon: 'dashboard' },
