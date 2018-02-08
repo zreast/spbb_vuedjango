@@ -99,7 +99,7 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block color="secondary" dark>Lab Exam</v-btn>
+	          <v-btn block class='bg__mdteal' dark>Lab Exam</v-btn>
 						<v-card>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
@@ -302,6 +302,12 @@
 
 
 <style>
+	.color__mdred {
+		color: #df5249 !important;
+	}
+	.bg__mdteal {
+		background-color: #5c9ba4 !important;
+	}
 	.navbar {
 		background-color: #df5249 !important;
 		color: white;

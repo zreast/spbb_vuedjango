@@ -99,7 +99,7 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block color="secondary" dark>Medical Record</v-btn>
+	          <v-btn block class='bg__mdteal' dark>Medical Record</v-btn>
 						<v-container grid-list-md text-xs-center>
 					    <v-layout row wrap>
 					      <v-flex xs6>
@@ -381,6 +381,9 @@
 <style>
 	.color__mdred {
 		color: #df5249 !important;
+	}
+	.bg__mdteal {
+		background-color: #5c9ba4 !important;
 	}
 	.navbar {
 		background-color: #df5249 !important;

@@ -99,7 +99,7 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block color="secondary" dark>เป้าหมายของการให้เลือด</v-btn>
+	          <v-btn block class='bg__mdteal'  dark>เป้าหมายของการให้เลือด</v-btn>
 						<v-card>
 							<v-container fluid>
         				<v-layout row>
@@ -121,6 +121,21 @@
 							</v-container>
 					  </v-card>
 						<br>
+						<v-btn block class='bg__mdteal'  dark>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+						<v-card>
+							<v-container fluid>
+						    <v-layout row wrap>
+						      <v-flex xs12 md6>
+						        <v-card flat>
+						          <v-card-text>
+						            <v-checkbox label="Fresh Whole Blood (FWB)" v-model="ex5" value="John"></v-checkbox>
+						            <v-checkbox label="Stored Whole Blood (SWB)" v-model="ex5" value="Jacob"></v-checkbox>
+						          </v-card-text>
+						        </v-card>
+						      </v-flex>
+						    </v-layout>
+						  </v-container>
+					  </v-card>
 						<br>
 						<div class="text-xs-center">
 							<a href='#/suggestion' style='text-decoration: none !important;'>
@@ -195,6 +210,12 @@
 
 
 <style>
+	.color__mdred {
+		color: #df5249 !important;
+	}
+	.bg__mdteal {
+		background-color: #5c9ba4 !important;
+	}
 	.navbar {
 		background-color: #df5249 !important;
 		color: white;

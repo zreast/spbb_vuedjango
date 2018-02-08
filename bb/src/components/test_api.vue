@@ -5,6 +5,7 @@
       <p>{{post.body}}</p>
     </li>
   </ul>
+
 </template>
 
 <script>
