@@ -5,9 +5,13 @@
 </template>
 
 <script>
-export default {
-
-}
+  export default {
+    data () {
+      return {
+        fixed: false
+      }
+    }
+  }
 </script>
 
 <style lang="scss">

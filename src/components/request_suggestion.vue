@@ -164,7 +164,6 @@
       return {
         clipped: false,
         drawer: false,
-        fixed: false,
 				breadcrumbs: [
           {
             text: 'การเก็บเลือด',

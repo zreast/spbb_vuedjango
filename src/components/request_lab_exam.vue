@@ -107,6 +107,7 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
+									@click="recentBloodChem"
 						    >
 						      ล่าสุด
 						      <v-icon right dark>update</v-icon>
@@ -196,11 +197,27 @@
 		components: {
       AppFooter
     },
+		methods: {
+	    recentBloodChem () {
+        this.$http.get('https://kxwka7o2i1.execute-api.ap-southeast-1.amazonaws.com/prod/nokey/result-lastest?petID=5', this.user)
+          .then(function (response) {
+            console.log(response)
+            this.isLoading = true
+          })
+          .catch(function (error) {
+            if (error.body && error.body.detail === 'Please logout.') {
+              this.$router.push('/logout')
+            } else {
+              this.alert = 'คุณกรอกอีเมลล์หรือรหัสผ่านไม่ถูกต้อง'
+            }
+            console.log(error)
+          })
+	    }
+	  },
     data () {
       return {
         clipped: false,
         drawer: false,
-        fixed: false,
 				breadcrumbs: [
           {
             text: 'การเก็บเลือด',
