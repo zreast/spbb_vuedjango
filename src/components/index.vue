@@ -163,7 +163,7 @@
 												เคยได้รับเลือดมาก่อน
 												<v-layout row>
 													<v-flex xs6>
-														<v-radio-group v-model="ex8" :mandatory="false">
+														<v-radio-group :mandatory="false">
 								              <v-radio label="ไม่เคย" value="radio-1"></v-radio>
 								              <v-radio label="เคย เมื่อ" value="radio-2"></v-radio>
 								            </v-radio-group>
@@ -214,7 +214,6 @@
 												<v-flex>
 													<v-select
 							              v-bind:items="items"
-							              v-model="e1"
 							              label="Select Diagnosis"
 							              single-line
 							              bottom
@@ -231,7 +230,7 @@
 												วันที่ต้องการใช้เลือด
 												<v-layout row>
 													<v-flex xs6>
-														<v-radio-group v-model="ex8" :mandatory="false">
+														<v-radio-group :mandatory="false">
 								              <v-radio label="ทันที" value="radio-1"></v-radio>
 								              <v-radio label="จองใช้เมื่อ" value="radio-2"></v-radio>
 								            </v-radio-group>
