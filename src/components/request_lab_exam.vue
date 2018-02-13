@@ -54,6 +54,7 @@
 				    </v-breadcrumbs>
 
 						<h1>Blood Request</h1>
+						{{posts}}
 
 						<div class="progress">
 							<a href='/'>
@@ -192,6 +193,7 @@
 	/* eslint-disable */
 
 	import AppFooter from '@/components/common/Footer.vue'
+	import axios from 'axios'
 
   export default {
 		components: {
@@ -199,23 +201,21 @@
     },
 		methods: {
 	    recentBloodChem () {
-        this.$http.get('https://kxwka7o2i1.execute-api.ap-southeast-1.amazonaws.com/prod/nokey/result-lastest?petID=5', this.user)
-          .then(function (response) {
-            console.log(response)
-            this.isLoading = true
-          })
-          .catch(function (error) {
-            if (error.body && error.body.detail === 'Please logout.') {
-              this.$router.push('/logout')
-            } else {
-              this.alert = 'คุณกรอกอีเมลล์หรือรหัสผ่านไม่ถูกต้อง'
-            }
-            console.log(error)
-          })
+				axios.get('https://kxwka7o2i1.execute-api.ap-southeast-1.amazonaws.com/prod/nokey/result-lastest?petID=5')
+		    .then(response => {
+		      // JSON responses are automatically parsed.
+		      this.posts = response.data
+					console.log(response.data)
+		    })
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
 	    }
 	  },
     data () {
       return {
+				posts: [],
+				errors: [],
         clipped: false,
         drawer: false,
 				breadcrumbs: [
