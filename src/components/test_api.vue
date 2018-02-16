@@ -15,12 +15,14 @@
   export default {
     methods: {
 	    callAPI () {
-				axios.get('https://kxwka7o2i1.execute-api.ap-southeast-1.amazonaws.com/prod/nokey/result-lastest?petID=5')
-		    .then(response => {
-		      // JSON responses are automatically parsed.
-		      this.posts = response.data
-					console.log(response.data)
+				this.postBody.petID = 8
+				axios.post(`https://myfuckingapi.herokuapp.com/api/results/lastest-result`, {
+		      body: this.postBody
 		    })
+		    .then(response => {
+					this.posts = response.data
+					console.log(this.posts)
+				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
@@ -28,8 +30,9 @@
 	  },
     data () {
       return {
-        posts: [],
-        errors: []
+				posts: [],
+				postBody: [],
+      	errors: []
       }
     }
   }
