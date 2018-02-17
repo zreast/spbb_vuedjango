@@ -29,7 +29,7 @@
 				var headers = {
             'Content-Type': 'application/json'
         }
-			  axios.post('https://kxwka7o2i1.execute-api.ap-southeast-1.amazonaws.com/prod/nokey/result-lastest', {
+			  axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
     "petID" : "8"
   },headers)
    .then(response => {
