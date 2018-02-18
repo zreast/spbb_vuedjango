@@ -131,6 +131,7 @@
 					        single-line
 					        hide-details
 					        v-model="petID"
+                  @change="callAPI()"
 					      ></v-text-field>
 								<v-btn
 						      color="grey"
@@ -139,7 +140,49 @@
 									<v-icon dark>add</v-icon>
 						      Add New Pet
 						    </v-btn>
-					      <v-spacer></v-spacer>
+                <v-layout justify-center column>
+                  <v-expansion-panel popout>
+                    <v-expansion-panel-content
+                      hide-actions
+                    >
+                      <v-layout align-center row spacer slot="header">
+                        <v-flex xs4 sm2 md1>
+                          <v-avatar
+                            size="36px"
+                            slot="activator"
+                          >
+                            <img
+                              src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
+                              alt=""
+                              v-if="posts.img"
+                            >
+                            <v-icon v-else>{{ posts.img }}</v-icon>
+                          </v-avatar>
+                        </v-flex>
+                        <v-flex>
+                          <v-chip
+                            label
+                            small
+                            class="ml-0"
+                            v-if="posts.petName"
+                          >Canine</v-chip>
+                          <strong v-html="posts.petName"/>
+                          <span class="grey--text" v-if="posts.petID">&nbsp;(ID: {{posts.petID}})</span>
+                        </v-flex>
+                      </v-layout>
+                      <v-card>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                          เพศ: Famale<br>
+                          อายุ: 6<br>
+                          เจ้าของ: คุณปาริชาติ<br>
+                          เบอร์ติดต่อ: 0828118811<br>
+
+                        </v-card-text>
+                      </v-card>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-layout>
 					    </v-card-title>
 						</v-card>
 						<br>
@@ -343,7 +386,7 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
-									@click="recentBloodChem"
+									<!-- @click="recentBloodChem" -->
 						    >
 						      ล่าสุด
 						      <v-icon right dark>update</v-icon>
@@ -436,8 +479,8 @@
 						      <v-flex xs12 md6>
 						        <v-card flat>
 						          <v-card-text>
-						            <v-checkbox label="Fresh Whole Blood (FWB)" v-model="ex5" value="John"></v-checkbox>
-						            <v-checkbox label="Stored Whole Blood (SWB)" v-model="ex5" value="Jacob"></v-checkbox>
+						            <v-checkbox label="Fresh Whole Blood (FWB)"  value="John"></v-checkbox>
+						            <v-checkbox label="Stored Whole Blood (SWB)"  value="Jacob"></v-checkbox>
 						          </v-card-text>
 						        </v-card>
 						      </v-flex>
@@ -465,32 +508,16 @@
 	/* eslint-disable */
 
   import AppFooter from '@/components/common/Footer.vue'
+  import axios from 'axios'
 
   export default {
     components: {
       AppFooter
     },
-    methods: {
-	    callAPI () {
-				var headers = {
-            'Content-Type': 'application/json'
-        }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
-          body: this.postBody
-        },headers)
-        .then(response => {
-					this.posts = response.data
-					console.log(this.posts)
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
-	    }
-	  },
     data () {
       return {
+        posts: [],
+        petID: '',
         postBody: '',
         errors: [],
         page: 'profile',
@@ -600,7 +627,15 @@
             high: 212,
             critical_high: 5000
           }
-        ]
+        ],
+        messages: [
+        {
+          avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
+          name: 'John Leider',
+          title: 'Welcome to Vuetify.js!',
+          excerpt: 'Thank you for joining our community...'
+        }
+      ],
       }
     },
 		methods: {
@@ -619,7 +654,25 @@
 
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      }
+      },
+      callAPI () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
+          petID : this.petID
+        },headers)
+        .then(response => {
+					this.posts = response.data
+          this.posts.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+					console.log(this.posts)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    }
     }
   }
 </script>
