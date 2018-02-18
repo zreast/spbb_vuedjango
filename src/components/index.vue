@@ -394,12 +394,66 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
-                  @click="show_all_exam=true; show_recent_exam=false;"
+                  @click="show_all_exam=true; show_recent_exam=false; show_spec_exam=false;"
 						    >
 						      ทั้งหมด
 						      <v-icon right dark>sort</v-icon>
 						    </v-btn>
 					    </v-card-title>
+
+              <v-data-table
+					        v-bind:headers="result_headers"
+					        v-bind:items="t_items"
+					        v-bind:search="search"
+                  v-show='show_spec_exam==true'
+					      >
+					      <template slot="items" slot-scope="props">
+					        <td>
+					          <v-edit-dialog
+					            lazy
+					          > {{ props.item.name }}
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="props.item.name"
+					              single-line
+					              counter
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					        <td class="text-xs-right">{{ props.item.result_value }}</td>
+					        <td class="text-xs-right">{{ props.item.result_value_uom_cd }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
+					        <td class="text-xs-right">{{ props.item.low }}</td>
+					        <td class="text-xs-right">{{ props.item.high }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
+					        <td class="text-xs-right">
+					          <v-edit-dialog
+					            @open="tmp = props.item.iron"
+					            @save="props.item.iron = tmp || props.item.iron"
+					            large
+					            lazy
+					          >
+					            <div>{{ props.item.iron }}</div>
+					            <div slot="input" class="mt-3 title">Update Iron</div>
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="tmp"
+					              single-line
+					              counter
+					              autofocus
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					      </template>
+					      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+					        From {{ pageStart }} to {{ pageStop }}
+					      </template>
+					    </v-data-table>
+
               <v-data-table
 					        v-bind:headers="result_headers"
 					        v-bind:items="t_items"
@@ -468,7 +522,7 @@
 					        <td class="text-xs-right">{{ props.item.doctor_firstname }}</td>
 					        <td class="text-xs-right">{{ props.item.doctor_lastname }}</td>
                   <td class="justify-center layout px-0">
-                    <v-btn icon class="mx-0" @click="editItem(props.item)">
+                    <v-btn icon class="mx-0" @click="getSpecExam(props.item.result_id)">
                       <v-icon color="teal">remove_red_eye</v-icon>
                     </v-btn>
                   </td>
@@ -582,6 +636,7 @@
         title: 'Smart Pet Blood Bank',
         show_all_exam: true,
         show_recent_exam: false,
+        show_spec_exam: false,
         max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
@@ -701,9 +756,30 @@
         },headers)
         .then(response => {
 					this.current_result = response.data
+					this.createResult()
+          this.show_spec_exam = false;
+          this.show_recent_exam = true;
+          this.show_all_exam = false;
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    },
+      getSpecExam (result_id) {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/specific', {
+          resultID: result_id
+        },headers)
+        .then(response => {
+					this.current_result = response.data
           console.log(this.current_result)
 					this.createResult()
-          this.show_recent_exam = true;
+          this.show_spec_exam = true;
+          this.show_recent_exam = false;
           this.show_all_exam = false;
 				})
 		    .catch(e => {
