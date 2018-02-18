@@ -697,10 +697,11 @@
             'Content-Type': 'application/json'
         }
         axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/lastest', {
-          petID: "99"
+          petID: this.current_pet.petID
         },headers)
         .then(response => {
 					this.current_result = response.data
+          console.log(this.current_result)
 					this.createResult()
           this.show_recent_exam = true;
           this.show_all_exam = false;
