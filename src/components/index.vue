@@ -386,7 +386,7 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
-									<!-- @click="recentBloodChem" -->
+									@click="getLatestExam()"
 						    >
 						      ล่าสุด
 						      <v-icon right dark>update</v-icon>
@@ -394,24 +394,39 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
-                  @click="show_all_exam=true"
+                  @click="show_all_exam=true; show_recent_exam=false;"
 						    >
 						      ทั้งหมด
 						      <v-icon right dark>sort</v-icon>
 						    </v-btn>
 					    </v-card-title>
-					    <v-data-table
-					        v-bind:headers="headers"
-					        v-bind:items="current_pet.results"
+              <v-data-table
+					        v-bind:headers="result_headers"
+					        v-bind:items="t_items"
 					        v-bind:search="search"
+                  v-show='show_recent_exam==true'
 					      >
 					      <template slot="items" slot-scope="props">
-					        <td class="text-xs-right">{{ props.item.result_id }}</td>
-					        <td class="text-xs-right">{{ props.item.date }}</td>
-					        <td class="text-xs-right">{{ props.item.doctor_id }}</td>
-					        <td class="text-xs-right">{{ props.item.doctor_firstname }}</td>
-					        <td class="text-xs-right">{{ props.item.doctor_lastname }}</td>
-					        <td class="text-xs-right">{{ props.item.actions }}</td>
+					        <td>
+					          <v-edit-dialog
+					            lazy
+					          > {{ props.item.name }}
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="props.item.name"
+					              single-line
+					              counter
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					        <td class="text-xs-right">{{ props.item.result_value }}</td>
+					        <td class="text-xs-right">{{ props.item.result_value_uom_cd }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
+					        <td class="text-xs-right">{{ props.item.low }}</td>
+					        <td class="text-xs-right">{{ props.item.high }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
 					        <td class="text-xs-right">
 					          <v-edit-dialog
 					            @open="tmp = props.item.iron"
@@ -437,6 +452,28 @@
 					        From {{ pageStart }} to {{ pageStop }}
 					      </template>
 					    </v-data-table>
+
+              <v-data-table
+                :headers="headers"
+                v-bind:items="current_pet.results"
+                v-bind:search="search"
+                v-show='show_all_exam==true'
+                hide-actions
+                class="elevation-1"
+              >
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-right">{{ props.item.result_id }}</td>
+					        <td class="text-xs-right">{{ props.item.date }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_id }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_firstname }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_lastname }}</td>
+                  <td class="justify-center layout px-0">
+                    <v-btn icon class="mx-0" @click="editItem(props.item)">
+                      <v-icon color="teal">remove_red_eye</v-icon>
+                    </v-btn>
+                  </td>
+                </template>
+              </v-data-table>
 					  </v-card>
             <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>เป้าหมายของการให้เลือด</v-btn>
 						<v-card v-show='page=="suggestion"'>
@@ -503,7 +540,9 @@
     },
     data () {
       return {
+        temp: [],
         current_pet: [],
+        current_result: [],
         petID: '',
         postBody: '',
         errors: [],
@@ -541,7 +580,8 @@
         right: true,
         rightDrawer: false,
         title: 'Smart Pet Blood Bank',
-        show_all_exam: false,
+        show_all_exam: true,
+        show_recent_exam: false,
         max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
@@ -554,70 +594,21 @@
           { text: 'doctor_lastname', value: 'doctor_lastname' },
           { text: 'actions', value: 'actions' }
         ],
-        t_items: [
+        result_headers: [
           {
-						name: 'CREA',
-            value: 0.6,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0.0,
-            low: 0.5,
-            high: 1.8,
-            critical_high: 5.0
+            text: 'Testd',
+            align: 'left',
+            sortable: false,
+            value: 'name'
           },
-          {
-						name: 'BUN',
-            value: 11,
-            value_oum_cd: 'mg/dL',
-            critical_low: 0,
-            low: 7,
-            high: 27,
-            critical_high: 100
-          },
-          {
-						name: 'BUN/CREA',
-            value: 19,
-            value_oum_cd: '',
-            critical_low: '',
-            low: '',
-            high: '',
-            critical_high: ''
-          },
-          {
-						name: 'ALT',
-            value: 33,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 10,
-            high: 125,
-            critical_high: 2000
-          },
-          {
-						name: 'AST',
-            value: 38,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 0,
-            high: 50,
-            critical_high: 1500
-          },
-          {
-						name: 'ALKP',
-            value: 65,
-            value_oum_cd: 'U/L',
-            critical_low: 0,
-            low: 23,
-            high: 212,
-            critical_high: 5000
-          }
+          { text: 'value', value: 'value' },
+          { text: 'value_oum_cd', value: 'value_oum_cd' },
+          { text: 'critical low', value: 'critical_low' },
+          { text: 'low', value: 'low' },
+          { text: 'high', value: 'high' },
+          { text: 'critical high', value: 'critical_high' }
         ],
-        messages: [
-        {
-          avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
-          name: 'John Leider',
-          title: 'Welcome to Vuetify.js!',
-          excerpt: 'Thank you for joining our community...'
-        }
-      ],
+        t_items: []
       }
     },
 		methods: {
@@ -647,7 +638,72 @@
         .then(response => {
 					this.current_pet = response.data
           this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
-					console.log(this.current_pet)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    },
+      createResult() {
+        this.t_items = []
+        if(this.current_result.results.alt!=null)
+          {this.temp = this.current_result.results.alt
+          this.temp.name = 'ALT'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.crea!=null)
+          {this.temp = this.current_result.results.crea
+          this.temp.name = 'CREA'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.bun!=null)
+          {this.temp = this.current_result.results.bun
+          this.temp.name = 'BUN'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.crea_bun!=null)
+          {this.temp = this.current_result.results.crea_bun
+          this.temp.name = 'BUN/CREA'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.alb!=null)
+          {this.temp = this.current_result.results.alb
+          this.temp.name = 'ALB'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.alb_glob!=null)
+          {this.temp = this.current_result.results.alb_glob
+          this.temp.name = 'ALB/GLOB'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.alkp!=null)
+          {this.temp = this.current_result.results.alkp
+          this.temp.name = 'ALKP'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.glob!=null)
+          {this.temp = this.current_result.results.glob
+          this.temp.name = 'GLOB'
+          this.t_items.push(this.temp)}
+
+        if(this.current_result.results.tp!=null)
+          {this.temp = this.current_result.results.tp
+          this.temp.name = 'TP'
+          this.t_items.push(this.temp)}
+      },
+      getLatestExam () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/lastest', {
+          petID: "99"
+        },headers)
+        .then(response => {
+					this.current_result = response.data
+					this.createResult()
+          this.show_recent_exam = true;
+          this.show_all_exam = false;
 				})
 		    .catch(e => {
 		      this.errors.push(e)
