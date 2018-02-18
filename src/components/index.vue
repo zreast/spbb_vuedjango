@@ -394,6 +394,7 @@
 								<v-btn
 						      color="grey"
 						      class="white--text"
+                  @click="show_all_exam=true"
 						    >
 						      ทั้งหมด
 						      <v-icon right dark>sort</v-icon>
@@ -401,30 +402,16 @@
 					    </v-card-title>
 					    <v-data-table
 					        v-bind:headers="headers"
-					        v-bind:items="t_items"
+					        v-bind:items="current_pet.results"
 					        v-bind:search="search"
 					      >
 					      <template slot="items" slot-scope="props">
-					        <td>
-					          <v-edit-dialog
-					            lazy
-					          > {{ props.item.name }}
-					            <v-text-field
-					              slot="input"
-					              label="Edit"
-					              v-model="props.item.name"
-					              single-line
-					              counter
-					              :rules="[max25chars]"
-					            ></v-text-field>
-					          </v-edit-dialog>
-					        </td>
-					        <td class="text-xs-right">{{ props.item.value }}</td>
-					        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
-					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
-					        <td class="text-xs-right">{{ props.item.low }}</td>
-					        <td class="text-xs-right">{{ props.item.high }}</td>
-					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
+					        <td class="text-xs-right">{{ props.item.result_id }}</td>
+					        <td class="text-xs-right">{{ props.item.date }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_id }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_firstname }}</td>
+					        <td class="text-xs-right">{{ props.item.doctor_lastname }}</td>
+					        <td class="text-xs-right">{{ props.item.actions }}</td>
 					        <td class="text-xs-right">
 					          <v-edit-dialog
 					            @open="tmp = props.item.iron"
@@ -554,23 +541,18 @@
         right: true,
         rightDrawer: false,
         title: 'Smart Pet Blood Bank',
+        show_all_exam: false,
         max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
         pagination: {},
         headers: [
-          {
-            text: 'Testd',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'value', value: 'value' },
-          { text: 'value_oum_cd', value: 'value_oum_cd' },
-          { text: 'critical low', value: 'critical_low' },
-          { text: 'low', value: 'low' },
-          { text: 'high', value: 'high' },
-          { text: 'critical high', value: 'critical_high' }
+          { text: 'result_id', value: 'result_id' },
+          { text: 'date', value: 'date' },
+          { text: 'doctor_id', value: 'doctor_id' },
+          { text: 'doctor_firstname', value: 'doctor_firstname' },
+          { text: 'doctor_lastname', value: 'doctor_lastname' },
+          { text: 'actions', value: 'actions' }
         ],
         t_items: [
           {
