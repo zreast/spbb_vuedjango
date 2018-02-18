@@ -401,6 +401,10 @@
 						    </v-btn>
 					    </v-card-title>
 
+              <v-btn round dark class='bg__mdteal' @click='show_all_exam=true; show_spec_exam=false; show_recent_exam=false;' v-show='show_spec_exam==true'>
+                <v-icon dark>arrow_back</v-icon>
+                &nbsp;Back
+              </v-btn>
               <v-data-table
 					        v-bind:headers="result_headers"
 					        v-bind:items="t_items"
@@ -651,7 +655,7 @@
         ],
         result_headers: [
           {
-            text: 'Testd',
+            text: 'Test',
             align: 'left',
             sortable: false,
             value: 'name'
