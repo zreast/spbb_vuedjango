@@ -55,23 +55,67 @@
 
 						<h1>Blood Request</h1>
 
-						<div class="progress">
-							<a href='/'>
+						<div class="progress" v-if='page=="profile"'>
+							<a @click='page="profile"'>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a href='/lab_exam'>
+							<a @click='page="lab"'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a href='/suggestion'>
+							<a @click='page="suggestion"'>
 							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Request</span>
+							  </div>
+							</a>
+						</div>
+            <div class="progress" v-if='page=="lab"'>
+							<a @click='page="profile"'>
+							  <div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Profile</span>
+							  </div>
+							</a>
+						  <span class="bar done"></span>
+							<a @click='page="lab"'>
+							  <div class="circle active">
+							    <span class="label"></span>
+							    <span class="title">Lab</span>
+							  </div>
+							</a>
+						  <span class="bar half"></span>
+							<a @click='page="suggestion"'>
+								<div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Request</span>
+							  </div>
+							</a>
+						</div>
+            <div class="progress" v-if='page=="suggestion"'>
+							<a @click='page="profile"'>
+							  <div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Profile</span>
+							  </div>
+							</a>
+						  <span class="bar done"></span>
+							<a @click='page="lab"'>
+							  <div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Lab</span>
+							  </div>
+							</a>
+						  <span class="bar done"></span>
+							<a @click='page="suggestion"'>
+								<div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
@@ -86,7 +130,7 @@
 					        label="Pet Name, H.N., Owner, Address"
 					        single-line
 					        hide-details
-					        v-model="search"
+					        v-model="petID"
 					      ></v-text-field>
 								<v-btn
 						      color="grey"
@@ -99,8 +143,8 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block class='bg__mdteal' dark>Medical Record</v-btn>
-						<v-container grid-list-md text-xs-center>
+	          <v-btn block class='bg__mdteal' dark v-show='page=="profile"'>Medical Record</v-btn>
+						<v-container grid-list-md text-xs-center v-show='page=="profile"'>
 					    <v-layout row wrap>
 					      <v-flex xs6>
 					        <v-card>
@@ -291,8 +335,117 @@
 					      </v-flex>
 					    </v-layout>
 					  </v-container>
-						<br>
-						<br>
+            <v-btn block class='bg__mdteal' dark v-show='page=="lab"'>Lab Exam</v-btn>
+						<v-card v-show='page=="lab"'>
+					    <v-card-title>
+					      <h2>Blood Chemistry</h2>
+					      <v-spacer></v-spacer>
+								<v-btn
+						      color="grey"
+						      class="white--text"
+									@click="recentBloodChem"
+						    >
+						      ล่าสุด
+						      <v-icon right dark>update</v-icon>
+						    </v-btn>
+								<v-btn
+						      color="grey"
+						      class="white--text"
+						    >
+						      ทั้งหมด
+						      <v-icon right dark>sort</v-icon>
+						    </v-btn>
+					    </v-card-title>
+					    <v-data-table
+					        v-bind:headers="headers"
+					        v-bind:items="t_items"
+					        v-bind:search="search"
+					      >
+					      <template slot="items" slot-scope="props">
+					        <td>
+					          <v-edit-dialog
+					            lazy
+					          > {{ props.item.name }}
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="props.item.name"
+					              single-line
+					              counter
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					        <td class="text-xs-right">{{ props.item.value }}</td>
+					        <td class="text-xs-right">{{ props.item.value_oum_cd }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_low }}</td>
+					        <td class="text-xs-right">{{ props.item.low }}</td>
+					        <td class="text-xs-right">{{ props.item.high }}</td>
+					        <td class="text-xs-right">{{ props.item.critical_high }}</td>
+					        <td class="text-xs-right">
+					          <v-edit-dialog
+					            @open="tmp = props.item.iron"
+					            @save="props.item.iron = tmp || props.item.iron"
+					            large
+					            lazy
+					          >
+					            <div>{{ props.item.iron }}</div>
+					            <div slot="input" class="mt-3 title">Update Iron</div>
+					            <v-text-field
+					              slot="input"
+					              label="Edit"
+					              v-model="tmp"
+					              single-line
+					              counter
+					              autofocus
+					              :rules="[max25chars]"
+					            ></v-text-field>
+					          </v-edit-dialog>
+					        </td>
+					      </template>
+					      <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+					        From {{ pageStart }} to {{ pageStop }}
+					      </template>
+					    </v-data-table>
+					  </v-card>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>เป้าหมายของการให้เลือด</v-btn>
+						<v-card v-show='page=="suggestion"'>
+							<v-container fluid>
+        				<v-layout row>
+									<v-flex xs4>
+				          </v-flex>
+									<v-flex xs4>
+										<v-layout row>
+											<h2 style='padding-top:1.4em'>Target PCV</h2>
+				              <v-text-field
+				                name="input-1"
+				                label="Type Here"
+				                textarea
+												rows=1
+												class='pl-2'
+				              ></v-text-field>
+										</v-layout>
+			            </v-flex>
+								</v-layout>
+							</v-container>
+					  </v-card>
+						<v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+						<v-card v-show='page=="suggestion"'>
+							<v-container fluid>
+						    <v-layout row wrap>
+						      <v-flex xs12 md6>
+						        <v-card flat>
+						          <v-card-text>
+						            <v-checkbox label="Fresh Whole Blood (FWB)" v-model="ex5" value="John"></v-checkbox>
+						            <v-checkbox label="Stored Whole Blood (SWB)" v-model="ex5" value="Jacob"></v-checkbox>
+						          </v-card-text>
+						        </v-card>
+						      </v-flex>
+						    </v-layout>
+						  </v-container>
+					  </v-card>
+            <br>
+
 						<div class="text-xs-center">
 							<a href='/lab_exam' style='text-decoration: none !important;'>
 		           <v-btn color="error" dark large>Next</v-btn>
@@ -317,10 +470,33 @@
     components: {
       AppFooter
     },
+    methods: {
+	    callAPI () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
+          body: this.postBody
+        },headers)
+        .then(response => {
+					this.posts = response.data
+					console.log(this.posts)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    }
+	  },
     data () {
       return {
+        postBody: '',
+        errors: [],
+        page: 'profile',
         clipped: false,
         drawer: false,
+        clipped: false,
 				breadcrumbs: [
           {
             text: 'การเก็บเลือด',
@@ -350,12 +526,81 @@
         miniVariant: false,
         right: true,
         rightDrawer: false,
-        title: 'iTaam CRM tools for Animal Hospital',
-				max25chars: (v) => v.length <= 25 || 'Input too long!',
+        title: 'Smart Pet Blood Bank',
+        max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
         pagination: {},
-				lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
+        headers: [
+          {
+            text: 'Testd',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'value', value: 'value' },
+          { text: 'value_oum_cd', value: 'value_oum_cd' },
+          { text: 'critical low', value: 'critical_low' },
+          { text: 'low', value: 'low' },
+          { text: 'high', value: 'high' },
+          { text: 'critical high', value: 'critical_high' }
+        ],
+        t_items: [
+          {
+						name: 'CREA',
+            value: 0.6,
+            value_oum_cd: 'mg/dL',
+            critical_low: 0.0,
+            low: 0.5,
+            high: 1.8,
+            critical_high: 5.0
+          },
+          {
+						name: 'BUN',
+            value: 11,
+            value_oum_cd: 'mg/dL',
+            critical_low: 0,
+            low: 7,
+            high: 27,
+            critical_high: 100
+          },
+          {
+						name: 'BUN/CREA',
+            value: 19,
+            value_oum_cd: '',
+            critical_low: '',
+            low: '',
+            high: '',
+            critical_high: ''
+          },
+          {
+						name: 'ALT',
+            value: 33,
+            value_oum_cd: 'U/L',
+            critical_low: 0,
+            low: 10,
+            high: 125,
+            critical_high: 2000
+          },
+          {
+						name: 'AST',
+            value: 38,
+            value_oum_cd: 'U/L',
+            critical_low: 0,
+            low: 0,
+            high: 50,
+            critical_high: 1500
+          },
+          {
+						name: 'ALKP',
+            value: 65,
+            value_oum_cd: 'U/L',
+            critical_low: 0,
+            low: 23,
+            high: 212,
+            critical_high: 5000
+          }
+        ]
       }
     },
 		methods: {
