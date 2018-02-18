@@ -131,7 +131,7 @@
 					        single-line
 					        hide-details
 					        v-model="petID"
-                  @change="callAPI()"
+                  @change="getPetID()"
 					      ></v-text-field>
 								<v-btn
 						      color="grey"
@@ -154,9 +154,9 @@
                             <img
                               src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
                               alt=""
-                              v-if="posts.img"
+                              v-if="current_pet.img"
                             >
-                            <v-icon v-else>{{ posts.img }}</v-icon>
+                            <v-icon v-else>{{ current_pet.img }}</v-icon>
                           </v-avatar>
                         </v-flex>
                         <v-flex>
@@ -164,10 +164,10 @@
                             label
                             small
                             class="ml-0"
-                            v-if="posts.petName"
+                            v-if="current_pet.petName"
                           >Canine</v-chip>
-                          <strong v-html="posts.petName"/>
-                          <span class="grey--text" v-if="posts.petID">&nbsp;(ID: {{posts.petID}})</span>
+                          <strong v-html="current_pet.petName"/>
+                          <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
                         </v-flex>
                       </v-layout>
                       <v-card>
@@ -516,7 +516,7 @@
     },
     data () {
       return {
-        posts: [],
+        current_pet: [],
         petID: '',
         postBody: '',
         errors: [],
@@ -655,7 +655,7 @@
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
-      callAPI () {
+      getPetID () {
 				var headers = {
             'Content-Type': 'application/json'
         }
@@ -663,9 +663,9 @@
           petID : this.petID
         },headers)
         .then(response => {
-					this.posts = response.data
-          this.posts.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
-					console.log(this.posts)
+					this.current_pet = response.data
+          this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+					console.log(this.current_pet)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
