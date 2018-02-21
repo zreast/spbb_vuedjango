@@ -60,28 +60,32 @@
                 <v-flex xs3>
                   <a href='/request'>
                     <v-card dark color="secondary">
-                      <v-card-text class="px-0">บริจาคเลือด</v-card-text>
+                      <img src='../assets/index/donation.svg' class='img_task'></img>
+                      <v-card-text class="px-0 caption_task">บริจาคเลือด</v-card-text>
                     </v-card>
                   </a>
                 </v-flex>
                 <v-flex xs3>
                   <a href='/request'>
                     <v-card dark color="secondary">
-                      <v-card-text class="px-0">ทำนัด</v-card-text>
+                      <img src='../assets/index/calendar.svg' class='img_task'></img>
+                      <v-card-text class="px-0 caption_task">ทำนัด</v-card-text>
                     </v-card>
                   </a>
                 </v-flex>
                 <v-flex xs3>
                   <a href='/request'>
                     <v-card dark color="secondary">
-                      <v-card-text class="px-0">เบิกเลือด</v-card-text>
+                      <img src='../assets/index/transfusion.svg' class='img_task'></img>
+                      <v-card-text class="px-0 caption_task">เบิกเลือด</v-card-text>
                     </v-card>
                   </a>
                 </v-flex>
                 <v-flex xs3>
                   <a href='/request'>
                   <v-card dark color="secondary">
-                    <v-card-text class="px-0">จัดการ Stock เลือด</v-card-text>
+                    <img src='../assets/index/stock.svg' class='img_task'></img>
+                    <v-card-text class="px-0 caption_task">จัดการ Stock เลือด</v-card-text>
                   </v-card>
                   </a>
                 </v-flex>
@@ -185,6 +189,16 @@
   }
   a{
     text-decoration: none;
+  }
+
+  .img_task{
+    max-height: 150px;
+    max-width: 150px;
+    margin: 2em 2em 0em 2em;
+  }
+  .caption_task{
+    font-size: 1.4em;
+    font-weight: bold;
   }
 
 </style>
