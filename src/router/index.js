@@ -5,8 +5,7 @@ import VueResource from 'vue-resource'
 
 const LandingPage = () => import('@/components/')
 const LoginPage = () => import('@/components/login.vue')
-const LabExam = () => import('@/components/request_lab_exam.vue')
-const Suggestion = () => import('@/components/request_suggestion.vue')
+const Request = () => import('@/components/request.vue')
 const TestAPI = () => import('@/components/test_api.vue')
 
 Vue.use(Router)
@@ -21,14 +20,9 @@ var router = new Router({
       component: LandingPage
     },
     {
-      path: '/lab_exam',
-      name: 'Lab Exam',
-      component: LabExam
-    },
-    {
-      path: '/suggestion',
-      name: 'Suggestion',
-      component: Suggestion
+      path: '/request',
+      name: 'Request',
+      component: Request
     },
     {
       path: '/test_api',
