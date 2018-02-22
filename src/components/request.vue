@@ -15,7 +15,7 @@
             <v-list-tile-title v-text="item.text"></v-list-tile-title>
           </v-list-tile>
         </v-list>
-        <v-list-tile v-for="item in items" :key="item.text" @click="">
+        <v-list-tile v-for="item in items" :key="item.text" @click="route(item.page)">
           <v-list-tile-action class="grey--text darken-4">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -97,6 +97,7 @@
           <v-btn
             color="grey"
             class="white--text"
+            @click="route('newrequest')"
           >
             <v-icon dark>add</v-icon>
             New Request
@@ -104,7 +105,7 @@
         </v-layout>
         <br>
         <br>
-        <v-card>
+        <v-card v-for='item in requests.requests' style='margin-bottom: 1em'>
           <v-card-actions>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
@@ -113,12 +114,18 @@
                     <v-card-text class="px-0 text_grey">
                       Request Date
                     </v-card-text>
+                    <v-card-text class="px-0">
+                      {{item.date}}
+                    </v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
                       Recipient
+                    </v-card-text>
+                    <v-card-text class="px-0">
+                      {{item.pet_name}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -127,12 +134,18 @@
                     <v-card-text class="px-0 text_grey">
                       Owner
                     </v-card-text>
+                    <v-card-text class="px-0">
+                      {{item.doctor_firstname}}
+                    </v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
                       Product
+                    </v-card-text>
+                    <v-card-text class="px-0">
+
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -141,12 +154,18 @@
                     <v-card-text class="px-0 text_grey">
                       From
                     </v-card-text>
+                    <v-card-text class="px-0">
+                      {{item.doctor_firstname}}
+                    </v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
                       Use Date
+                    </v-card-text>
+                    <v-card-text class="px-0">
+                      {{item.date}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -181,12 +200,27 @@
   import axios from 'axios'
 
   export default {
+    created () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/hospital', {
+          hospitalID : "1"
+        },headers)
+        .then(response => {
+					this.requests = response.data
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+    },
     components: {
       AppFooter
     },
     data () {
       return {
-        postBody: '',
+        requests: [],
+        postBody: [],
         errors: [],
         clipped: false,
         drawer: false,
@@ -202,11 +236,11 @@
           }
         ],
 				items: [
-					{ title: 'Dashboard', icon: 'dashboard' },
-          { title: 'Do it now!', icon: 'extension' },
-          { title: 'Statistic', icon: 'trending_up' },
-          { title: 'Email', icon: 'email' },
-          { title: 'Social', icon: 'message' }
+					{ title: 'Dashboard', icon: 'dashboard', page: '/'},
+          { title: 'Do it now!', icon: 'extension', page: '/'},
+          { title: 'Statistic', icon: 'trending_up', page: '/'},
+          { title: 'Email', icon: 'email', page: '/'},
+          { title: 'Social', icon: 'message', page: '/'}
         ],
 	      items2: [
 	        { picture: 28, text: 'โรงพยาบาลสัตว์ สวนผัก' }
@@ -241,7 +275,10 @@
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
-    }
+      route (page) {
+        window.location.href = page
+      },
+    },
   }
 </script>
 

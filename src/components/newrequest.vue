@@ -15,7 +15,7 @@
             <v-list-tile-title v-text="item.text"></v-list-tile-title>
           </v-list-tile>
         </v-list>
-        <v-list-tile v-for="item in items" :key="item.text" @click="">
+        <v-list-tile v-for="item in items" :key="item.text" @click="route(item.page)">
           <v-list-tile-action class="grey--text darken-4">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -379,7 +379,51 @@
 					    </v-layout>
 					  </v-container>
             <v-btn block class='bg__mdteal' dark v-show='page=="lab"'>Lab Exam</v-btn>
-						<v-card v-show='page=="lab"'>
+
+            <v-card v-show='page=="lab"' class='bg__grey'>
+					    <v-card-title>
+					      <h2>Complete Blood Count (CBC)</h2>
+					    </v-card-title>
+
+              <v-layout row wrap>
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="HCT" v-model="hct" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="PLT" v-model="plt" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="HbG" v-model="hgb" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="RBC (M/usl)" v-model="rbc" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="MCH (M/usl)" v-model="mch" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                  <v-text-field box label="WBC" v-model="wbc" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs2 class='result_box'>
+                </v-flex>
+
+
+              </v-layout>
+            </v-card>
+
+            <v-card v-show='page=="lab"'>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
 					      <v-spacer></v-spacer>
@@ -541,15 +585,22 @@
 				          </v-flex>
 									<v-flex xs4>
 										<v-layout row>
-											<h2 style='padding-top:1.4em'>Target PCV</h2>
-				              <v-text-field
-				                name="input-1"
-				                label="Type Here"
-				                textarea
-												rows=1
-												class='pl-2'
-				              ></v-text-field>
+											<h2 style='padding-top:1em'>Target PCV</h2>
+                      <v-text-field
+      					        append-icon="cancel"
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="pcv"
+                        type="number"
+                        style="margin-left:2em"
+      					      ></v-text-field>
 										</v-layout>
+                    <br>
+                    <v-btn fab dark style='max-width:30px; max-height:30px'>
+                      <v-icon dark>add</v-icon>
+                    </v-btn>
+                    <b>เพิ่มเป้าหมายการให้เลือด</b>
 			            </v-flex>
 								</v-layout>
 							</v-container>
@@ -569,6 +620,65 @@
 						    </v-layout>
 						  </v-container>
 					  </v-card>
+
+            <v-card v-show='page=="lab"' class='bg__grey'>
+					    <v-card-title>
+					      <h2>Test Kit</h2>
+					    </v-card-title>
+
+              <v-layout row wrap>
+                <v-flex xs5>
+                  <div style='margin-left: 2em'>
+                    <v-layout>
+                      <b>E.Canis/ E.ewingii Ab</b>
+                    </v-layout>
+                      <v-radio-group v-model="radios" :mandatory="false">
+                        <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
+                        <v-radio label="Positive" value="radio-2"></v-radio>
+                        <v-radio label="Negative" value="radio-3"></v-radio>
+                      </v-radio-group>
+                  </div>
+                </v-flex>
+                <v-flex xs5>
+                  <div style='margin-left: 2em'>
+                    <v-layout>
+                      <b>FIV Ab</b>
+                    </v-layout>
+                      <v-radio-group v-model="radios" :mandatory="false">
+                        <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
+                        <v-radio label="Positive" value="radio-2"></v-radio>
+                        <v-radio label="Negative" value="radio-3"></v-radio>
+                      </v-radio-group>
+                  </div>
+                </v-flex>
+                <v-flex xs5>
+                  <div style='margin-left: 2em'>
+                    <v-layout>
+                      <b>Lyme Disease</b>
+                    </v-layout>
+                      <v-radio-group v-model="radios" :mandatory="false">
+                        <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
+                        <v-radio label="Positive" value="radio-2"></v-radio>
+                        <v-radio label="Negative" value="radio-3"></v-radio>
+                      </v-radio-group>
+                  </div>
+                </v-flex>
+                <v-flex xs5>
+                  <div style='margin-left: 2em'>
+                    <v-layout>
+                      <b>FeLV Ag</b>
+                    </v-layout>
+                      <v-radio-group v-model="radios" :mandatory="false">
+                        <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
+                        <v-radio label="Positive" value="radio-2"></v-radio>
+                        <v-radio label="Negative" value="radio-3"></v-radio>
+                      </v-radio-group>
+                  </div>
+                </v-flex>
+              </v-layout>
+
+
+            </v-card>
             <br>
 
 						<div class="text-xs-center">
@@ -618,12 +728,12 @@
             disabled: true
           }
         ],
-				items: [
-					{ title: 'Dashboard', icon: 'dashboard' },
-          { title: 'Do it now!', icon: 'extension' },
-          { title: 'Statistic', icon: 'trending_up' },
-          { title: 'Email', icon: 'email' },
-          { title: 'Social', icon: 'message' }
+        items: [
+					{ title: 'Dashboard', icon: 'dashboard', page: '/'},
+          { title: 'Do it now!', icon: 'extension', page: '/'},
+          { title: 'Statistic', icon: 'trending_up', page: '/'},
+          { title: 'Email', icon: 'email', page: '/'},
+          { title: 'Social', icon: 'message', page: '/'}
         ],
 	      items2: [
 	        { picture: 28, text: 'โรงพยาบาลสัตว์ สวนผัก' }
@@ -687,6 +797,7 @@
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+
       getPetID () {
 				var headers = {
             'Content-Type': 'application/json'
@@ -791,7 +902,10 @@
 		    })
 
 
-	    }
+	    },
+      route (page) {
+        window.location.href = page
+      },
     }
   }
 </script>
@@ -886,5 +1000,13 @@
         }
       }
     }
+  }
+
+  .bg__grey{
+    background-color: #f5f5f5 !important;
+  }
+  .result_box{
+    margin: 0em 2em 0em 2em;
+
   }
 </style>
