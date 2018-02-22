@@ -132,6 +132,7 @@
 					        hide-details
 					        v-model="petID"
                   @change="getPetID()"
+                  @keyup.enter="getPetID()"
 					      ></v-text-field>
 								<v-btn
 						      color="grey"
@@ -712,7 +713,7 @@
                     <v-layout>
                       <b>E.Canis/ E.ewingii Ab</b>
                     </v-layout>
-                      <v-radio-group v-model="radios" :mandatory="false">
+                      <v-radio-group v-model="radios1" :mandatory="false">
                         <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
                         <v-radio label="Positive" value="radio-2"></v-radio>
                         <v-radio label="Negative" value="radio-3"></v-radio>
@@ -724,7 +725,7 @@
                     <v-layout>
                       <b>FIV Ab</b>
                     </v-layout>
-                      <v-radio-group v-model="radios" :mandatory="false">
+                      <v-radio-group v-model="radios2" :mandatory="false">
                         <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
                         <v-radio label="Positive" value="radio-2"></v-radio>
                         <v-radio label="Negative" value="radio-3"></v-radio>
@@ -736,7 +737,7 @@
                     <v-layout>
                       <b>Lyme Disease</b>
                     </v-layout>
-                      <v-radio-group v-model="radios" :mandatory="false">
+                      <v-radio-group v-model="radios3" :mandatory="false">
                         <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
                         <v-radio label="Positive" value="radio-2"></v-radio>
                         <v-radio label="Negative" value="radio-3"></v-radio>
@@ -748,7 +749,7 @@
                     <v-layout>
                       <b>FeLV Ag</b>
                     </v-layout>
-                      <v-radio-group v-model="radios" :mandatory="false">
+                      <v-radio-group v-model="radios4" :mandatory="false">
                         <v-radio label="ไม่ได้ตรวจ" value="radio-1"></v-radio>
                         <v-radio label="Positive" value="radio-2"></v-radio>
                         <v-radio label="Negative" value="radio-3"></v-radio>
@@ -878,6 +879,12 @@
         p_prp: false,
         p_ffp: false,
         p_fp: false,
+        radios1: null,
+        radios2: null,
+        radios3: null,
+        radios4: null,
+        dialog: false,
+        post_diagnosis: '',
       }
     },
 		methods: {
@@ -903,13 +910,25 @@
         var mm = today.getMonth()+1; //January is 0!
 
         var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var mn = today.getMinutes();
+        var ss = today.getSeconds();
         if(dd<10){
             dd='0'+dd;
         }
         if(mm<10){
             mm='0'+mm;
         }
-        var today = yyyy+mm+dd;
+        if(hh<10){
+            hh='0'+hh;
+        }
+        if(mn<10){
+            mn='0'+mn;
+        }
+        if(ss<10){
+            ss='0'+ss;
+        }
+        var today = yyyy+mm+dd+hh+mm+ss;
 
         return today
       },
@@ -920,14 +939,15 @@
             'Content-Type': 'application/json'
         }
         axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodrequesthistory/add', {
-          "hospital_id": "1",
-          "request_reason": this.post_diagnosis,
-          "pet_id": this.current_pet.petID,
-          "vet_id": "1",
-          "date": this.today_date
+          hospital_id: "1",
+          request_reason: this.post_diagnosis,
+          pet_id: this.current_pet.petID,
+          vet_id: "1",
+          date: this.today_date
         },headers)
         .then(response => {
-					window.location.href = '/success'
+					console.log(response.data)
+          window.location.href = '/success'
 				})
 		    .catch(e => {
 		      this.errors.push(e)
