@@ -1196,7 +1196,7 @@
           product_request_detail_id: prod_req_id
         },headers)
         .then(response => {
-					console.log(response.data)
+					window.location.href = '/success'
 				})
 		    .catch(e => {
 		      this.errors.push(e)

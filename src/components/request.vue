@@ -176,7 +176,7 @@
                 <v-btn color="primary" dark slot="activator" @click='selected_request=item; getDetail()'>Detail</v-btn>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Request:</span>
+                    <span class="headline">Blood Request:{{selected_request.request_id}}</span>
                   </v-card-title>
                   <v-card-text>
                     <v-layout justify-center column>
@@ -207,16 +207,53 @@
                         </v-card-text>
                       </v-card>
                     </v-layout>
-                    <v-btn block class='bg__mdteal'  dark >Medical Record</v-btn>
-                    <v-card>
-                      <v-container grid-list-md text-xs-center>
-                        eiei
-                      </v-container>
-        					  </v-card>
                     <v-btn block class='bg__mdteal'  dark >ถุงเลือดที่ใช้</v-btn>
                     <v-card>
                       <v-container grid-list-md text-xs-center>
-                        eiei
+                        <v-layout row wrap v-for='item in selected_bags.detail' style='border-bottom: 1px solid #f4f4f4'>
+                          <v-flex xs3>
+                            <v-card class='custom_card'>
+                              <v-card-text class="px-0 text_grey">
+                                <img src='../assets/request/bloodbag.svg' style='width:40px'>
+                                </img>
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.required_quantity}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-card class='custom_card'>
+                              <v-card-text class="px-0 text_grey">
+                                เลขที่การขอใช้เลือด
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.product_request_id}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-card class='custom_card'>
+                              <v-card-text class="px-0 text_grey">
+                                Type
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.product_type}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-card class='custom_card'>
+                              <v-card-text class="px-0 text_grey">
+                                สถานะ
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.request_status
+                                }}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
                       </v-container>
         					  </v-card>
                     <v-btn block class='bg__mdteal'  dark >บันทึกผลการใช้เลือด</v-btn>
@@ -228,8 +265,6 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" flat="flat" @click="dialog = false">Disagree</v-btn>
-                    <v-btn color="green darken-1" flat="flat" @click="dialog = false">Agree</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -280,6 +315,8 @@
         current_pet_detail: [],
         current_pet_owner: [],
         selected_request: [],
+        selected_bags: [],
+        dialog: false,
         clipped: false,
         drawer: false,
         clipped: false,
@@ -366,7 +403,16 @@
         },headers)
         .then(response => {
 					this.current_pet_owner = response.data
-          console.log(this.current_pet_owner)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/specificrequestwithrequestdetail', {
+          "RequestID": this.selected_request.request_id
+        },headers)
+        .then(response => {
+          this.selected_bags = response.data
 				})
 		    .catch(e => {
 		      this.errors.push(e)
