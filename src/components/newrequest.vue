@@ -191,15 +191,14 @@
 									<v-icon dark>add</v-icon>
 						      Add New Pet
 						    </v-btn>
-                <v-layout justify-center column>
-                  <v-expansion-panel popout>
-                    <v-expansion-panel-content
-                      hide-actions
-                    >
-                      <v-layout align-center row spacer slot="header">
-                        <v-flex xs4 sm2 md1>
+                <v-spacer v-show='current_pet.petID==null'></v-spacer>
+                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet.petID!=null'>
+                  <v-card>
+                    <v-card-text>
+                      <v-layout row wrap>
+                        <v-flex xs1>
                           <v-avatar
-                            size="36px"
+                            size="50px"
                             slot="activator"
                           >
                             <img
@@ -210,29 +209,29 @@
                             <v-icon v-else>{{ current_pet.img }}</v-icon>
                           </v-avatar>
                         </v-flex>
-                        <v-flex>
+                        <v-flex xs3>
                           <v-chip
                             label
                             small
                             class="ml-0"
                             v-if="current_pet.petName"
-                          >Canine</v-chip>
-                          <strong v-html="current_pet.petName"/>
+                          >{{current_pet_detail.patient_species}}</v-chip>
+                          <br>
+                          <h2 v-html="current_pet.petName"/>
                           <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
                         </v-flex>
+                        <v-flex xs4>
+                          <b>เพศ:</b> {{current_pet_detail.patient_gender}}<br>
+                          <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
+                        </v-flex>
+                        <v-flex xs4>
+                          <b>เจ้าของ:</b> คุณปาริชาติ<br>
+                          <b>เบอร์ติดต่อ:</b> 0828118811<br>
+                        </v-flex>
                       </v-layout>
-                      <v-card>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                          เพศ: Famale<br>
-                          อายุ: 6<br>
-                          เจ้าของ: คุณปาริชาติ<br>
-                          เบอร์ติดต่อ: 0828118811<br>
 
-                        </v-card-text>
-                      </v-card>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
+                    </v-card-text>
+                  </v-card>
                 </v-layout>
 					    </v-card-title>
 						</v-card>
@@ -1181,6 +1180,17 @@
         .then(response => {
 					this.current_pet = response.data
           this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
+          petID : this.petID
+        },headers)
+        .then(response => {
+					this.current_pet_detail = response.data
+          console.log(this.current)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
