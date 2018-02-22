@@ -58,7 +58,7 @@
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
                 <v-flex xs3>
-                  <a href='/request'>
+                  <a href='/donation'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/donation.svg' class='img_task'></img>
                       <v-card-text class="px-0 caption_task">บริจาคเลือด</v-card-text>
@@ -66,7 +66,7 @@
                   </a>
                 </v-flex>
                 <v-flex xs3>
-                  <a href='/request'>
+                  <a href='#'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/calendar.svg' class='img_task'></img>
                       <v-card-text class="px-0 caption_task">ทำนัด</v-card-text>
@@ -82,7 +82,7 @@
                   </a>
                 </v-flex>
                 <v-flex xs3>
-                  <a href='/request'>
+                  <a href='/stock'>
                   <v-card dark color="secondary">
                     <img src='../assets/index/stock.svg' class='img_task'></img>
                     <v-card-text class="px-0 caption_task">จัดการ Stock เลือด</v-card-text>
