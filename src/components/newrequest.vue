@@ -225,8 +225,8 @@
                           <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
                         </v-flex>
                         <v-flex xs4>
-                          <b>เจ้าของ:</b> คุณปาริชาติ<br>
-                          <b>เบอร์ติดต่อ:</b> 0828118811<br>
+                          <b>เจ้าของ:</b> {{current_pet_owner.owner_name}}<br>
+                          <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
                         </v-flex>
                       </v-layout>
 
@@ -1003,6 +1003,8 @@
       return {
         temp: [],
         current_pet: [],
+        current_pet_detail: [],
+        current_pet_owner: [],
         current_result: [],
         bloodbags: [],
         in_bloodbags: [],
@@ -1190,7 +1192,17 @@
         },headers)
         .then(response => {
 					this.current_pet_detail = response.data
-          console.log(this.current)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
+          ownerID : '1'
+        },headers)
+        .then(response => {
+					this.current_pet_owner = response.data
+          console.log(this.current_pet_owner)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
