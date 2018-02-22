@@ -791,6 +791,9 @@
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap v-for='item in out_bloodbags' style='border-bottom: 1px solid #f4f4f4'>
+                    <v-flex xs12>
+                      <h3>{{item.hospital_name}}</h3>
+                    </v-flex>
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0 text_grey">
@@ -798,7 +801,7 @@
                           </img>
                         </v-card-text>
                         <v-card-text class="px-0">
-                          400 ml.
+                          {{item.quantity}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -828,7 +831,7 @@
                           PCV
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.quantity}}
+                          {{item.pcv}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -846,7 +849,7 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0">
-                          <v-btn @click='selected_bloodbags=item; page="confirm"'>เลือกถุงเลือด</v-btn>
+                          <v-btn @click='selected_bloodbags=item; page="confirm"'>Contact</v-btn>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -1150,8 +1153,10 @@
         return today
       },
       sendRequest () {
+        var req_id = ''
+        var prod_req_id = ''
+
         this.today_date = this.getDate()
-        console.log(this.today_date)
 				var headers = {
             'Content-Type': 'application/json'
         }
@@ -1163,8 +1168,35 @@
           date: this.today_date
         },headers)
         .then(response => {
+          req_id = response.data.request_id
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodproductrequestdetail/add', {
+          request_date: this.today_date,
+          bloodtype: this.selected_bloodbags.blood_type,
+          product_type: this.selected_bloodbags.product_type,
+          required_quantity: this.selected_bloodbags.quantity,
+          request_id: req_id,
+          request_status: 1,
+        },headers)
+        .then(response => {
+					prod_req_id = response.data.product_request_detail_id
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodbagrequestdetail/add', {
+          quantity: this.selected_bloodbags.quantity,
+          method: "test",
+          bag_id: this.selected_bloodbags.bag_id,
+          product_request_detail_id: prod_req_id
+        },headers)
+        .then(response => {
 					console.log(response.data)
-          window.location.href = '/success'
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -1307,6 +1339,9 @@
         },headers)
         .then(response => {
 					this.bloodbags = response.data
+
+          this.in_bloodbags = []
+          this.out_bloodbags = []
           for(var i in this.bloodbags.blood_bags)
           {
             if(this.bloodbags.blood_bags[i].hospital_id=='1')

@@ -171,18 +171,72 @@
                 </v-flex>
               </v-layout>
             </v-container>
-            <br><br>
-            <v-btn>See Details</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn icon @click.native="show = !show">
-              <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            <v-layout row justify-center>
+              <v-dialog v-model="dialog" width="600px">
+                <v-btn color="primary" dark slot="activator" @click='selected_request=item; getDetail()'>Detail</v-btn>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Request:</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-layout justify-center column>
+                      <v-card>
+                        <v-card-text>
+                          <v-layout row wrap>
+                            <v-flex xs4>
+                              <v-chip
+                                label
+                                small
+                                class="ml-0"
+                                v-if="current_pet.petName"
+                              >{{current_pet_detail.patient_species}}</v-chip>
+                              <br>
+                              <h2 v-html="current_pet.petName"/>
+                              <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
+                            </v-flex>
+                            <v-flex xs4>
+                              <b>เพศ:</b> {{current_pet_detail.patient_gender}}<br>
+                              <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
+                            </v-flex>
+                            <v-flex xs4>
+                              <b>เจ้าของ:</b> {{current_pet_owner.owner_name}}<br>
+                              <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
+                            </v-flex>
+                          </v-layout>
+
+                        </v-card-text>
+                      </v-card>
+                    </v-layout>
+                    <v-btn block class='bg__mdteal'  dark >Medical Record</v-btn>
+                    <v-card>
+                      <v-container grid-list-md text-xs-center>
+                        eiei
+                      </v-container>
+        					  </v-card>
+                    <v-btn block class='bg__mdteal'  dark >ถุงเลือดที่ใช้</v-btn>
+                    <v-card>
+                      <v-container grid-list-md text-xs-center>
+                        eiei
+                      </v-container>
+        					  </v-card>
+                    <v-btn block class='bg__mdteal'  dark >บันทึกผลการใช้เลือด</v-btn>
+                    <v-card>
+                      <v-container grid-list-md text-xs-center>
+                        eiei
+                      </v-container>
+        					  </v-card>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click="dialog = false">Disagree</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click="dialog = false">Agree</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-layout>
+            <v-btn success>บันทึกผลตรวจ</v-btn>
             </v-btn>
           </v-card-actions>
-          <v-slide-y-transition>
-            <v-card-text v-show="show">
-              test expand
-            </v-card-text>
-          </v-slide-y-transition>
         </v-card>
 
       </v-container>
@@ -222,6 +276,10 @@
         requests: [],
         postBody: [],
         errors: [],
+        current_pet: [],
+        current_pet_detail: [],
+        current_pet_owner: [],
+        selected_request: [],
         clipped: false,
         drawer: false,
         clipped: false,
@@ -278,6 +336,44 @@
       route (page) {
         window.location.href = page
       },
+      getDetail () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
+          petID : this.selected_request.pet_id
+        },headers)
+        .then(response => {
+					this.current_pet = response.data
+          this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
+          petID : this.selected_request.pet_id
+        },headers)
+        .then(response => {
+					this.current_pet_detail = response.data
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
+          ownerID : '1'
+        },headers)
+        .then(response => {
+					this.current_pet_owner = response.data
+          console.log(this.current_pet_owner)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    },
     },
   }
 </script>
