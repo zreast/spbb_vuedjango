@@ -76,6 +76,13 @@
 							    <span class="title">Request</span>
 							  </div>
 							</a>
+              <span class="bar"></span>
+							<a @click='page="confirm"'>
+							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Confirm</span>
+							  </div>
+							</a>
 						</div>
             <div class="progress" v-if='page=="lab"'>
 							<a @click='page="profile"'>
@@ -98,6 +105,13 @@
 							    <span class="title">Request</span>
 							  </div>
 							</a>
+              <span class="bar"></span>
+							<a @click='page="confirm"'>
+							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Confirm</span>
+							  </div>
+							</a>
 						</div>
             <div class="progress" v-if='page=="suggestion"||page=="bloodbag"'>
 							<a @click='page="profile"'>
@@ -118,6 +132,42 @@
 								<div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
+							  </div>
+							</a>
+              <span class="bar"></span>
+							<a @click='page="confirm"'>
+							  <div class="circle">
+							    <span class="label"></span>
+							    <span class="title">Confirm</span>
+							  </div>
+							</a>
+						</div>
+            <div class="progress" v-if='page=="confirm"'>
+							<a @click='page="profile"'>
+							  <div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Profile</span>
+							  </div>
+							</a>
+						  <span class="bar done"></span>
+							<a @click='page="lab"'>
+							  <div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Lab</span>
+							  </div>
+							</a>
+						  <span class="bar done"></span>
+							<a @click='page="suggestion"'>
+								<div class="circle done">
+							    <span class="label"></span>
+							    <span class="title">Request</span>
+							  </div>
+							</a>
+              <span class="bar done"></span>
+							<a @click='page="confirm"'>
+							  <div class="circle active">
+							    <span class="label"></span>
+							    <span class="title">Confirm</span>
 							  </div>
 							</a>
 						</div>
@@ -728,7 +778,7 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0">
-                          <v-btn>เลือกถุงเลือด</v-btn>
+                          <v-btn @click='selected_bloodbags=item; page="confirm"'>เลือกถุงเลือด</v-btn>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -797,7 +847,7 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0">
-                          <v-btn>เลือกถุงเลือด</v-btn>
+                          <v-btn @click='selected_bloodbags=item; page="confirm"'>เลือกถุงเลือด</v-btn>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -866,87 +916,55 @@
 
 
             </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>เป้าหมายของการให้เลือด</v-btn>
-            <v-card v-show='page=="suggestion"||page=="bloodbag"'>
-							<v-container fluid>
-        				<v-layout row>
-									<v-flex xs4>
-				          </v-flex>
-									<v-flex xs4>
-										<v-layout row v-show='pcv'>
-											<h2 style='padding-top:1em'>Target PCV</h2>
-                      <v-text-field
-      					        label="Type Here"
-      					        single-line
-      					        hide-details
-      					        v-model="t_pcv"
-                        type="number"
-                        style="margin-left:2em"
-      					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='pcv=false'>cancel</v-icon>
-										</v-layout>
-                    <v-layout row v-show='pp'>
-											<h2 style='padding-top:1em'>Target PP</h2>
-                      <v-text-field
-      					        label="Type Here"
-      					        single-line
-      					        hide-details
-      					        v-model="t_pp"
-                        type="number"
-                        style="margin-left:2em"
-      					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='pp=false'>cancel</v-icon>
-										</v-layout>
-                    <v-layout row v-show='plt'>
-											<h2 style='padding-top:1em'>Target PLT</h2>
-                      <v-text-field
-      					        label="Type Here"
-      					        single-line
-      					        hide-details
-      					        v-model="t_plt"
-                        type="number"
-                        style="margin-left:2em"
-      					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='plt=false'>cancel</v-icon>
-										</v-layout>
-                    <v-layout row v-show='alb'>
-											<h2 style='padding-top:1em'>Target Alb</h2>
-                      <v-text-field
-      					        label="Type Here"
-      					        single-line
-      					        hide-details
-      					        v-model="t_alb"
-                        type="number"
-                        style="margin-left:2em"
-      					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='alb=false'>cancel</v-icon>
-										</v-layout>
-                    <br>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>ยืนยันการรับถุงเลือด</v-btn>
+            <v-card v-show='page=="confirm"'>
+              <v-container grid-list-md text-xs-center>
+                <v-layout row wrap style='border: 2px solid #e1e1e1; margin: 2em; border-radius: 10px;'>
+                  <v-flex xs2>
 
-                    <v-dialog v-model="dialog" scrollable max-width="300px">
-                      <v-btn fab dark style='max-width:30px; max-height:30px' slot="activator">
-                        <v-icon dark>add</v-icon>
-                      </v-btn>
-                      <b slot="activator">เพิ่มเป้าหมายการให้เลือด</b>
-                      <v-card>
-                        <v-card-title>เพิ่มเป้าหมายการให้เลือด</v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text style="height: 300px;">
-                          <v-btn block v-show='pcv==false' @click='pcv=true; dialog = false;'>PCV</v-btn>
-                          <v-btn block v-show='pp==false' @click='pp=true; dialog = false;'>PP</v-btn>
-                          <v-btn block v-show='plt==false' @click='plt=true; dialog = false;'>PLT</v-btn>
-                          <v-btn block v-show='alb==false' @click='alb=true; dialog = false;'>Alb</v-btn>
-                        </v-card-text>
-                      </v-card>
-                    </v-dialog>
-
-                    <br>
-                    <div class="text-xs-center" v-show='page=="profile"'>
-        	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
-        		        </div>
-			            </v-flex>
-								</v-layout>
-							</v-container>
+                  </v-flex>
+                  <v-flex xs2>
+                    <v-card class='custom_card'>
+                      <v-card-text class="px-0 text_grey">
+                        เลขที่ถุงเลือด
+                      </v-card-text>
+                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
+                        {{selected_bloodbags.bag_id}}
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs2>
+                    <v-card class='custom_card'>
+                      <v-card-text class="px-0 text_grey">
+                        PCV
+                      </v-card-text>
+                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
+                        {{selected_bloodbags.pcv}}
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs2>
+                    <v-card class='custom_card'>
+                      <v-card-text class="px-0 text_grey">
+                        Type
+                      </v-card-text>
+                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
+                        {{selected_bloodbags.product_type}}
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                  <v-flex xs2>
+                    <v-card class='custom_card'>
+                      <v-card-text class="px-0 text_grey">
+                        ปริมาณที่เบิก
+                      </v-card-text>
+                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
+                        {{selected_bloodbags.quantity}}
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-container>
 					  </v-card>
             <br>
 
@@ -959,8 +977,8 @@
             <div class="text-xs-center" v-show='page=="suggestion"'>
 	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag()'>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
-            <div class="text-xs-center" v-show='page=="bloodbag"'>
-	           <v-btn color="error" dark large @click='sendRequest()'>ส่งคำขอเลือด</v-btn>
+            <div class="text-xs-center" v-show='page=="confirm"'>
+	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
 		        </div>
           </v-layout>
         </v-slide-y-transition>
@@ -990,6 +1008,7 @@
         bloodbags: [],
         in_bloodbags: [],
         out_bloodbags: [],
+        selected_bloodbags: [],
         petID: '',
         postBody: '',
         errors: [],
