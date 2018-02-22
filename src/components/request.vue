@@ -135,7 +135,7 @@
                       Owner
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.doctor_firstname}}
+                      {{item.doctor_lastname}}
                     </v-card-text>
                   </v-card>
                 </v-flex>

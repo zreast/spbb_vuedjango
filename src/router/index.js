@@ -7,6 +7,7 @@ const Donation = () => import('@/components/donation.vue')
 const Request = () => import('@/components/request.vue')
 const NewRequest = () => import('@/components/newrequest.vue')
 const Stock = () => import('@/components/stock.vue')
+const Success = () => import('@/components/success.vue')
 const TestAPI = () => import('@/components/test_api.vue')
 
 Vue.use(Router)
@@ -34,6 +35,11 @@ var router = new Router({
       path: '/newrequest',
       name: 'NewRequest',
       component: NewRequest
+    },
+    {
+      path: '/success',
+      name: 'Success',
+      component: Success
     },
     {
       path: '/stock',

@@ -299,12 +299,13 @@
 											<v-card class='pa-2'>
 												สาเหตุของความต้องการเลือด / Diagnosis
 												<v-flex>
-													<v-select
-							              v-bind:items="items"
-							              label="Select Diagnosis"
-							              single-line
-							              bottom
-							            ></v-select>
+                          <v-select
+                            :items="diagnosis"
+                            v-model="post_diagnosis"
+                            label="Select"
+                            single-line
+                            bottom
+                          ></v-select>
 							          </v-flex>
 											</v-card>
 						        </v-card>
@@ -584,41 +585,120 @@
 									<v-flex xs4>
 				          </v-flex>
 									<v-flex xs4>
-										<v-layout row>
+										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
       					        append-icon="cancel"
       					        label="Type Here"
       					        single-line
       					        hide-details
-      					        v-model="pcv"
+      					        v-model="t_pcv"
                         type="number"
                         style="margin-left:2em"
+                        @change="pcv=false"
+      					      ></v-text-field>
+										</v-layout>
+                    <v-layout row v-show='pp'>
+											<h2 style='padding-top:1em'>Target PP</h2>
+                      <v-text-field
+      					        append-icon="cancel"
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_pp"
+                        type="number"
+                        style="margin-left:2em"
+                        @change="pp=false"
+      					      ></v-text-field>
+										</v-layout>
+                    <v-layout row v-show='plt'>
+											<h2 style='padding-top:1em'>Target PLT</h2>
+                      <v-text-field
+      					        append-icon="cancel"
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_plt"
+                        type="number"
+                        style="margin-left:2em"
+                        @change="plt=false"
+      					      ></v-text-field>
+										</v-layout>
+                    <v-layout row v-show='alb'>
+											<h2 style='padding-top:1em'>Target Alb</h2>
+                      <v-text-field
+      					        append-icon="cancel"
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_alb"
+                        type="number"
+                        style="margin-left:2em"
+                        @change="alb=false"
       					      ></v-text-field>
 										</v-layout>
                     <br>
-                    <v-btn fab dark style='max-width:30px; max-height:30px'>
-                      <v-icon dark>add</v-icon>
-                    </v-btn>
-                    <b>เพิ่มเป้าหมายการให้เลือด</b>
+
+                    <v-dialog v-model="dialog" scrollable max-width="300px">
+                      <v-btn fab dark style='max-width:30px; max-height:30px' slot="activator">
+                        <v-icon dark>add</v-icon>
+                      </v-btn>
+                      <b slot="activator">เพิ่มเป้าหมายการให้เลือด</b>
+                      <v-card>
+                        <v-card-title>เพิ่มเป้าหมายการให้เลือด</v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text style="height: 300px;">
+                          <v-btn block v-show='pcv==false' @click='pcv=true; dialog = false;'>PCV</v-btn>
+                          <v-btn block v-show='pp==false' @click='pp=true; dialog = false;'>PP</v-btn>
+                          <v-btn block v-show='plt==false' @click='plt=true; dialog = false;'>PLT</v-btn>
+                          <v-btn block v-show='alb==false' @click='alb=true; dialog = false;'>Alb</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
 			            </v-flex>
 								</v-layout>
 							</v-container>
 					  </v-card>
 						<v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
-						<v-card v-show='page=="suggestion"'>
-							<v-container fluid>
-						    <v-layout row wrap>
-						      <v-flex xs12 md6>
-						        <v-card flat>
-						          <v-card-text>
-						            <v-checkbox label="Fresh Whole Blood (FWB)"  value="John"></v-checkbox>
-						            <v-checkbox label="Stored Whole Blood (SWB)"  value="Jacob"></v-checkbox>
-						          </v-card-text>
-						        </v-card>
-						      </v-flex>
-						    </v-layout>
-						  </v-container>
+						<v-card v-show='page=="suggestion"' style='padding: 1em'>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_fwb" label='Fresh Whole Blood (FWB)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_swb" label='Stored Whole Blood (SWB)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_prbc" label='Packed RBCs (pRBCs)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_prp" label='Platelet Rich Plasma (PRP)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_ffp" label='Fresh Frozen Plasma (FFP)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+              <v-flex xs8>
+  							<v-layout align-center>
+                  <v-checkbox v-model="p_fp" label='Fresh Plasma (FP)' class="shrink mr-2"></v-checkbox>
+                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
+                </v-layout>
+              </v-flex>
+
+
 					  </v-card>
 
             <v-card v-show='page=="lab"' class='bg__grey'>
@@ -681,10 +761,14 @@
             </v-card>
             <br>
 
-						<div class="text-xs-center">
-							<a href='/lab_exam' style='text-decoration: none !important;'>
-		           <v-btn color="error" dark large>Next</v-btn>
-						 </a>
+						<div class="text-xs-center" v-show='page=="profile"'>
+	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
+		        </div>
+            <div class="text-xs-center" v-show='page=="lab"'>
+	           <v-btn color="error" dark large @click='page="suggestion"'>Next</v-btn>
+		        </div>
+            <div class="text-xs-center" v-show='page=="suggestion"'>
+	           <v-btn color="error" dark large @click='sendRequest()'>ส่งคำขอเลือด</v-btn>
 		        </div>
           </v-layout>
         </v-slide-y-transition>
@@ -738,6 +822,7 @@
 	      items2: [
 	        { picture: 28, text: 'โรงพยาบาลสัตว์ สวนผัก' }
 	      ],
+        today_date: null,
 				date: null,
 	      dateFormatted: null,
 	      menu: false,
@@ -751,6 +836,11 @@
         show_all_exam: true,
         show_recent_exam: false,
         show_spec_exam: false,
+        diagnosis: [
+          { text: 'Anemia' },
+          { text: 'ผ่าตัด' },
+          { text: 'อื่นๆ' },
+        ],
         max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
@@ -777,7 +867,17 @@
           { text: 'high', value: 'high' },
           { text: 'critical high', value: 'critical_high' }
         ],
-        t_items: []
+        t_items: [],
+        pcv: true,
+        pp: false,
+        plt: false,
+        alb: false,
+        p_fwb: false,
+        p_swb: false,
+        p_prbc: false,
+        p_prp: false,
+        p_ffp: false,
+        p_fp: false,
       }
     },
 		methods: {
@@ -797,7 +897,44 @@
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+      getDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
 
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd;
+        }
+        if(mm<10){
+            mm='0'+mm;
+        }
+        var today = yyyy+mm+dd;
+
+        return today
+      },
+      sendRequest () {
+        this.today_date = this.getDate()
+        console.log(this.today_date)
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodrequesthistory/add', {
+          "hospital_id": "1",
+          "request_reason": this.post_diagnosis,
+          "pet_id": this.current_pet.petID,
+          "vet_id": "1",
+          "date": this.today_date
+        },headers)
+        .then(response => {
+					window.location.href = '/success'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    },
       getPetID () {
 				var headers = {
             'Content-Type': 'application/json'
