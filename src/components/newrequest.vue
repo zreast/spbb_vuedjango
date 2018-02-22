@@ -99,7 +99,7 @@
 							  </div>
 							</a>
 						</div>
-            <div class="progress" v-if='page=="suggestion"'>
+            <div class="progress" v-if='page=="suggestion"||page=="bloodbag"'>
 							<a @click='page="profile"'>
 							  <div class="circle done">
 							    <span class="label"></span>
@@ -680,7 +680,7 @@
                           </img>
                         </v-card-text>
                         <v-card-text class="px-0">
-                          400 ml.
+                          {{item.quantity}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -710,7 +710,7 @@
                           PCV
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.quantity}}
+                          {{item.pcv}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -866,6 +866,88 @@
 
 
             </v-card>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>เป้าหมายของการให้เลือด</v-btn>
+            <v-card v-show='page=="suggestion"||page=="bloodbag"'>
+							<v-container fluid>
+        				<v-layout row>
+									<v-flex xs4>
+				          </v-flex>
+									<v-flex xs4>
+										<v-layout row v-show='pcv'>
+											<h2 style='padding-top:1em'>Target PCV</h2>
+                      <v-text-field
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_pcv"
+                        type="number"
+                        style="margin-left:2em"
+      					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='pcv=false'>cancel</v-icon>
+										</v-layout>
+                    <v-layout row v-show='pp'>
+											<h2 style='padding-top:1em'>Target PP</h2>
+                      <v-text-field
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_pp"
+                        type="number"
+                        style="margin-left:2em"
+      					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='pp=false'>cancel</v-icon>
+										</v-layout>
+                    <v-layout row v-show='plt'>
+											<h2 style='padding-top:1em'>Target PLT</h2>
+                      <v-text-field
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_plt"
+                        type="number"
+                        style="margin-left:2em"
+      					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='plt=false'>cancel</v-icon>
+										</v-layout>
+                    <v-layout row v-show='alb'>
+											<h2 style='padding-top:1em'>Target Alb</h2>
+                      <v-text-field
+      					        label="Type Here"
+      					        single-line
+      					        hide-details
+      					        v-model="t_alb"
+                        type="number"
+                        style="margin-left:2em"
+      					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='alb=false'>cancel</v-icon>
+										</v-layout>
+                    <br>
+
+                    <v-dialog v-model="dialog" scrollable max-width="300px">
+                      <v-btn fab dark style='max-width:30px; max-height:30px' slot="activator">
+                        <v-icon dark>add</v-icon>
+                      </v-btn>
+                      <b slot="activator">เพิ่มเป้าหมายการให้เลือด</b>
+                      <v-card>
+                        <v-card-title>เพิ่มเป้าหมายการให้เลือด</v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text style="height: 300px;">
+                          <v-btn block v-show='pcv==false' @click='pcv=true; dialog = false;'>PCV</v-btn>
+                          <v-btn block v-show='pp==false' @click='pp=true; dialog = false;'>PP</v-btn>
+                          <v-btn block v-show='plt==false' @click='plt=true; dialog = false;'>PLT</v-btn>
+                          <v-btn block v-show='alb==false' @click='alb=true; dialog = false;'>Alb</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+
+                    <br>
+                    <div class="text-xs-center" v-show='page=="profile"'>
+        	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
+        		        </div>
+			            </v-flex>
+								</v-layout>
+							</v-container>
+					  </v-card>
             <br>
 
 						<div class="text-xs-center" v-show='page=="profile"'>
@@ -1179,8 +1261,8 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/blood-bag/getbyhospital', {
-          hospitalID: '1'
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/blood-bag/getall', {
+
         },headers)
         .then(response => {
 					this.bloodbags = response.data
@@ -1190,13 +1272,11 @@
             {
               this.in_bloodbags.push(this.bloodbags.blood_bags[i])
             }
-            else{
-
-              this.out_bloogbags.push(this.bloodbags.blood_bags[i])
+            else if(this.bloodbags.blood_bags[i].hospital_id!='1')
+            {
+              this.out_bloodbags.push(this.bloodbags.blood_bags[i])
             }
           }
-          console.log(this.in_bloodbags)
-          console.log(this.out_bloodbags)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
