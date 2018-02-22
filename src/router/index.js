@@ -5,6 +5,7 @@ import VueResource from 'vue-resource'
 const LandingPage = () => import('@/components/')
 const Donation = () => import('@/components/donation.vue')
 const Request = () => import('@/components/request.vue')
+const NewRequest = () => import('@/components/newrequest.vue')
 const Stock = () => import('@/components/stock.vue')
 const TestAPI = () => import('@/components/test_api.vue')
 
@@ -28,6 +29,11 @@ var router = new Router({
       path: '/request',
       name: 'Request',
       component: Request
+    },
+    {
+      path: '/newrequest',
+      name: 'NewRequest',
+      component: NewRequest
     },
     {
       path: '/stock',
