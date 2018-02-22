@@ -589,54 +589,50 @@
 										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
-      					        append-icon="cancel"
       					        label="Type Here"
       					        single-line
       					        hide-details
       					        v-model="t_pcv"
                         type="number"
                         style="margin-left:2em"
-                        @change="pcv=false"
       					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='pcv=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='pp'>
 											<h2 style='padding-top:1em'>Target PP</h2>
                       <v-text-field
-      					        append-icon="cancel"
       					        label="Type Here"
       					        single-line
       					        hide-details
       					        v-model="t_pp"
                         type="number"
                         style="margin-left:2em"
-                        @change="pp=false"
       					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='pp=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='plt'>
 											<h2 style='padding-top:1em'>Target PLT</h2>
                       <v-text-field
-      					        append-icon="cancel"
       					        label="Type Here"
       					        single-line
       					        hide-details
       					        v-model="t_plt"
                         type="number"
                         style="margin-left:2em"
-                        @change="plt=false"
       					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='plt=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='alb'>
 											<h2 style='padding-top:1em'>Target Alb</h2>
                       <v-text-field
-      					        append-icon="cancel"
       					        label="Type Here"
       					        single-line
       					        hide-details
       					        v-model="t_alb"
                         type="number"
                         style="margin-left:2em"
-                        @change="alb=false"
       					      ></v-text-field>
+                      <v-icon style='padding-top:0.5em' @click='alb=false'>cancel</v-icon>
 										</v-layout>
                     <br>
 
@@ -656,6 +652,11 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
+
+                    <br>
+                    <div class="text-xs-center" v-show='page=="profile"'>
+        	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
+        		        </div>
 			            </v-flex>
 								</v-layout>
 							</v-container>
