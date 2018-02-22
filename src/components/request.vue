@@ -88,31 +88,82 @@
         </v-slide-y-transition>
 
         <br>
-        <v-text-field
-          append-icon="search"
-          label="Search"
-        ></v-text-field>
-        <v-btn
-          color="grey"
-          class="white--text"
-        >
-          <v-icon dark>add</v-icon>
-          New Request
-        </v-btn>
+        <v-layout row wrap>
+          <v-spacer></v-spacer>
+          <v-text-field
+            append-icon="search"
+            label="Search by name"
+          ></v-text-field>
+          <v-btn
+            color="grey"
+            class="white--text"
+          >
+            <v-icon dark>add</v-icon>
+            New Request
+          </v-btn>
+        </v-layout>
         <br>
         <br>
         <v-card>
-          <v-card-title>
-            <div>
-              <span class="grey--text">Number 10</span><br>
-              <span>Whitehaven Beach</span><br>
-              <span>Whitsunday Island, Whitsunday Islands</span>
-            </div>
-          </v-card-title>
           <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
+            <v-container grid-list-md text-xs-center>
+              <v-layout row wrap>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      Request Date
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      Recipient
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      Owner
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      Product
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      From
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
+                      Use Date
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <br><br>
+            <v-btn>See Details</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn icon @click.native="show = !show">
+              <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            </v-btn>
           </v-card-actions>
+          <v-slide-y-transition>
+            <v-card-text v-show="show">
+              test expand
+            </v-card-text>
+          </v-slide-y-transition>
         </v-card>
 
       </v-container>
@@ -170,6 +221,7 @@
         right: true,
         rightDrawer: false,
         title: 'Smart Pet Blood Bank',
+        show: false,
       }
     },
 		methods: {
@@ -195,6 +247,11 @@
 
 
 <style lang="scss">
+  $grey_line: #979797;
+
+  .text_grey{
+    color: $grey_line;
+  }
   .color__mdred {
     color: #df5249 !important;
   }
@@ -218,6 +275,10 @@
   .caption_task{
     font-size: 1.4em;
     font-weight: bold;
+  }
+  .custom_card{
+    box-shadow: 0px 0px 0px 0px !important;
+    border-right: 1px solid $grey_line;
   }
 
 </style>
