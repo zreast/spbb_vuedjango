@@ -389,33 +389,39 @@
 
               <v-layout row wrap>
                 <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="HCT" v-model="hct" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
-                <v-flex xs2 class='result_box'>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="PLT" v-model="plt" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
 
                 <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="HbG" v-model="hgb" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
-                <v-flex xs2 class='result_box'>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="RBC (M/usl)" v-model="rbc" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
 
                 <v-flex xs2 class='result_box'>
+                </v-flex>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="MCH (M/usl)" v-model="mch" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
-                <v-flex xs2 class='result_box'>
+                <v-flex xs3 class='result_box'>
                   <v-text-field box label="WBC" v-model="wbc" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
@@ -424,7 +430,7 @@
 
               </v-layout>
             </v-card>
-
+            <br>
             <v-card v-show='page=="lab"'>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
@@ -579,8 +585,8 @@
                 </template>
               </v-data-table>
 					  </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>เป้าหมายของการให้เลือด</v-btn>
-						<v-card v-show='page=="suggestion"'>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>เป้าหมายของการให้เลือด</v-btn>
+						<v-card v-show='page=="suggestion"||page=="bloodbag"'>
 							<v-container fluid>
         				<v-layout row>
 									<v-flex xs4>
@@ -661,47 +667,146 @@
 								</v-layout>
 							</v-container>
 					  </v-card>
-						<v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
-						<v-card v-show='page=="suggestion"' style='padding: 1em'>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_fwb" label='Fresh Whole Blood (FWB)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_swb" label='Stored Whole Blood (SWB)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_prbc" label='Packed RBCs (pRBCs)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_prp" label='Platelet Rich Plasma (PRP)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_ffp" label='Fresh Frozen Plasma (FFP)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
-              <v-flex xs8>
-  							<v-layout align-center>
-                  <v-checkbox v-model="p_fp" label='Fresh Plasma (FP)' class="shrink mr-2"></v-checkbox>
-                  <v-text-field label="ปริมาณที่ต้องการ" type="number"></v-text-field>
-                </v-layout>
-              </v-flex>
+						<v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+            <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
+              <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
+              <v-card-actions>
+                <v-container grid-list-md text-xs-center>
+                  <v-layout row wrap v-for='item in in_bloodbags' style='border-bottom: 1px solid #f4f4f4'>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          <img src='../assets/request/bloodbag.svg' style='width:40px'>
+                          </img>
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          400 ml.
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          เลขที่ถุงเลือด
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.bag_id}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          Type
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.product_type}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          PCV
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.quantity}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          วันหมดอายุ
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.ExpDate}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
 
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0">
+                          <v-btn>เลือกถุงเลือด</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
 
-					  </v-card>
+                  </v-layout>
+                </v-container>
+
+              </v-card-actions>
+
+              <h2 style='margin:2em 2em 0em 2em'>ภายนอกหน่วยงาน</h2>
+              <v-card-actions>
+                <v-container grid-list-md text-xs-center>
+                  <v-layout row wrap v-for='item in out_bloodbags' style='border-bottom: 1px solid #f4f4f4'>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          <img src='../assets/request/bloodbag.svg' style='width:40px'>
+                          </img>
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          400 ml.
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          เลขที่ถุงเลือด
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.bag_id}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          Type
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.product_type}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          PCV
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.quantity}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0 text_grey">
+                          วันหมดอายุ
+                        </v-card-text>
+                        <v-card-text class="px-0">
+                          {{item.ExpDate}}
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+
+                    <v-flex xs2>
+                      <v-card class='custom_card'>
+                        <v-card-text class="px-0">
+                          <v-btn>เลือกถุงเลือด</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+
+                  </v-layout>
+                </v-container>
+
+              </v-card-actions>
+            </v-card>
 
             <v-card v-show='page=="lab"' class='bg__grey'>
 					    <v-card-title>
@@ -770,6 +875,9 @@
 	           <v-btn color="error" dark large @click='page="suggestion"'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="suggestion"'>
+	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag()'>เลือกถุงเลือดที่ต้องการ</v-btn>
+		        </div>
+            <div class="text-xs-center" v-show='page=="bloodbag"'>
 	           <v-btn color="error" dark large @click='sendRequest()'>ส่งคำขอเลือด</v-btn>
 		        </div>
           </v-layout>
@@ -797,6 +905,9 @@
         temp: [],
         current_pet: [],
         current_result: [],
+        bloodbags: [],
+        in_bloodbags: [],
+        out_bloodbags: [],
         petID: '',
         postBody: '',
         errors: [],
@@ -870,16 +981,19 @@
           { text: 'critical high', value: 'critical_high' }
         ],
         t_items: [],
+        hct: null,
+        hgb: null,
+        rbc: null,
+        mch: null,
+        wbc: null,
         pcv: true,
         pp: false,
         plt: false,
         alb: false,
-        p_fwb: false,
-        p_swb: false,
-        p_prbc: false,
-        p_prp: false,
-        p_ffp: false,
-        p_fp: false,
+        t_pcv: null,
+        t_alb: null,
+        t_plt: null,
+        t_pp: null,
         radios1: null,
         radios2: null,
         radios3: null,
@@ -1061,6 +1175,35 @@
 
 
 	    },
+      getBloodBag () {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/blood-bag/getbyhospital', {
+          hospitalID: '1'
+        },headers)
+        .then(response => {
+					this.bloodbags = response.data
+          for(var i in this.bloodbags.blood_bags)
+          {
+            if(this.bloodbags.blood_bags[i].hospital_id=='1')
+            {
+              this.in_bloodbags.push(this.bloodbags.blood_bags[i])
+            }
+            else{
+
+              this.out_bloogbags.push(this.bloodbags.blood_bags[i])
+            }
+          }
+          console.log(this.in_bloodbags)
+          console.log(this.out_bloodbags)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+
+	    },
       route (page) {
         window.location.href = page
       },
@@ -1164,7 +1307,15 @@
     background-color: #f5f5f5 !important;
   }
   .result_box{
-    margin: 0em 2em 0em 2em;
 
+  }
+
+  $grey_line: #979797;
+
+  .text_grey{
+    color: $grey_line;
+  }
+  .custom_card{
+    box-shadow: 0px 0px 0px 0px !important;
   }
 </style>
