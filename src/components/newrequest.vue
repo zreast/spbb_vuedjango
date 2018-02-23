@@ -1013,6 +1013,8 @@
         in_bloodbags: [],
         out_bloodbags: [],
         selected_bloodbags: [],
+        req_id: null,
+        prod_req_id: null,
         petID: '',
         postBody: '',
         errors: [],
@@ -1152,10 +1154,40 @@
 
         return today
       },
-      sendRequest () {
-        var req_id = ''
-        var prod_req_id = ''
+      sendRequestDetail (){
+        this.today_date = this.getDate()
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodproductrequestdetail/add', {
+          request_date: this.today_date,
+          bloodtype: this.selected_bloodbags.blood_type,
+          product_type: this.selected_bloodbags.product_type,
+          required_quantity: this.selected_bloodbags.quantity,
+          request_id: this.req_id,
+          request_status: "1",
+        },headers)
+        .then(response => {
+					this.prod_req_id = response.data.product_request_detail_id
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
 
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodbagrequestdetail/add', {
+          quantity: this.selected_bloodbags.quantity,
+          method: "test",
+          bag_id: this.selected_bloodbags.bag_id,
+          product_request_detail_id: this.prod_req_id
+        },headers)
+        .then(response => {
+					window.location.href = '/success'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+      },
+      sendRequest () {
         this.today_date = this.getDate()
 				var headers = {
             'Content-Type': 'application/json'
@@ -1168,40 +1200,12 @@
           date: this.today_date
         },headers)
         .then(response => {
-          req_id = response.data.request_id
+          this.req_id = response.data.request_id
+          this.sendRequestDetail()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodproductrequestdetail/add', {
-          request_date: this.today_date,
-          bloodtype: this.selected_bloodbags.blood_type,
-          product_type: this.selected_bloodbags.product_type,
-          required_quantity: this.selected_bloodbags.quantity,
-          request_id: req_id,
-          request_status: 1,
-        },headers)
-        .then(response => {
-					prod_req_id = response.data.product_request_detail_id
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodbagrequestdetail/add', {
-          quantity: this.selected_bloodbags.quantity,
-          method: "test",
-          bag_id: this.selected_bloodbags.bag_id,
-          product_request_detail_id: prod_req_id
-        },headers)
-        .then(response => {
-					window.location.href = '/success'
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
 
 	    },
       getPetID () {
