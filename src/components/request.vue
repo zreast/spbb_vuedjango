@@ -60,25 +60,25 @@
                 <v-flex xs3>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">New Request</v-card-text>
-                    <span class='stat_task'>2</span>
+                    <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">Crossmatch Stage</v-card-text>
-                    <span class='stat_task'>6</span>
+                    <span class='stat_task'>N/A</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">จ่ายถุงเลือดแล้ววันนี้</v-card-text>
-                    <span class='stat_task'>5/9</span>
+                    <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">Today in Process</v-card-text>
-                    <span class='stat_task'>15</span>
+                    <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
               </v-layout>
@@ -112,6 +112,21 @@
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
+                      สถานะ
+                    </v-card-text>
+                    <v-card-text class="px-0">
+                      <v-chip
+                        label
+                        small
+                        class="white--text"
+                        color="yellow darken-2"
+                      >Request Submit</v-chip>
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+                <v-flex xs2>
+                  <v-card class='custom_card'>
+                    <v-card-text class="px-0 text_grey">
                       Request Date
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -135,17 +150,7 @@
                       Owner
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.doctor_lastname}}
-                    </v-card-text>
-                  </v-card>
-                </v-flex>
-                <v-flex xs2>
-                  <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
-                      Product
-                    </v-card-text>
-                    <v-card-text class="px-0">
-
+                      {{item.owner_name}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -172,18 +177,34 @@
               </v-layout>
             </v-container>
             <v-layout row justify-center>
-              <v-dialog v-model="dialog" width="600px">
+              <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
                 <v-btn color="primary" dark slot="activator" @click='selected_request=item; getDetail()'>Detail</v-btn>
+                <v-toolbar dark color="primary">
+                  <v-btn icon @click.native="dialog = false" dark>
+                    <v-icon>close</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>Blood Request:{{selected_request.request_id}}</v-toolbar-title>
+                </v-toolbar>
                 <v-card>
-                  <v-card-title>
-                    <span class="headline">Blood Request:{{selected_request.request_id}}</span>
-                  </v-card-title>
                   <v-card-text>
                     <v-layout justify-center column>
                       <v-card>
                         <v-card-text>
                           <v-layout row wrap>
-                            <v-flex xs4>
+                            <v-flex xs1>
+                              <v-avatar
+                                size="50px"
+                                slot="activator"
+                              >
+                                <img
+                                  src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
+                                  alt=""
+                                  v-if="current_pet.img"
+                                >
+                                <v-icon v-else>{{ current_pet.img }}</v-icon>
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs3>
                               <v-chip
                                 label
                                 small
@@ -259,7 +280,69 @@
                     <v-btn block class='bg__mdteal'  dark >บันทึกผลการใช้เลือด</v-btn>
                     <v-card>
                       <v-container grid-list-md text-xs-center>
-                        eiei
+                        <v-layout row>
+                          <v-flex xs3>
+                            <v-subheader>บันทึกผลโดยย่อ</v-subheader>
+                          </v-flex>
+                          <v-flex xs6>
+                            <v-text-field
+                              v-model="comment"
+                              label="ความคิดเห็นจากสัตวแพทย์"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-btn
+                              @click="saveNote(selected_request.request_id)"
+                            >
+                            บันทึก
+                            </v-btn>
+                          </v-flex>
+                        </v-layout>
+                        <v-divider></v-divider>
+                        <br>
+                        <v-layout row wrap v-for='item in notes.diagnostic_result' style='border-bottom: 1px solid #f4f4f4'>
+                          <v-flex xs1>
+                            <v-card class='custom_card2'>
+                              <v-card-text class="px-0 text_grey">
+                                เลขที่บันทึก
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.diagnostic_id}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-card class='custom_card2'>
+                              <v-card-text class="px-0 text_grey">
+                                สัตวแพทย์ที่ตรวจ
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.doctor_firstname}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-card class='custom_card2'>
+                              <v-card-text class="px-0 text_grey">
+                                โรงพยาบาล
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.hospital_name}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs5>
+                            <v-card class='custom_card2'>
+                              <v-card-text class="px-0 text_grey">
+                                ความคิดเห็น
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.others
+                                }}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
                       </v-container>
         					  </v-card>
                   </v-card-text>
@@ -269,8 +352,6 @@
                 </v-card>
               </v-dialog>
             </v-layout>
-            <v-btn success>บันทึกผลตรวจ</v-btn>
-            </v-btn>
           </v-card-actions>
         </v-card>
 
@@ -316,6 +397,8 @@
         current_pet_owner: [],
         selected_request: [],
         selected_bags: [],
+        notes: [],
+        comment: '',
         dialog: false,
         clipped: false,
         drawer: false,
@@ -373,6 +456,25 @@
       route (page) {
         window.location.href = page
       },
+      saveNote (id) {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/add', {
+          "vetID": "1",
+          "hospitalID": "1",
+          "PCV": "11",
+          "others": this.comment,
+          "resultID": id
+        },headers)
+        .then(response => {
+					window.location.reload()
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+      },
       getDetail () {
 				var headers = {
             'Content-Type': 'application/json'
@@ -418,6 +520,16 @@
 		      this.errors.push(e)
 		    })
 
+        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/getbyrequestid', {
+          requestID : this.selected_request.request_id
+        },headers)
+        .then(response => {
+					this.notes = response.data
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
 
 	    },
     },
@@ -458,6 +570,9 @@
   .custom_card{
     box-shadow: 0px 0px 0px 0px !important;
     border-right: 1px solid $grey_line;
+  }
+  .custom_card2{
+    box-shadow: 0px 0px 0px 0px !important;
   }
 
 </style>
