@@ -96,11 +96,11 @@
         clipped: false,
 				breadcrumbs: [
           {
-            text: 'การเก็บเลือด',
+            text: 'ธนาคารเลือดสัตว์เลี้ยง',
             disabled: false
           },
           {
-            text: 'การบริจาคเลือด',
+            text: 'การเบิกเลือด',
             disabled: true
           }
         ],
