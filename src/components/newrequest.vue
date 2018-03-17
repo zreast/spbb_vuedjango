@@ -654,6 +654,8 @@
 									<v-flex xs4>
 				          </v-flex>
 									<v-flex xs4>
+                    <span v-show='recommended_products!=null' style='font-size:1.2em'>ผลิตภัณฑ์เลือดที่แนะนำ : </span>
+                    <span v-show='recommended_products!=null' style='font-size:1.2em; font-weight: bold; color: #2196f3'>{{recommended_products}}</span>
 										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
@@ -1131,7 +1133,8 @@
         post_other: null,
         post_disease: [
           "von Willebrand's", 'Hypoproteinemia', 'Low immunoglobulin', 'Hemophelia A', 'Hemophelia B', 'Disseminated intravascular coagulopathy', 'Pancreatitis', 'Liver disease', 'Thrombocytopenia'
-        ]
+        ],
+        recommended_products: null
       }
     },
 		methods: {
@@ -1143,6 +1146,7 @@
         this.rec_cryo = false
         this.rec_colloid = false
         this.rec_plt = false
+        this.recommended_products = null
 
         if(this.post_diagnosis.text=='Anemia')
         {
@@ -1220,13 +1224,57 @@
             this.rec_plt = true;
           }
         }
-        if(this.rec_wb||this.rec_prbc)
+        if(this.rec_wb)
         {
           this.pcv = true;
+          if(this.recommended_products == null)
+            this.recommended_products = "Whole Blood";
+          else
+            this.recommended_products += ", Whole Blood";
+        }
+        if(this.rec_prbc)
+        {
+          this.pcv = true;
+          if(this.recommended_products == null)
+            this.recommended_products = "Packed Red Blood Cells";
+          else
+            this.recommended_products += ", Packed Red Blood Cells";
+        }
+        if(this.rec_ffp)
+        {
+          if(this.recommended_products == null)
+            this.recommended_products = "Fresh Frozen Plasma";
+          else
+            this.recommended_products += ", Fresh Frozen Plasma";
+        }
+        if(this.rec_fp)
+        {
+          if(this.recommended_products == null)
+            this.recommended_products = "Frozenplasma / Cryoprecipitate poor plasma";
+          else
+            this.recommended_products += ", Frozenplasma / Cryoprecipitate poor plasma";
+        }
+        if(this.rec_cryo)
+        {
+          if(this.recommended_products == null)
+            this.recommended_products = "Cryoprecipitate";
+          else
+            this.recommended_products += ", Cryoprecipitate";
+        }
+        if(this.rec_colloid)
+        {
+          if(this.recommended_products == null)
+            this.recommended_products = "Colloid";
+          else
+            this.recommended_products += ", Colloid";
         }
         if(this.rec_plt)
         {
           this.plt = true;
+          if(this.recommended_products == null)
+            this.recommended_products = "Platelets";
+          else
+            this.recommended_products += ", Platelets";
         }
       },
       formatDate (date) {
