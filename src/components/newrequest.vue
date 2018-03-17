@@ -348,15 +348,29 @@
 						          <v-btn block>Diagnosis</v-btn>
 											<v-card class='pa-2'>
 												สาเหตุของความต้องการเลือด / Diagnosis
-												<v-flex>
+                        <v-select
+                          :items="diagnosis"
+                          v-model="post_diagnosis"
+                          label="Select"
+                          single-line
+                          bottom
+                        ></v-select>
+                        <v-radio-group v-model="post_anemia" :mandatory="false">
+                          <v-radio label="regenerative" value="radio-1"></v-radio>
+                          <v-radio label="nonregenerative" value="radio-2"></v-radio>
+                          <v-radio label="with hypoproteinemia" value="radio-2"></v-radio>
+                          <v-radio label="with hypovolemia" value="radio-2"></v-radio>
+                          <v-radio label="with coagulopathy" value="radio-2"></v-radio>
+                          <v-radio label="nonregenerative" value="radio-2"></v-radio>
+                        </v-radio-group>
+                        <v-flex xs12 sm6>
                           <v-select
-                            :items="diagnosis"
-                            v-model="post_diagnosis"
+                            :items="post_disease"
+                            v-model="post_other"
                             label="Select"
-                            single-line
-                            bottom
+                            autocomplete
                           ></v-select>
-							          </v-flex>
+                        </v-flex>
 											</v-card>
 						        </v-card>
 						      </v-flex>
@@ -1107,9 +1121,13 @@
         radios4: null,
         dialog: false,
         post_diagnosis: '',
+        post_anemia: ''
       }
     },
 		methods: {
+      componentUpdate () {
+
+      },
       formatDate (date) {
         if (!date) {
           return null
