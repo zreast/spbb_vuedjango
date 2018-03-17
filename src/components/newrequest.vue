@@ -56,28 +56,28 @@
 						<h1>Blood Request</h1>
 
 						<div class="progress" v-if='page=="profile"'>
-							<a @click='page="profile"'>
+							<a @click='page="profile";  componentUpdate()'>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a @click='page="lab"'>
+							<a @click='page="lab";  componentUpdate()'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a @click='page="suggestion"'>
+							<a @click='page="suggestion";  componentUpdate()'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm"'>
+							<a @click='page="confirm";  componentUpdate()'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -85,28 +85,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="lab"'>
-							<a @click='page="profile"'>
+							<a @click='page="profile";  componentUpdate()'>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab"'>
+							<a @click='page="lab";  componentUpdate()'>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar half"></span>
-							<a @click='page="suggestion"'>
+							<a @click='page="suggestion";  componentUpdate()'>
 								<div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm"'>
+							<a @click='page="confirm";  componentUpdate()'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -114,28 +114,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="suggestion"||page=="bloodbag"'>
-							<a @click='page="profile"'>
+							<a @click='page="profile";  componentUpdate()'>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab"'>
+							<a @click='page="lab";  componentUpdate()'>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="suggestion"'>
+							<a @click='page="suggestion";  componentUpdate()'>
 								<div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm"'>
+							<a @click='page="confirm";  componentUpdate()'>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -143,28 +143,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="confirm"'>
-							<a @click='page="profile"'>
+							<a @click='page="profile";  componentUpdate()'>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab"'>
+							<a @click='page="lab";  componentUpdate()'>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="suggestion"'>
+							<a @click='page="suggestion";  componentUpdate()'>
 								<div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar done"></span>
-							<a @click='page="confirm"'>
+							<a @click='page="confirm";  componentUpdate()'>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -355,22 +355,21 @@
                           single-line
                           bottom
                         ></v-select>
-                        <v-radio-group v-model="post_anemia" :mandatory="false">
-                          <v-radio label="regenerative" value="radio-1"></v-radio>
-                          <v-radio label="nonregenerative" value="radio-2"></v-radio>
-                          <v-radio label="with hypoproteinemia" value="radio-2"></v-radio>
-                          <v-radio label="with hypovolemia" value="radio-2"></v-radio>
-                          <v-radio label="with coagulopathy" value="radio-2"></v-radio>
-                          <v-radio label="nonregenerative" value="radio-2"></v-radio>
+
+                        <v-radio-group v-if="post_diagnosis.text=='Anemia'" v-model="post_anemia" :mandatory="false">
+                          <v-radio label="regenerative" value="case1"></v-radio>
+                          <v-radio label="nonregenerative" value="case2"></v-radio>
+                          <v-radio label="with hypoproteinemia" value="case3"></v-radio>
+                          <v-radio label="with hypovolemia" value="case4"></v-radio>
+                          <v-radio label="with coagulopathy" value="case5"></v-radio>
                         </v-radio-group>
-                        <v-flex xs12 sm6>
-                          <v-select
-                            :items="post_disease"
-                            v-model="post_other"
-                            label="Select"
-                            autocomplete
-                          ></v-select>
-                        </v-flex>
+                        <v-select
+                          v-if="post_diagnosis.text=='อื่นๆ'"
+                          :items="post_disease"
+                          v-model="post_other"
+                          label="ระบุ"
+                          autocomplete
+                        ></v-select>
 											</v-card>
 						        </v-card>
 						      </v-flex>
@@ -724,7 +723,7 @@
 
                     <br>
                     <div class="text-xs-center" v-show='page=="profile"'>
-        	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
+        	           <v-btn color="error" dark large @click='page="lab"; componentUpdate()'>Next</v-btn>
         		        </div>
 			            </v-flex>
 								</v-layout>
@@ -985,13 +984,13 @@
             <br>
 
 						<div class="text-xs-center" v-show='page=="profile"'>
-	           <v-btn color="error" dark large @click='page="lab"'>Next</v-btn>
+	           <v-btn color="error" dark large @click='page="lab";  componentUpdate()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="lab"'>
-	           <v-btn color="error" dark large @click='page="suggestion"'>Next</v-btn>
+	           <v-btn color="error" dark large @click='page="suggestion";  componentUpdate()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="suggestion"'>
-	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag()'>เลือกถุงเลือดที่ต้องการ</v-btn>
+	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();  componentUpdate()'>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="confirm"'>
 	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
@@ -1120,13 +1119,115 @@
         radios3: null,
         radios4: null,
         dialog: false,
-        post_diagnosis: '',
-        post_anemia: ''
+        rec_wb: false,
+        rec_prbc: false,
+        rec_ffp: false,
+        rec_fp: false,
+        rec_cryo: false,
+        rec_colloid: false,
+        rec_plt: false,
+        post_diagnosis: [],
+        post_anemia: null,
+        post_other: null,
+        post_disease: [
+          "von Willebrand's", 'Hypoproteinemia', 'Low immunoglobulin', 'Hemophelia A', 'Hemophelia B', 'Disseminated intravascular coagulopathy', 'Pancreatitis', 'Liver disease', 'Thrombocytopenia'
+        ]
       }
     },
 		methods: {
       componentUpdate () {
+        this.rec_wb = false
+        this.rec_prbc = false
+        this.rec_ffp = false
+        this.rec_fp = false
+        this.rec_cryo = false
+        this.rec_colloid = false
+        this.rec_plt = false
 
+        if(this.post_diagnosis.text=='Anemia')
+        {
+          //regenerative
+          if(this.post_anemia=='case1')
+          {
+            this.rec_prbc = true;
+          }
+          //regenerative
+          else if (this.post_anemia=='case2')
+          {
+            this.rec_prbc = true;
+          }
+          //with hypoproteinemia or with hypovolemia
+          else if (this.post_anemia=='case3'||this.post_anemia=='case4')
+          {
+            this.rec_wb = true;
+            this.rec_prbc = true;
+            this.rec_fp = true;
+            this.rec_colloid = true;
+          }
+          //with coagulopathy
+          else if (this.post_anemia=='case5')
+          {
+            this.rec_wb = true;
+            this.rec_prbc = true;
+            this.rec_ffp = true;
+          }
+        }
+        else if(this.post_diagnosis.text=='อื่นๆ')
+        {
+          if(this.post_other=="von Willebrand's")
+          {
+            this.rec_ffp = true;
+            this.rec_cryo = true;
+          }
+          else if(this.post_other=="Hypoproteinemia")
+          {
+            this.rec_fp = true;
+            this.rec_colloid = true;
+          }
+          else if(this.post_other=="Low immunoglobulin")
+          {
+            this.rec_ffp = true;
+            this.rec_fp = true;
+          }
+          else if(this.post_other=="Hemophelia A")
+          {
+            this.rec_ffp = true;
+            this.rec_cryo = true;
+          }
+          else if(this.post_other=="Hemophelia B")
+          {
+            this.rec_ffp = true;
+            this.rec_fp = true;
+          }
+          else if(this.post_other=="Disseminated intravascular coagulopathy")
+          {
+            this.rec_wb = true;
+            this.rec_ffp = true;
+            this.rec_fp = true;
+            this.rec_plt = true;
+          }
+          else if(this.post_other=="Pancreatitis")
+          {
+            this.rec_cryo = true;
+          }
+          else if(this.post_other=="Liver disease")
+          {
+            this.rec_fp = true;
+          }
+          else if(this.post_other=="Thrombocytopenia")
+          {
+            this.rec_wb = true;
+            this.rec_plt = true;
+          }
+        }
+        if(this.rec_wb||this.rec_prbc)
+        {
+          this.pcv = true;
+        }
+        if(this.rec_plt)
+        {
+          this.plt = true;
+        }
       },
       formatDate (date) {
         if (!date) {
