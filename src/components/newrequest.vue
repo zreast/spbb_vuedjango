@@ -666,7 +666,7 @@
                         type="number"
                         style="margin-left:2em"
       					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='pcv=false'>cancel</v-icon>
+                      <v-icon style='padding-top:0.5em; cursor: pointer' @click='pcv=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='pp'>
 											<h2 style='padding-top:1em'>Target PP</h2>
@@ -678,7 +678,7 @@
                         type="number"
                         style="margin-left:2em"
       					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='pp=false'>cancel</v-icon>
+                      <v-icon style='padding-top:0.5em; cursor: pointer' @click='pp=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='plt'>
 											<h2 style='padding-top:1em'>Target PLT</h2>
@@ -690,7 +690,7 @@
                         type="number"
                         style="margin-left:2em"
       					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='plt=false'>cancel</v-icon>
+                      <v-icon style='padding-top:0.5em; cursor: pointer' @click='plt=false'>cancel</v-icon>
 										</v-layout>
                     <v-layout row v-show='alb'>
 											<h2 style='padding-top:1em'>Target Alb</h2>
@@ -702,7 +702,7 @@
                         type="number"
                         style="margin-left:2em"
       					      ></v-text-field>
-                      <v-icon style='padding-top:0.5em' @click='alb=false'>cancel</v-icon>
+                      <v-icon style='padding-top:0.5em; cursor: pointer' @click='alb=false'>cancel</v-icon>
 										</v-layout>
                     <br>
 
