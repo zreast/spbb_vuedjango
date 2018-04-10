@@ -58,7 +58,7 @@
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
                 <v-flex xs3>
-                  <a href='#'>
+                  <a href='/donation'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/donation.svg' class='img_task'></img>
                       <v-card-text class="px-0 caption_task">บริจาคเลือด</v-card-text>
@@ -69,7 +69,7 @@
                   <a href='#'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/calendar.svg' class='img_task'></img>
-                      <v-card-text class="px-0 caption_task">ทำนัด</v-card-text>
+                      <v-card-text class="px-0 caption_task">ทำนัดหมาย</v-card-text>
                     </v-card>
                   </a>
                 </v-flex>
