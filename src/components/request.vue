@@ -140,7 +140,7 @@
                       Recipient
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.pet_name}}
+                      {{item.petName}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -150,7 +150,7 @@
                       Owner
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.owner_name}}
+                      {{item.ownerName}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -160,7 +160,7 @@
                       From
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.doctor_firstname}}
+                      {{item.doctorFirstname}}
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -374,7 +374,7 @@
 				var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/hospital', {
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/detail/request-byhospital', {
           hospitalID : "1"
         },headers)
         .then(response => {
