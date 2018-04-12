@@ -57,27 +57,21 @@
             <br>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-card dark color="secondary">
-                    <v-card-text class="px-0 caption_task">New Request</v-card-text>
+                    <v-card-text class="px-0 caption_task">Success / All Donor Today</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-card dark color="secondary">
-                    <v-card-text class="px-0 caption_task">Crossmatch Stage</v-card-text>
+                    <v-card-text class="px-0 caption_task">Wait for Physical Exam</v-card-text>
                     <span class='stat_task'>N/A</span>
                   </v-card>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-card dark color="secondary">
-                    <v-card-text class="px-0 caption_task">จ่ายถุงเลือดแล้ววันนี้</v-card-text>
-                    <span class='stat_task'>{{requests.requests.length}}</span>
-                  </v-card>
-                </v-flex>
-                <v-flex xs3>
-                  <v-card dark color="secondary">
-                    <v-card-text class="px-0 caption_task">Today in Process</v-card-text>
+                    <v-card-text class="px-0 caption_task">Wait for Lab Result</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
@@ -97,10 +91,10 @@
           <v-btn
             color="grey"
             class="white--text"
-            @click="route('newrequest')"
+            @click="route('newdonation')"
           >
             <v-icon dark>add</v-icon>
-            New Request
+            New Donation
           </v-btn>
         </v-layout>
         <br>

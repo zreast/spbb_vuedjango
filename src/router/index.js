@@ -4,6 +4,7 @@ import VueResource from 'vue-resource'
 
 const LandingPage = () => import('@/components/')
 const Donation = () => import('@/components/donation.vue')
+const NewDonation = () => import('@/components/newdonation.vue')
 const Request = () => import('@/components/request.vue')
 const NewRequest = () => import('@/components/newrequest.vue')
 const Stock = () => import('@/components/stock.vue')
@@ -26,6 +27,11 @@ var router = new Router({
       path: '/donation',
       name: 'Donation',
       component: Donation
+    },
+    {
+      path: '/newdonation',
+      name: 'NewDonation',
+      component: NewDonation
     },
     {
       path: '/request',
