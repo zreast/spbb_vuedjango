@@ -191,8 +191,8 @@
 									<v-icon dark>add</v-icon>
 						      Add New Pet
 						    </v-btn>
-                <v-spacer v-show='current_pet.petID==null'></v-spacer>
-                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet.petID!=null'>
+                <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
+                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
                   <v-card>
                     <v-card-text>
                       <v-layout row wrap>
@@ -204,9 +204,9 @@
                             <img
                               src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
                               alt=""
-                              v-if="current_pet.img"
+                              v-if="current_pet_detail.img"
                             >
-                            <v-icon v-else>{{ current_pet.img }}</v-icon>
+                            <v-icon v-else>{{ current_pet_detail.img }}</v-icon>
                           </v-avatar>
                         </v-flex>
                         <v-flex xs3>
@@ -214,18 +214,18 @@
                             label
                             small
                             class="ml-0"
-                            v-if="current_pet.petName"
-                          >{{current_pet_detail.patient_species}}</v-chip>
+                            v-if="current_pet_detail.petName"
+                          >{{current_pet_detail.patientSpecies}}</v-chip>
                           <br>
-                          <h2 v-html="current_pet.petName"/>
-                          <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
+                          <h2 v-html="current_pet_detail.petName"/>
+                          <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
                         </v-flex>
                         <v-flex xs4>
-                          <b>เพศ:</b> {{current_pet_detail.patient_gender}}<br>
-                          <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
+                          <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
+                          <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
                         </v-flex>
                         <v-flex xs4>
-                          <b>เจ้าของ:</b> {{current_pet_owner.owner_name}}<br>
+                          <b>เจ้าของ:</b> {{current_pet_owner.ownerName}}<br>
                           <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
                         </v-flex>
                       </v-layout>
@@ -1362,7 +1362,7 @@
         axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodrequesthistory/add', {
           hospital_id: "1",
           request_reason: this.post_diagnosis,
-          pet_id: this.current_pet.petID,
+          pet_id: this.current_pet_detail.petID,
           vet_id: "1",
           date: this.today_date
         },headers)
@@ -1375,33 +1375,15 @@
 		    })
 
 	    },
-      getPetID () {
-				var headers = {
+      getOwner ()
+      {
+        var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
-          petID : this.petID
-        },headers)
-        .then(response => {
-					this.current_pet = response.data
-          this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
 
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
-          petID : this.petID
-        },headers)
-        .then(response => {
-					this.current_pet_detail = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
-          ownerID : '1'
+        //owner-detail
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/owner/detail', {
+          ownerID : this.current_pet_detail.ownerID
         },headers)
         .then(response => {
 					this.current_pet_owner = response.data
@@ -1410,8 +1392,36 @@
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
+      },
+      getPetID () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
 
+        //getresult
+        // axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
+        //   petID : this.petID
+        // },headers)
+        // .then(response => {
+				// 	this.current_pet = response.data
+				// })
+		    // .catch(e => {
+		    //   this.errors.push(e)
+		    // })
 
+        //pet-detail
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/pet/datail', {
+          petID : this.petID
+        },headers)
+        .then(response => {
+					this.current_pet_detail = response.data
+          this.current_pet_detail.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        this.getOwner()
 	    },
       createResult() {
         this.t_items = []
@@ -1465,7 +1475,7 @@
             'Content-Type': 'application/json'
         }
         axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/lastest', {
-          petID: this.current_pet.petID
+          petID: this.current_pet_detail.petID
         },headers)
         .then(response => {
 					this.current_result = response.data
