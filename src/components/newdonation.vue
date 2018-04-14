@@ -53,7 +53,7 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-						<h1>Blood Donate</h1>
+						<h1>Blood Donation</h1>
 
 						<div class="progress" v-if='page=="profile"'>
 							<a @click='page="profile";  componentUpdate()'>
@@ -191,8 +191,8 @@
 									<v-icon dark>add</v-icon>
 						      Add New Pet
 						    </v-btn>
-                <v-spacer v-show='current_pet.petID==null'></v-spacer>
-                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet.petID!=null'>
+                <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
+                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
                   <v-card>
                     <v-card-text>
                       <v-layout row wrap>
@@ -204,9 +204,9 @@
                             <img
                               src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
                               alt=""
-                              v-if="current_pet.img"
+                              v-if="current_pet_detail.img"
                             >
-                            <v-icon v-else>{{ current_pet.img }}</v-icon>
+                            <v-icon v-else>{{ current_pet_detail.img }}</v-icon>
                           </v-avatar>
                         </v-flex>
                         <v-flex xs3>
@@ -214,18 +214,18 @@
                             label
                             small
                             class="ml-0"
-                            v-if="current_pet.petName"
-                          >{{current_pet_detail.patient_species}}</v-chip>
+                            v-if="current_pet_detail.petName"
+                          >{{current_pet_detail.patientSpecies}}</v-chip>
                           <br>
-                          <h2 v-html="current_pet.petName"/>
-                          <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
+                          <h2 v-html="current_pet_detail.petName"/>
+                          <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
                         </v-flex>
                         <v-flex xs4>
-                          <b>เพศ:</b> {{current_pet_detail.patient_gender}}<br>
-                          <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
+                          <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
+                          <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
                         </v-flex>
                         <v-flex xs4>
-                          <b>เจ้าของ:</b> {{current_pet_owner.owner_name}}<br>
+                          <b>เจ้าของ:</b> {{current_pet_owner.ownerName}}<br>
                           <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
                         </v-flex>
                       </v-layout>
@@ -345,88 +345,7 @@
 
 									<v-flex text-xs-left>
 						        <v-card>
-						          <v-btn block>Diagnosis</v-btn>
-											<v-card class='pa-2'>
-												สาเหตุของความต้องการเลือด / Diagnosis
-                        <v-select
-                          :items="diagnosis"
-                          v-model="post_diagnosis"
-                          label="Select"
-                          single-line
-                          bottom
-                        ></v-select>
-
-                        <v-radio-group v-if="post_diagnosis.text=='Anemia'" v-model="post_anemia" :mandatory="false">
-                          <v-radio label="regenerative" value="case1"></v-radio>
-                          <v-radio label="nonregenerative" value="case2"></v-radio>
-                          <v-radio label="with hypoproteinemia" value="case3"></v-radio>
-                          <v-radio label="with hypovolemia" value="case4"></v-radio>
-                          <v-radio label="with coagulopathy" value="case5"></v-radio>
-                        </v-radio-group>
-                        <v-select
-                          v-if="post_diagnosis.text=='อื่นๆ'"
-                          :items="post_disease"
-                          v-model="post_other"
-                          label="ระบุ"
-                          autocomplete
-                        ></v-select>
-											</v-card>
-						        </v-card>
-						      </v-flex>
-
-									<v-flex text-xs-left>
-						        <v-card>
-						          <v-btn block>Date Use</v-btn>
-											<v-card class='pa-2'>
-												วันที่ต้องการใช้เลือด
-												<v-layout row>
-													<v-flex xs6>
-														<v-radio-group :mandatory="false">
-								              <v-radio label="ทันที" value="radio-1"></v-radio>
-								              <v-radio label="จองใช้เมื่อ" value="radio-2"></v-radio>
-								            </v-radio-group>
-													</v-flex>
-													<v-flex xs6>
-														<br><br>
-														<v-menu
-											        lazy
-											        :close-on-content-click="false"
-											        v-model="menu"
-											        transition="scale-transition"
-											        offset-y
-											        full-width
-											        :nudge-right="40"
-											        max-width="290px"
-											        min-width="290px"
-											      >
-											        <v-text-field
-											          slot="activator"
-											          label="Date in M/D/Y"
-											          v-model="dateFormatted"
-											          prepend-icon="event"
-											          @blur="date = parseDate(dateFormatted)"
-											        ></v-text-field>
-											        <v-date-picker v-model="date" @input="dateFormatted = formatDate($event)" no-title scrollable actions>
-											          <template slot-scope="{ save, cancel }">
-											            <v-card-actions>
-											              <v-spacer></v-spacer>
-											              <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-											              <v-btn flat color="primary" @click="save">OK</v-btn>
-											            </v-card-actions>
-											          </template>
-											        </v-date-picker>
-											      </v-menu>
-													</v-flex>
-												</v-layout>
-
-
-											</v-card>
-						        </v-card>
-						      </v-flex>
-
-									<v-flex text-xs-left>
-						        <v-card>
-						          <v-btn block>Note</v-btn>
+						          <v-btn block>สรุปผลการตรวจ</v-btn>
 											<v-card class='pa-2'>
 												ความคิดเห็นอื่นๆ
 												<v-flex>
@@ -933,7 +852,7 @@
 
 
             </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>ยืนยันการรับถุงเลือด</v-btn>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>Blood Bag Label</v-btn>
             <v-card v-show='page=="confirm"'>
               <v-container grid-list-md text-xs-center>
                 <v-layout row wrap style='border: 2px solid #e1e1e1; margin: 2em; border-radius: 10px;'>
@@ -995,7 +914,7 @@
 	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();  componentUpdate()'>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="confirm"'>
-	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
+	           <v-btn color="error" dark large @click='sendDonation()'>บันทึกผลการเก็บเลือด</v-btn>
 		        </div>
           </v-layout>
         </v-slide-y-transition>
@@ -1321,7 +1240,7 @@
 
         return today
       },
-      sendRequestDetail (){
+      sendDonationDetail (){
         this.today_date = this.getDate()
         var headers = {
             'Content-Type': 'application/json'
@@ -1354,54 +1273,37 @@
 		      this.errors.push(e)
 		    })
       },
-      sendRequest () {
+      sendDonation () {
         this.today_date = this.getDate()
 				var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodrequesthistory/add', {
-          hospital_id: "1",
-          request_reason: this.post_diagnosis,
-          pet_id: this.current_pet.petID,
-          vet_id: "1",
-          date: this.today_date
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/donation-history/add', {
+          donationStatus: "test",
+          quantity: "100ml",
+          receiverID: "1",
+          hospitalID: "1",
+          donorID: "1",
+          donationDate: this.today_date
         },headers)
         .then(response => {
-          this.req_id = response.data.request_id
-          this.sendRequestDetail()
+          console.log(response.data)
+          //this.sendRequestDetail()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
 
 	    },
-      getPetID () {
-				var headers = {
+      getOwner ()
+      {
+        var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
-          petID : this.petID
-        },headers)
-        .then(response => {
-					this.current_pet = response.data
-          this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
 
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
-          petID : this.petID
-        },headers)
-        .then(response => {
-					this.current_pet_detail = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
-          ownerID : '1'
+        //owner-detail
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/owner/detail', {
+          ownerID : this.current_pet_detail.ownerID
         },headers)
         .then(response => {
 					this.current_pet_owner = response.data
@@ -1410,8 +1312,35 @@
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
+      },
+      getPetID () {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
 
+        //getresult
+        // axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
+        //   petID : this.petID
+        // },headers)
+        // .then(response => {
+				// 	this.current_pet = response.data
+				// })
+		    // .catch(e => {
+		    //   this.errors.push(e)
+		    // })
 
+        //pet-detail
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/pet/datail', {
+          petID : this.petID
+        },headers)
+        .then(response => {
+					this.current_pet_detail = response.data
+          this.current_pet_detail.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+          this.getOwner()
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
 	    },
       createResult() {
         this.t_items = []
@@ -1465,7 +1394,7 @@
             'Content-Type': 'application/json'
         }
         axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/lastest', {
-          petID: this.current_pet.petID
+          petID: this.current_pet_detail.petID
         },headers)
         .then(response => {
 					this.current_result = response.data
@@ -1489,7 +1418,6 @@
         },headers)
         .then(response => {
 					this.current_result = response.data
-          console.log(this.current_result)
 					this.createResult()
           this.show_spec_exam = true;
           this.show_recent_exam = false;
