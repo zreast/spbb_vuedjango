@@ -1240,34 +1240,27 @@
 
         return today
       },
-      sendDonationDetail (){
+      sendBloodbag (donationID){
         this.today_date = this.getDate()
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodproductrequestdetail/add', {
-          request_date: this.today_date,
-          bloodtype: this.selected_bloodbags.blood_type,
-          product_type: this.selected_bloodbags.product_type,
-          required_quantity: this.selected_bloodbags.quantity,
-          request_id: this.req_id,
-          request_status: "1",
+        //bloodbag-add
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
+          bagDate: this.today_date,
+          donationID: donationID,
+          type: "value",
+          expDate: "none",
+          bagStatus: "active",
+          bloodType: "A",
+          productType: "wholeblood",
+          hospitalID: "1",
+          quantity: "500",
+          pcv: "18",
+          vetComment: "good"
         },headers)
         .then(response => {
-					this.prod_req_id = response.data.product_request_detail_id
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodbagrequestdetail/add', {
-          quantity: this.selected_bloodbags.quantity,
-          method: "test",
-          bag_id: this.selected_bloodbags.bag_id,
-          product_request_detail_id: this.prod_req_id
-        },headers)
-        .then(response => {
-					window.location.href = '/success'
+					console.log(response.data)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -1278,17 +1271,18 @@
 				var headers = {
             'Content-Type': 'application/json'
         }
+        //donation-history-add
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/donation-history/add', {
           donationStatus: "test",
           quantity: "100ml",
           receiverID: "1",
           hospitalID: "1",
           donorID: "1",
+          bagID: "1",
           donationDate: this.today_date
         },headers)
         .then(response => {
-          console.log(response.data)
-          //this.sendRequestDetail()
+          this.sendBloodbag(response.data.donationID)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
