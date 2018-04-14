@@ -1317,7 +1317,7 @@
         if(ss<10){
             ss='0'+ss;
         }
-        var today = yyyy+mm+dd+hh+mm+ss;
+        var today = yyyy+'-'+mm+'-'+dd+' '+hh+':'+mm+':'+ss;
 
         return today
       },

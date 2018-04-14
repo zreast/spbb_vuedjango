@@ -1236,7 +1236,8 @@
         if(ss<10){
             ss='0'+ss;
         }
-        var today = yyyy+mm+dd+hh+mm+ss;
+        var today = yyyy+'-'+mm+'-'+dd+' '+hh+':'+mm+':'+ss;
+        console.log(today)
 
         return today
       },
@@ -1278,7 +1279,7 @@
           receiverID: "1",
           hospitalID: "1",
           donorID: "1",
-          bagID: "1",
+          bagID: "",
           donationDate: this.today_date
         },headers)
         .then(response => {
