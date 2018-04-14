@@ -1237,7 +1237,6 @@
             ss='0'+ss;
         }
         var today = yyyy+'-'+mm+'-'+dd+' '+hh+':'+mm+':'+ss;
-        console.log(today)
 
         return today
       },
@@ -1251,7 +1250,7 @@
           bagDate: this.today_date,
           donationID: donationID,
           type: "value",
-          expDate: "none",
+          expDate: this.today_date,
           bagStatus: "active",
           bloodType: "A",
           productType: "wholeblood",
