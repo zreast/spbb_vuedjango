@@ -1416,12 +1416,11 @@
         .then(response => {
 					this.current_pet_detail = response.data
           this.current_pet_detail.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+          this.getOwner()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
-
-        this.getOwner()
 	    },
       createResult() {
         this.t_items = []
@@ -1499,7 +1498,6 @@
         },headers)
         .then(response => {
 					this.current_result = response.data
-          console.log(this.current_result)
 					this.createResult()
           this.show_spec_exam = true;
           this.show_recent_exam = false;

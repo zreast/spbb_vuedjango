@@ -82,7 +82,7 @@
                   </a>
                 </v-flex>
                 <v-flex xs3>
-                  <a href='#'>
+                  <a href='/stock'>
                   <v-card dark color="secondary">
                     <img src='../assets/index/stock.svg' class='img_task'></img>
                     <v-card-text class="px-0 caption_task">จัดการ Stock เลือด</v-card-text>
