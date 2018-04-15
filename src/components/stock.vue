@@ -151,7 +151,10 @@
               <td class="text-xs-right">{{ props.item.blood_type }}</td>
               <td class="text-xs-right">{{ props.item.pcv }}</td>
               <td class="text-xs-right">{{ props.item.vet_comment }}</td>
-              <td class="text-xs-right">{{ props.item.bag_status }}</td>
+              <td class="text-xs-right">
+                <v-chip v-show='props.item.bag_status!="active"' color="yellow darken-2" text-color="white">{{ props.item.bag_status }}</v-chip>
+                <v-chip v-show='props.item.bag_status=="active"' color="green" text-color="white">{{ props.item.bag_status }}</v-chip>
+              </td>
             </template>
           </v-data-table>
           <div class="text-xs-center pt-2">
