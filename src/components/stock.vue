@@ -53,20 +53,27 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-            <v-container grid-list-md text-xs-center>
-              <v-layout row wrap>
-                <v-flex xs6>
-                  <v-card>
-                    <v-card-text class="px-0 caption_task">ADD</v-card-text>
-                  </v-card>
-                </v-flex>
-                <v-flex xs6>
-                  <v-card>
-                    <v-card-text class="px-0 caption_task">REMOVE</v-card-text>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <v-layout row wrap>
+              <v-spacer></v-spacer>
+              <v-btn
+                large
+                color="blue"
+                class="white--text"
+              >
+                <v-icon dark>add</v-icon>
+                เพิ่มถุงเลือด
+              </v-btn>
+              <v-btn
+                large
+                color="grey"
+                class="white--text"
+              >
+                <v-icon dark>remove</v-icon>
+                ลบถุงเลือด
+              </v-btn>
+            </v-layout>
+
+            <br><br>
 
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
@@ -117,21 +124,40 @@
 
           </v-layout>
         </v-slide-y-transition>
-        <v-data-table
-          :headers="bloodbag_headers"
-          :items="bloodbag_items"
-          hide-actions
-          class="elevation-1"
-        >
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.calories }}</td>
-            <td class="text-xs-right">{{ props.item.fat }}</td>
-            <td class="text-xs-right">{{ props.item.carbs }}</td>
-            <td class="text-xs-right">{{ props.item.protein }}</td>
-            <td class="text-xs-right">{{ props.item.iron }}</td>
-          </template>
-        </v-data-table>
+        <br>
+        <div>
+          <v-data-table
+            :headers="bloodbag_headers"
+            :items="bloodbag_items.bloodBags"
+            :search="search"
+            :pagination.sync="pagination"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="headerCell" slot-scope="props">
+              <v-tooltip bottom>
+                <span slot="activator">
+                  {{ props.header.text }}
+                </span>
+                <span>
+                  {{ props.header.text }}
+                </span>
+              </v-tooltip>
+            </template>
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.quantity }}</td>
+              <td class="text-xs-right">{{ props.item.bag_id }}</td>
+              <td class="text-xs-right">{{ props.item.product_type }}</td>
+              <td class="text-xs-right">{{ props.item.blood_type }}</td>
+              <td class="text-xs-right">{{ props.item.pcv }}</td>
+              <td class="text-xs-right">{{ props.item.vet_comment }}</td>
+              <td class="text-xs-right">{{ props.item.bag_status }}</td>
+            </template>
+          </v-data-table>
+          <div class="text-xs-center pt-2">
+            <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+          </div>
+        </div>
       </v-container>
     </v-content>
 
@@ -151,11 +177,11 @@
 				var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/detail/request-byhospital', {
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/get-by-hospitalid', {
           hospitalID : "1"
         },headers)
         .then(response => {
-					this.requests = response.data
+					this.bloodbag_items = response.data
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -211,19 +237,124 @@
         rightDrawer: false,
         title: 'Smart Pet Blood Bank',
         show: false,
+        bloodbag_items: [],
+        search: '',
+        pagination: {},
+        selected: [],
         bloodbag_headers: [
           {
-            text: 'Dessert (100g serving)',
+            text: 'Volume (ml.)',
             align: 'left',
-            sortable: false,
-            value: 'name'
+            value: 'quantity'
           },
-          { text: 'Calories', value: 'calories' },
-          { text: 'Fat (g)', value: 'fat' },
-          { text: 'Carbs (g)', value: 'carbs' },
-          { text: 'Protein (g)', value: 'protein' },
-          { text: 'Iron (%)', value: 'iron' }
+          { text: 'ID', value: 'bag_id' },
+          { text: 'Product Type', value: 'product_type' },
+          { text: 'Blood Type', value: 'blood_type' },
+          { text: 'PCV', value: 'pcv' },
+          { text: 'Comment', value: 'vet_comment' },
+          { text: 'Status', value: 'bag_status' }
         ],
+        items: [
+          {
+            value: false,
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            iron: '7%'
+          },
+          {
+            value: false,
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            iron: '8%'
+          },
+          {
+            value: false,
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            iron: '16%'
+          },
+          {
+            value: false,
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            iron: '0%'
+          },
+          {
+            value: false,
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            iron: '2%'
+          },
+          {
+            value: false,
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            iron: '45%'
+          },
+          {
+            value: false,
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            iron: '22%'
+          },
+          {
+            value: false,
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            iron: '6%'
+          }
+        ],
+      }
+    },
+    computed: {
+      pages () {
+        if (this.pagination.rowsPerPage == null ||
+          this.pagination.totalItems == null
+        ) return 0
+
+        return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
       }
     },
 		methods: {
