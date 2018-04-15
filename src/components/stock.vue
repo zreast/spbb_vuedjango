@@ -55,24 +55,71 @@
 
             <v-layout row wrap>
               <v-spacer></v-spacer>
-              <v-btn
-                large
-                color="blue"
-                class="white--text"
-              >
-                <v-icon dark>add</v-icon>
-                เพิ่มถุงเลือด
-              </v-btn>
-              <v-btn
-                large
-                color="grey"
-                class="white--text"
-              >
-                <v-icon dark>remove</v-icon>
-                ลบถุงเลือด
-              </v-btn>
+              <v-dialog v-model="dialog" persistent max-width="500px">
+                <v-btn
+                  large
+                  color="blue"
+                  class="white--text"
+                  slot="activator"
+                >
+                  <v-icon dark>add</v-icon>
+                  เพิ่มถุงเลือด
+                </v-btn>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">User Profile</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Legal first name" required></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4>
+                          <v-text-field
+                            label="Legal last name"
+                            hint="example of persistent helper text"
+                            persistent-hint
+                            required
+                          ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12>
+                          <v-text-field label="Email" required></v-text-field>
+                        </v-flex>
+                        <v-flex xs12>
+                          <v-text-field label="Password" type="password" required></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6>
+                          <v-select
+                            label="Age"
+                            required
+                            :items="['0-17', '18-29', '30-54', '54+']"
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6>
+                          <v-select
+                            label="Interests"
+                            multiple
+                            autocomplete
+                            chips
+                            :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                          ></v-select>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                    <small>*indicates required field</small>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+                    <v-btn color="blue darken-1" flat @click.native="addBloodBag(); dialog = false">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-layout>
-
             <br><br>
 
             <v-container grid-list-md text-xs-center>
@@ -145,16 +192,17 @@
               </v-tooltip>
             </template>
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.quantity }}</td>
-              <td class="text-xs-right">{{ props.item.bag_id }}</td>
-              <td class="text-xs-right">{{ props.item.product_type }}</td>
-              <td class="text-xs-right">{{ props.item.blood_type }}</td>
-              <td class="text-xs-right">{{ props.item.pcv }}</td>
-              <td class="text-xs-right">{{ props.item.vet_comment }}</td>
-              <td class="text-xs-right">
+              <td>
                 <v-chip v-show='props.item.bag_status!="active"' color="yellow darken-2" text-color="white">{{ props.item.bag_status }}</v-chip>
                 <v-chip v-show='props.item.bag_status=="active"' color="green" text-color="white">{{ props.item.bag_status }}</v-chip>
               </td>
+              <td>{{ props.item.quantity }}</td>
+              <td>{{ props.item.bag_id }}</td>
+              <td>{{ props.item.product_type }}</td>
+              <td>{{ props.item.blood_type }}</td>
+              <td>{{ props.item.pcv }}</td>
+              <td>{{ props.item.vet_comment }}</td>
+              <td class="text-xs-right"><v-icon style='cursor:pointer' @click='deleteBloodBag(props.item.bag_id)'>delete</v-icon></td>
             </template>
           </v-data-table>
           <div class="text-xs-center pt-2">
@@ -245,110 +293,20 @@
         pagination: {},
         selected: [],
         bloodbag_headers: [
+          { text: 'Status',align: 'left', value: 'bag_status' },
           {
             text: 'Volume (ml.)',
             align: 'left',
             value: 'quantity'
           },
-          { text: 'ID', value: 'bag_id' },
-          { text: 'Product Type', value: 'product_type' },
-          { text: 'Blood Type', value: 'blood_type' },
-          { text: 'PCV', value: 'pcv' },
-          { text: 'Comment', value: 'vet_comment' },
-          { text: 'Status', value: 'bag_status' }
+          { text: 'ID', align: 'left',value: 'bag_id' },
+          { text: 'Product Type', align: 'left',value: 'product_type' },
+          { text: 'Blood Type', align: 'left',value: 'blood_type' },
+          { text: 'PCV', align: 'left',value: 'pcv' },
+          { text: 'Comment', align: 'left',value: 'vet_comment' },
+          { text: 'Action' }
         ],
-        items: [
-          {
-            value: false,
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%'
-          },
-          {
-            value: false,
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%'
-          },
-          {
-            value: false,
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%'
-          },
-          {
-            value: false,
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%'
-          },
-          {
-            value: false,
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%'
-          },
-          {
-            value: false,
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%'
-          },
-          {
-            value: false,
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%'
-          },
-          {
-            value: false,
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%'
-          },
-          {
-            value: false,
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%'
-          }
-        ],
+        dialog: false,
       }
     },
     computed: {
@@ -380,19 +338,43 @@
       route (page) {
         window.location.href = page
       },
-      saveNote (id) {
+      deleteBloodBag (id) {
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/add', {
-          "vetID": "1",
-          "hospitalID": "1",
-          "PCV": "11",
-          "others": this.comment,
-          "resultID": id
+        //delete-bloodbag
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/delete', {
+          bagID: id,
         },headers)
         .then(response => {
 					window.location.reload()
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+      },
+      addBloodBag (id) {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        //bloodbag-add
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
+          "bagDate": "2018-08-08",
+          "donationID": "1",
+          "type": "value2",
+          "expDate": "2018-08-08",
+          "bagStatus": "value2",
+          "bloodType": "value2",
+          "productType": "value2",
+          "hospitalID": "1",
+          "quantity": "500ml",
+          "pcv": "18",
+          "vetComment": "value1"
+        },headers)
+        .then(response => {
+          console.log(response.data)
+					//window.location.reload()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
