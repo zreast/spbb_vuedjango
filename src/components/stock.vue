@@ -67,30 +67,27 @@
                 </v-btn>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">User Profile</span>
+                    <span class="headline">เพิ่มถุงเลือด</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container grid-list-md>
                       <v-layout wrap>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field label="Legal first name" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field
-                            label="Legal last name"
-                            hint="example of persistent helper text"
-                            persistent-hint
+                        <v-flex xs12 sm6 md6>
+                          <v-select
+                            label="ผลิตภัณฑ์"
                             required
-                          ></v-text-field>
+                            :items="['FWB', 'SWB', 'pRBCs', 'PRP', 'FFP', 'FP']"
+                            v-model=bag_add.product
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-text-field label="ปริมาณ" hint="ตัวเลขเท่านั้น" required></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="Email" required></v-text-field>
+                          <v-text-field label="ค่า PCV" required></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="Password" type="password" required></v-text-field>
+                          <v-text-field label="หมายเลขการบริจาคเลือด" type="password" required></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6>
                           <v-select
@@ -127,43 +124,43 @@
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FWB</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_fwb}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_fwb}}</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">SWB</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_swb}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_swb}}</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">pRBCs</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_prbc}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_prbc}}</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">PRP</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_prp}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_prp}}</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FFP</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_ffp}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_ffp}}</v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FP</v-card-text>
-                    <span class='stat_task'>4</span>
-                    <v-card-text class="px-0 caption_task">จอง:1</v-card-text>
+                    <span class='stat_task'>{{c_fp}}</span>
+                    <v-card-text class="px-0 caption_task">จอง:{{r_fp}}</v-card-text>
                   </v-card>
                 </v-flex>
               </v-layout>
@@ -172,13 +169,14 @@
           </v-layout>
         </v-slide-y-transition>
         <br>
-        <v-alert v-show='deletetoggle' outline color="warning" icon="priority_high" :value="true">
+        <v-alert v-show='deletetoggle' outline color="warning" icon="priority_high" :value="true" class="animated slideInUp">
           <div style='color:black'>
             ต้องการลบถุงเลือด <b>ID:{{del_id}} {{del_type}} ปริมาณ {{del_qt}} ml.</b> หรือไม่?
             <v-chip color="yellow darken-3" text-color="white" @click='deleteBloodBag(del_id)'>ตกลง</v-chip>
             <v-chip color="grey" text-color="white" @click='deletetoggle=false'>ยกเลิก</v-chip>
           </div>
         </v-alert>
+        <br>
         <div>
           <v-data-table
             :headers="bloodbag_headers"
@@ -206,6 +204,7 @@
               <td>{{ props.item.quantity }}</td>
               <td>{{ props.item.bag_id }}</td>
               <td>{{ props.item.product_type }}</td>
+              <td>{{ props.item.ExpDate }}</td>
               <td>{{ props.item.blood_type }}</td>
               <td>{{ props.item.pcv }}</td>
               <td>{{ props.item.vet_comment }}</td>
@@ -242,6 +241,7 @@
         },headers)
         .then(response => {
 					this.bloodbag_items = response.data
+          this.checkStatus()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -310,9 +310,10 @@
           },
           { text: 'ID', align: 'left',value: 'bag_id' },
           { text: 'Product Type', align: 'left',value: 'product_type' },
-          { text: 'Blood Type', align: 'left',value: 'blood_type' },
+          { text: 'วันหมดอายุ', align: 'left',value: 'ExpDate' },
+          { text: 'กรุ๊ปเลือด', align: 'left',value: 'blood_type' },
           { text: 'PCV', align: 'left',value: 'pcv' },
-          { text: 'Comment', align: 'left',value: 'vet_comment' },
+          { text: 'หมายเหตุ', align: 'left',value: 'vet_comment' },
           { text: 'Action' }
         ],
         dialog: false,
@@ -320,6 +321,19 @@
         del_id: '',
         del_qt: '',
         del_type: '',
+        c_fwb: 0,
+        c_swb: 0,
+        c_prbc: 0,
+        c_prp: 0,
+        c_ffp: 0,
+        c_fp: 0,
+        r_fwb: 0,
+        r_swb: 0,
+        r_prbc: 0,
+        r_prp: 0,
+        r_ffp: 0,
+        r_fp: 0,
+        bag_add: []
       }
     },
     computed: {
@@ -367,6 +381,55 @@
 		    })
 
       },
+      checkStatus(){
+        this.c_fwb = 0
+        this.c_swb = 0
+        this.c_prbc = 0
+        this.c_prp = 0
+        this.c_ffp = 0
+        this.c_fp = 0
+        this.r_fwb = 0
+        this.r_swb = 0
+        this.r_prbc = 0
+        this.r_prp = 0
+        this.r_ffp = 0
+        this.r_fp = 0
+
+        for(var i in this.bloodbag_items.bloodBags)
+        {
+          if(this.bloodbag_items.bloodBags[i].product_type=='FWB')
+            {
+              this.c_fwb++;
+              if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+                this.r_fwb++;
+            }
+          if(this.bloodbag_items.bloodBags[i].product_type=='SWB'){
+            this.c_swb++;
+            if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+              this.r_swb++;
+          }
+          if(this.bloodbag_items.bloodBags[i].product_type=='pRBCs'){
+            this.c_prbc++;
+            if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+              this.r_prbc++;
+          }
+          if(this.bloodbag_items.bloodBags[i].product_type=='PRP'){
+            this.c_prp++;
+            if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+              this.r_prp++;
+          }
+          if(this.bloodbag_items.bloodBags[i].product_type=='FFP'){
+            this.c_ffp++;
+            if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+              this.r_ffp++;
+          }
+          if(this.bloodbag_items.bloodBags[i].product_type=='FP'){
+            this.c_fp++;
+            if(this.bloodbag_items.bloodBags[i].bag_status=='reserved')
+              this.r_fp++;
+          }
+        }
+      },
       addBloodBag (id) {
         var headers = {
             'Content-Type': 'application/json'
@@ -377,9 +440,9 @@
           "donationID": "1",
           "type": "value2",
           "expDate": "2018-08-08",
-          "bagStatus": "value2",
-          "bloodType": "value2",
-          "productType": "value2",
+          "bagStatus": "active",
+          "bloodType": "A",
+          "productType": this.bag_add.product,
           "hospitalID": "1",
           "quantity": "500",
           "pcv": "18",
