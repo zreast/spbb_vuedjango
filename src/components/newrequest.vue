@@ -1509,29 +1509,76 @@
 
 
 	    },
+      getSuggestion (bloodbags) {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        var send_bags = []
+        var temp = []
+
+        for(var i in bloodbags)
+        {
+          temp.volume = bloodbags[i].quantity
+          temp.pcv = bloodbags[i].pcv
+          send_bags.push(temp)
+        }
+        console.log(send_bags)
+        //model beta
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model', {
+          "Weight": 3.4,
+          "PCV_patient": 10,
+          "PCV_target": 23.6,
+          "bloodbag": [
+          {
+
+                  "volume": 300,
+                  "pcv": 30
+          },
+          {
+
+                  "volume": 500,
+                  "pcv": 50
+          }
+  ,
+          {
+
+                  "volume": 1000,
+                  "pcv": 30
+          }
+
+      ]
+        },headers)
+        .then(response => {
+          console.log(response.data)
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+	    },
       getBloodBag () {
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/blood-bag/getall', {
+        //getAllBag
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/get-all', {
 
         },headers)
         .then(response => {
 					this.bloodbags = response.data
-
           this.in_bloodbags = []
           this.out_bloodbags = []
-          for(var i in this.bloodbags.blood_bags)
+          for(var i in this.bloodbags.bloodBags)
           {
-            if(this.bloodbags.blood_bags[i].hospital_id=='1')
+            if(this.bloodbags.bloodBags[i].hospital_id=='1')
             {
-              this.in_bloodbags.push(this.bloodbags.blood_bags[i])
+              this.in_bloodbags.push(this.bloodbags.bloodBags[i])
             }
             else if(this.bloodbags.blood_bags[i].hospital_id!='1')
             {
-              this.out_bloodbags.push(this.bloodbags.blood_bags[i])
+              this.out_bloodbags.push(this.bloodbags.bloodBags[i])
             }
           }
+          this.getSuggestion(this.in_bloodbags)
 				})
 		    .catch(e => {
 		      this.errors.push(e)

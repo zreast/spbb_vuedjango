@@ -172,6 +172,13 @@
           </v-layout>
         </v-slide-y-transition>
         <br>
+        <v-alert v-show='deletetoggle' outline color="warning" icon="priority_high" :value="true">
+          <div style='color:black'>
+            ต้องการลบถุงเลือด <b>ID:{{del_id}} {{del_type}} ปริมาณ {{del_qt}} ml.</b> หรือไม่?
+            <v-chip color="yellow darken-3" text-color="white" @click='deleteBloodBag(del_id)'>ตกลง</v-chip>
+            <v-chip color="grey" text-color="white" @click='deletetoggle=false'>ยกเลิก</v-chip>
+          </div>
+        </v-alert>
         <div>
           <v-data-table
             :headers="bloodbag_headers"
@@ -202,7 +209,9 @@
               <td>{{ props.item.blood_type }}</td>
               <td>{{ props.item.pcv }}</td>
               <td>{{ props.item.vet_comment }}</td>
-              <td class="text-xs-right"><v-icon style='cursor:pointer' @click='deleteBloodBag(props.item.bag_id)'>delete</v-icon></td>
+              <td class="text-xs-right">
+                <v-icon style='cursor:pointer' @click='deletetoggle=true; del_id=props.item.bag_id; del_qt=props.item.quantity; del_type=props.item.product_type'>delete</v-icon>
+              </td>
             </template>
           </v-data-table>
           <div class="text-xs-center pt-2">
@@ -307,6 +316,10 @@
           { text: 'Action' }
         ],
         dialog: false,
+        deletetoggle: false,
+        del_id: '',
+        del_qt: '',
+        del_type: '',
       }
     },
     computed: {
@@ -368,13 +381,13 @@
           "bloodType": "value2",
           "productType": "value2",
           "hospitalID": "1",
-          "quantity": "500ml",
+          "quantity": "500",
           "pcv": "18",
           "vetComment": "value1"
         },headers)
         .then(response => {
           console.log(response.data)
-					//window.location.reload()
+					window.location.reload()
 				})
 		    .catch(e => {
 		      this.errors.push(e)

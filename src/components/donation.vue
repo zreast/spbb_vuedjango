@@ -394,6 +394,7 @@
         notes: [],
         comment: '',
         dialog: false,
+        dialog2: false,
         clipped: false,
         drawer: false,
         clipped: false,
