@@ -53,7 +53,9 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-						<h1>Blood Request</h1>
+            <h1 style='color:#1976D2'><v-icon color="blue darken-2">local_hospital
+            </v-icon> Blood Request</h1>
+            <br>
 
 						<div class="progress" v-if='page=="profile"'>
 							<a @click='page="profile";  componentUpdate()'>

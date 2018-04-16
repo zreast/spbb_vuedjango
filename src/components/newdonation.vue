@@ -53,7 +53,8 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-						<h1>Blood Donation</h1>
+						<h1 style='color:#7E57C2'><v-icon color="deep-purple lighten-1">add_circle_outline
+</v-icon> Blood Donation</h1>
 
 						<div class="progress" v-if='page=="profile"'>
 							<a @click='page="profile";  componentUpdate()'>
@@ -323,7 +324,7 @@
 											          label="Date in M/D/Y"
 											          v-model="dateFormatted2"
 											          prepend-icon="event"
-											          @blur="date = parseDate(dateFormatted)"
+											          @blur="date = parseDate(dateFormatted2)"
 											        ></v-text-field>
 											        <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
 											          <template slot-scope="{ save, cancel }">
@@ -789,53 +790,81 @@
             </v-card>
             <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>Blood Bag Label</v-btn>
             <v-card v-show='page=="confirm"'>
-              <v-container grid-list-md text-xs-center>
-                <v-layout row wrap style='border: 2px solid #e1e1e1; margin: 2em; border-radius: 10px;'>
-                  <v-flex xs2>
-
-                  </v-flex>
-                  <v-flex xs2>
-                    <v-card class='custom_card'>
-                      <v-card-text class="px-0 text_grey">
-                        เลขที่ถุงเลือด
-                      </v-card-text>
-                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
-                        {{selected_bloodbags.bag_id}}
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                  <v-flex xs2>
-                    <v-card class='custom_card'>
-                      <v-card-text class="px-0 text_grey">
-                        PCV
-                      </v-card-text>
-                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
-                        {{selected_bloodbags.pcv}}
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                  <v-flex xs2>
-                    <v-card class='custom_card'>
-                      <v-card-text class="px-0 text_grey">
-                        Type
-                      </v-card-text>
-                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
-                        {{selected_bloodbags.product_type}}
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                  <v-flex xs2>
-                    <v-card class='custom_card'>
-                      <v-card-text class="px-0 text_grey">
-                        ปริมาณที่เบิก
-                      </v-card-text>
-                      <v-card-text class="px-0" style='font-size: 1.2em; font-weight: bold'>
-                        {{selected_bloodbags.quantity}}
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">เพิ่มถุงเลือด</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12 sm6 md6>
+                        <v-select
+                          label="ผลิตภัณฑ์"
+                          required
+                          :items="['FWB', 'SWB', 'pRBCs', 'PRP', 'FFP', 'FP']"
+                          v-model=bag_add.product
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field label="ปริมาณ" hint="ตัวเลขเท่านั้น"
+                        v-model=bag_add.qt
+                        required></v-text-field>
+                      </v-flex>
+                      <v-flex xs12>
+                        <v-text-field label="ค่า PCV"
+                        v-model=bag_add.pcv required></v-text-field>
+                      </v-flex>
+                      <v-flex xs12>
+                        <v-text-field label="หมายเลขการบริจาคเลือด"
+                        v-model=bag_add.donationID required></v-text-field>
+                      </v-flex>
+                      <v-flex xs12>
+                        <v-text-field label="หมายเหตุ"
+                        v-model=bag_add.comment></v-text-field>
+                      </v-flex>
+                      <v-flex xs12 sm6>
+                        <v-select
+                          label="กรุ๊ปเลือด"
+                          required
+                          :items="['DEA1.1', 'DEA1.2', 'DEA3', 'DEA4', 'DEA5', 'DEA6', 'DEA7', 'DEA8']"
+                          v-model=bag_add.dea
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 sm6>
+                        <v-menu
+                          lazy
+                          :close-on-content-click="false"
+                          v-model="menu2"
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          :nudge-right="40"
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <v-text-field
+                            slot="activator"
+                            label="Date in M/D/Y"
+                            v-model="dateFormatted2"
+                            prepend-icon="event"
+                            @blur="date = parseDate(dateFormatted2)"
+                          ></v-text-field>
+                          <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
+                            <template slot-scope="{ save, cancel }">
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                <v-btn flat color="primary" @click="save">OK</v-btn>
+                              </v-card-actions>
+                            </template>
+                          </v-date-picker>
+                        </v-menu>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                  <small>*indicates required field</small>
+                </v-card-text>
+              </v-card>
 					  </v-card>
             <br>
 
@@ -988,7 +1017,8 @@
         post_disease: [
           "von Willebrand's", 'Hypoproteinemia', 'Low immunoglobulin', 'Hemophelia A', 'Hemophelia B', 'Disseminated intravascular coagulopathy', 'Pancreatitis', 'Liver disease', 'Thrombocytopenia'
         ],
-        recommended_products: null
+        recommended_products: null,
+        bag_add: [],
       }
     },
 		methods: {

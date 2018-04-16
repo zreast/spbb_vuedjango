@@ -53,30 +53,31 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-						<h1>Blood Request Board</h1>
+            <h1 style='color:#1976D2'><v-icon color="blue darken-2">local_hospital
+            </v-icon> Blood Request Board</h1>
             <br>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
                 <v-flex xs3>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">New Request</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">Crossmatch Stage</v-card-text>
                     <span class='stat_task'>N/A</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">จ่ายถุงเลือดแล้ววันนี้</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">Today in Process</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>

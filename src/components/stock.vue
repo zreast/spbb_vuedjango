@@ -53,6 +53,9 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
+            <h1 style='color:#00897B'><v-icon color="teal darken-1">account_balance
+            </v-icon> Inventory</h1>
+            <br>
             <v-layout row wrap>
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" persistent max-width="500px">
@@ -81,29 +84,59 @@
                           ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
-                          <v-text-field label="ปริมาณ" hint="ตัวเลขเท่านั้น" required></v-text-field>
+                          <v-text-field label="ปริมาณ" hint="ตัวเลขเท่านั้น"
+                          v-model=bag_add.qt
+                          required></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="ค่า PCV" required></v-text-field>
+                          <v-text-field label="ค่า PCV"
+                          v-model=bag_add.pcv required></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="หมายเลขการบริจาคเลือด" type="password" required></v-text-field>
+                          <v-text-field label="หมายเลขการบริจาคเลือด"
+                          v-model=bag_add.donationID required></v-text-field>
+                        </v-flex>
+                        <v-flex xs12>
+                          <v-text-field label="หมายเหตุ"
+                          v-model=bag_add.comment></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6>
                           <v-select
-                            label="Age"
+                            label="กรุ๊ปเลือด"
                             required
-                            :items="['0-17', '18-29', '30-54', '54+']"
+                            :items="['DEA1.1', 'DEA1.2', 'DEA3', 'DEA4', 'DEA5', 'DEA6', 'DEA7', 'DEA8']"
+                            v-model=bag_add.dea
                           ></v-select>
                         </v-flex>
                         <v-flex xs12 sm6>
-                          <v-select
-                            label="Interests"
-                            multiple
-                            autocomplete
-                            chips
-                            :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                          ></v-select>
+                          <v-menu
+                            lazy
+                            :close-on-content-click="false"
+                            v-model="menu2"
+                            transition="scale-transition"
+                            offset-y
+                            full-width
+                            :nudge-right="40"
+                            max-width="290px"
+                            min-width="290px"
+                          >
+                            <v-text-field
+                              slot="activator"
+                              label="Date in M/D/Y"
+                              v-model="dateFormatted2"
+                              prepend-icon="event"
+                              @blur="date = parseDate(dateFormatted2)"
+                            ></v-text-field>
+                            <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
+                              <template slot-scope="{ save, cancel }">
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                  <v-btn flat color="primary" @click="save">OK</v-btn>
+                                </v-card-actions>
+                              </template>
+                            </v-date-picker>
+                          </v-menu>
                         </v-flex>
                       </v-layout>
                     </v-container>
@@ -233,6 +266,8 @@
 
   export default {
     created () {
+        this.bag_add.comment=' '
+        this.bag_add.donationID='1'
 				var headers = {
             'Content-Type': 'application/json'
         }
@@ -288,6 +323,7 @@
 	      ],
 				date: null,
 	      dateFormatted: null,
+        dateFormatted2: null,
 	      menu: false,
 				date2: null,
 	      dateFormatted2: null,
@@ -437,16 +473,16 @@
         //bloodbag-add
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
           "bagDate": "2018-08-08",
-          "donationID": "1",
-          "type": "value2",
+          "donationID": this.bag_add.donationID,
+          "type": "value",
           "expDate": "2018-08-08",
           "bagStatus": "active",
-          "bloodType": "A",
+          "bloodType": this.bag_add.dea,
           "productType": this.bag_add.product,
           "hospitalID": "1",
-          "quantity": "500",
-          "pcv": "18",
-          "vetComment": "value1"
+          "quantity": this.bag_add.qt,
+          "pcv": this.bag_add.pcv,
+          "vetComment": this.bag_add.comment
         },headers)
         .then(response => {
           console.log(response.data)

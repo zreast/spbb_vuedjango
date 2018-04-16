@@ -53,24 +53,25 @@
 				      </v-breadcrumbs-item>
 				    </v-breadcrumbs>
 
-						<h1>Donation Board</h1>
+            <h1 style='color:#7E57C2'><v-icon color="deep-purple lighten-1">add_circle_outline
+            </v-icon> Donation Board</h1>
             <br>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
                 <v-flex xs4>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">Success / All Donor Today</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">Wait for Physical Exam</v-card-text>
                     <span class='stat_task'>N/A</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs4>
-                  <v-card dark color="secondary">
+                  <v-card>
                     <v-card-text class="px-0 caption_task">Wait for Lab Result</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
