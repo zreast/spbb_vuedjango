@@ -216,7 +216,7 @@
                             small
                             class="ml-0"
                             v-if="current_pet_detail.petName"
-                          >{{current_pet_detail.patientSpecies}}</v-chip>
+                          >Shih-Tzu</v-chip>
                           <br>
                           <h2 v-html="current_pet_detail.petName"/>
                           <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
@@ -347,6 +347,10 @@
 									<v-flex text-xs-left>
 						        <v-card>
 						          <v-btn block>สรุปผลการตรวจ</v-btn>
+                      <v-radio-group v-model="physical" row class='pa-2'>
+                        <v-radio label="ผ่าน" value="1" ></v-radio>
+                        <v-radio label="ไม่ผ่าน" value="2"></v-radio>
+                      </v-radio-group>
 											<v-card class='pa-2'>
 												ความคิดเห็นอื่นๆ
 												<v-flex>
@@ -569,8 +573,10 @@
 					  </v-card>
             <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>สรุปผลการตรวจสุขภาพ</v-btn>
 						<v-card v-show='page=="suggestion"||page=="bloodbag"'>
-              <v-card class='pa-2'>
+              <v-card class='pa-4'>
                 <h1>Physical Exam</h1>
+                <h2 v-show='physical==1' style='color:green'><v-icon color='green'>done</v-icon> ผ่าน</h2>
+                <h2 v-show='physical==2' style='color:red'><v-icon color='red'>clear</v-icon> ไม่ผ่าน</h2>
                 <v-flex style='max-width:500px'>
                   <v-text-field
                     name="vet_comment"
@@ -578,6 +584,8 @@
                   ></v-text-field>
                 </v-flex>
                 <h1>Lab</h1>
+                <h2 v-show='lab==1' style='color:green'><v-icon color='green'>done</v-icon> ผ่าน</h2>
+                <h2 v-show='lab==2' style='color:red'><v-icon color='red'>clear</v-icon> ไม่ผ่าน</h2>
                 <v-flex style='max-width:500px'>
                   <v-text-field
                     name="vet_comment"
@@ -788,6 +796,27 @@
 
 
             </v-card>
+            <v-card v-show='page=="lab"'>
+					    <v-card-title>
+					      <h2>สรุปผลการตรวจ</h2>
+					    </v-card-title>
+
+              <v-radio-group v-model="lab" row class='pa-2'>
+                <v-radio label="ผ่าน" value="1" ></v-radio>
+                <v-radio label="ไม่ผ่าน" value="2"></v-radio>
+              </v-radio-group>
+              <v-card class='pa-2'>
+                ความคิดเห็นอื่นๆ
+                <v-flex>
+                  <v-text-field
+                    name="vet_comment"
+                    label="บันทึกเพิ่มเติม"
+                    multi-line
+                  ></v-text-field>
+                </v-flex>
+              </v-card>
+
+            </v-card>
             <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>Blood Bag Label</v-btn>
             <v-card v-show='page=="confirm"'>
               <v-card>
@@ -875,10 +904,10 @@
 	           <v-btn color="error" dark large @click='page="suggestion";  componentUpdate()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="suggestion"'>
-	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();  componentUpdate()'>เลือกถุงเลือดที่ต้องการ</v-btn>
+	           <v-btn color="error" dark large @click='page="confirm"; componentUpdate()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="confirm"'>
-	           <v-btn color="error" dark large @click='sendDonation()'>บันทึกผลการเก็บเลือด</v-btn>
+	           <v-btn color="info" dark large @click='page="confirm"; addBloodBag();  componentUpdate()'>บันทึกผล</v-btn>
 		        </div>
           </v-layout>
         </v-slide-y-transition>
@@ -1019,6 +1048,8 @@
         ],
         recommended_products: null,
         bag_add: [],
+        physical: 2,
+        lab: 2,
       }
     },
 		methods: {
@@ -1368,6 +1399,33 @@
 
 
 	    },
+      addBloodBag () {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        //bloodbag-add
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
+          "bagDate": "2018-08-08",
+          "donationID": this.bag_add.donationID,
+          "type": "value",
+          "expDate": "2018-08-08",
+          "bagStatus": "active",
+          "bloodType": this.bag_add.dea,
+          "productType": this.bag_add.product,
+          "hospitalID": "1",
+          "quantity": this.bag_add.qt,
+          "pcv": this.bag_add.pcv,
+          "vetComment": this.bag_add.comment
+        },headers)
+        .then(response => {
+          console.log(response.data)
+					window.location.href = '/donation'
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+      },
       getSpecExam (result_id) {
 				var headers = {
             'Content-Type': 'application/json'

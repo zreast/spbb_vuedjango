@@ -115,14 +115,14 @@
                         small
                         class="white--text"
                         color="yellow darken-2"
-                      >Request Submit</v-chip>
+                      >Donated</v-chip>
                     </v-card-text>
                   </v-card>
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
-                      Request Date
+                      Donate Date
                     </v-card-text>
                     <v-card-text class="px-0">
                       {{item.date}}
@@ -132,10 +132,10 @@
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
-                      Recipient
+                      Donor
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.pet_name}}
+                      คุณไข่
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -145,7 +145,7 @@
                       Owner
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.owner_name}}
+                      วรัญญู
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -155,7 +155,7 @@
                       From
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.doctor_firstname}}
+                      K.Siri
                     </v-card-text>
                   </v-card>
                 </v-flex>

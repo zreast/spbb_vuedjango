@@ -1141,143 +1141,20 @@
     },
 		methods: {
       componentUpdate () {
-        this.rec_wb = false
-        this.rec_prbc = false
-        this.rec_ffp = false
-        this.rec_fp = false
-        this.rec_cryo = false
-        this.rec_colloid = false
-        this.rec_plt = false
-        this.recommended_products = null
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
+          "Disease": "hypoglobulinemia"
+        },headers)
+        .then(response => {
+          this.recommended_products = response.data
+          console.log(this.recommended_products)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
 
-        if(this.post_diagnosis.text=='Anemia')
-        {
-          //regenerative
-          if(this.post_anemia=='case1')
-          {
-            this.rec_prbc = true;
-          }
-          //regenerative
-          else if (this.post_anemia=='case2')
-          {
-            this.rec_prbc = true;
-          }
-          //with hypoproteinemia or with hypovolemia
-          else if (this.post_anemia=='case3'||this.post_anemia=='case4')
-          {
-            this.rec_wb = true;
-            this.rec_prbc = true;
-            this.rec_fp = true;
-            this.rec_colloid = true;
-          }
-          //with coagulopathy
-          else if (this.post_anemia=='case5')
-          {
-            this.rec_wb = true;
-            this.rec_prbc = true;
-            this.rec_ffp = true;
-          }
-        }
-        else if(this.post_diagnosis.text=='อื่นๆ')
-        {
-          if(this.post_other=="von Willebrand's")
-          {
-            this.rec_ffp = true;
-            this.rec_cryo = true;
-          }
-          else if(this.post_other=="Hypoproteinemia")
-          {
-            this.rec_fp = true;
-            this.rec_colloid = true;
-          }
-          else if(this.post_other=="Low immunoglobulin")
-          {
-            this.rec_ffp = true;
-            this.rec_fp = true;
-          }
-          else if(this.post_other=="Hemophelia A")
-          {
-            this.rec_ffp = true;
-            this.rec_cryo = true;
-          }
-          else if(this.post_other=="Hemophelia B")
-          {
-            this.rec_ffp = true;
-            this.rec_fp = true;
-          }
-          else if(this.post_other=="Disseminated intravascular coagulopathy")
-          {
-            this.rec_wb = true;
-            this.rec_ffp = true;
-            this.rec_fp = true;
-            this.rec_plt = true;
-          }
-          else if(this.post_other=="Pancreatitis")
-          {
-            this.rec_cryo = true;
-          }
-          else if(this.post_other=="Liver disease")
-          {
-            this.rec_fp = true;
-          }
-          else if(this.post_other=="Thrombocytopenia")
-          {
-            this.rec_wb = true;
-            this.rec_plt = true;
-          }
-        }
-        if(this.rec_wb)
-        {
-          this.pcv = true;
-          if(this.recommended_products == null)
-            this.recommended_products = "Whole Blood";
-          else
-            this.recommended_products += ", Whole Blood";
-        }
-        if(this.rec_prbc)
-        {
-          this.pcv = true;
-          if(this.recommended_products == null)
-            this.recommended_products = "Packed Red Blood Cells";
-          else
-            this.recommended_products += ", Packed Red Blood Cells";
-        }
-        if(this.rec_ffp)
-        {
-          if(this.recommended_products == null)
-            this.recommended_products = "Fresh Frozen Plasma";
-          else
-            this.recommended_products += ", Fresh Frozen Plasma";
-        }
-        if(this.rec_fp)
-        {
-          if(this.recommended_products == null)
-            this.recommended_products = "Frozenplasma / Cryoprecipitate poor plasma";
-          else
-            this.recommended_products += ", Frozenplasma / Cryoprecipitate poor plasma";
-        }
-        if(this.rec_cryo)
-        {
-          if(this.recommended_products == null)
-            this.recommended_products = "Cryoprecipitate";
-          else
-            this.recommended_products += ", Cryoprecipitate";
-        }
-        if(this.rec_colloid)
-        {
-          if(this.recommended_products == null)
-            this.recommended_products = "Colloid";
-          else
-            this.recommended_products += ", Colloid";
-        }
-        if(this.rec_plt)
-        {
-          this.plt = true;
-          if(this.recommended_products == null)
-            this.recommended_products = "Platelets";
-          else
-            this.recommended_products += ", Platelets";
-        }
       },
       formatDate (date) {
         if (!date) {

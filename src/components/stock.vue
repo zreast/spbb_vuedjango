@@ -466,7 +466,7 @@
           }
         }
       },
-      addBloodBag (id) {
+      addBloodBag () {
         var headers = {
             'Content-Type': 'application/json'
         }
