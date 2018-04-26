@@ -640,12 +640,16 @@
 									<v-flex xs4>
 				          </v-flex>
 									<v-flex xs4>
-                    <span v-show='recommended_products!=null' style='font-size:1.2em'>ผลิตภัณฑ์เลือดที่แนะนำ : </span>
-                    <span v-show='recommended_products!=null' style='font-size:1.2em; font-weight: bold; color: #2196f3'>
-                      <span v-for='item in recommended_products'>
-                        {{item.products}}
+                    <span v-if='recommended_products!=null' style='font-size:1.2em'>ผลิตภัณฑ์เลือดที่แนะนำ : </span>
+                    <span v-if='recommended_products!=null' style='font-size:1.2em; font-weight: bold; color: #2196f3'>
+                      <span v-for='item in recommended_products.products'>
+                        <v-chip>
+                          <v-avatar class="teal"> </v-avatar>
+                          {{item.type}}
+                        </v-chip>
                       </span>
                     </span>
+                    <br><br>
 										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
@@ -1126,13 +1130,15 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        console.log(this.post_select_disease)
+        if(this.post_select_disease==null)
+        {
+          return
+        }
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
           "Disease": this.post_select_disease
         },headers)
         .then(response => {
           this.recommended_products = response.data
-          console.log(this.recommended_products)
         })
         .catch(e => {
           this.errors.push(e)
@@ -1148,7 +1154,6 @@
         },headers)
         .then(response => {
           this.recommended_products = response.data
-          console.log(this.recommended_products)
         })
         .catch(e => {
           this.errors.push(e)
@@ -1164,7 +1169,6 @@
         },headers)
         .then(response => {
           this.recommended_products = response.data
-          console.log(this.recommended_products)
         })
         .catch(e => {
           this.errors.push(e)
