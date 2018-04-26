@@ -58,28 +58,28 @@
             <br>
 
 						<div class="progress" v-if='page=="profile"'>
-							<a @click='page="profile";  componentUpdate()'>
+							<a @click='page="profile";   '>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a @click='page="lab";  componentUpdate()'>
+							<a @click='page="lab";   '>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar"></span>
-							<a @click='page="suggestion";  componentUpdate()'>
-							  <div class="circle">
+							<a @click='page="suggestion";   '>
+							  <div class="circle" @click='model1()'>
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm";  componentUpdate()'>
+							<a @click='page="confirm";   '>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -87,28 +87,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="lab"'>
-							<a @click='page="profile";  componentUpdate()'>
+							<a @click='page="profile";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab";  componentUpdate()'>
+							<a @click='page="lab";   '>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar half"></span>
-							<a @click='page="suggestion";  componentUpdate()'>
-								<div class="circle">
+							<a @click='page="suggestion";   '>
+								<div class="circle" @click='model1()'>
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm";  componentUpdate()'>
+							<a @click='page="confirm";   '>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -116,28 +116,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="suggestion"||page=="bloodbag"'>
-							<a @click='page="profile";  componentUpdate()'>
+							<a @click='page="profile";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab";  componentUpdate()'>
+							<a @click='page="lab";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="suggestion";  componentUpdate()'>
-								<div class="circle active">
+							<a @click='page="suggestion";   '>
+								<div class="circle active" @click='model1()'>
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar"></span>
-							<a @click='page="confirm";  componentUpdate()'>
+							<a @click='page="confirm";   '>
 							  <div class="circle">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -145,28 +145,28 @@
 							</a>
 						</div>
             <div class="progress" v-if='page=="confirm"'>
-							<a @click='page="profile";  componentUpdate()'>
+							<a @click='page="profile";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Profile</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="lab";  componentUpdate()'>
+							<a @click='page="lab";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
 							    <span class="title">Lab</span>
 							  </div>
 							</a>
 						  <span class="bar done"></span>
-							<a @click='page="suggestion";  componentUpdate()'>
-								<div class="circle done">
+							<a @click='page="suggestion";   '>
+								<div class="circle done" @click='model1()'>
 							    <span class="label"></span>
 							    <span class="title">Request</span>
 							  </div>
 							</a>
               <span class="bar done"></span>
-							<a @click='page="confirm";  componentUpdate()'>
+							<a @click='page="confirm";   '>
 							  <div class="circle active">
 							    <span class="label"></span>
 							    <span class="title">Confirm</span>
@@ -351,22 +351,6 @@
 											<v-card class='pa-2'>
 												สาเหตุของความต้องการเลือด / Diagnosis
                         <v-select
-                          :items="diagnosis"
-                          v-model="post_diagnosis"
-                          label="Select"
-                          single-line
-                          bottom
-                        ></v-select>
-
-                        <v-radio-group v-if="post_diagnosis.text=='Anemia'" v-model="post_anemia" :mandatory="false">
-                          <v-radio label="regenerative" value="case1"></v-radio>
-                          <v-radio label="nonregenerative" value="case2"></v-radio>
-                          <v-radio label="with hypoproteinemia" value="case3"></v-radio>
-                          <v-radio label="with hypovolemia" value="case4"></v-radio>
-                          <v-radio label="with coagulopathy" value="case5"></v-radio>
-                        </v-radio-group>
-                        <v-select
-                          v-if="post_diagnosis.text=='อื่นๆ'"
                           :items="post_disease"
                           v-model="post_other"
                           label="ระบุ"
@@ -657,7 +641,11 @@
 				          </v-flex>
 									<v-flex xs4>
                     <span v-show='recommended_products!=null' style='font-size:1.2em'>ผลิตภัณฑ์เลือดที่แนะนำ : </span>
-                    <span v-show='recommended_products!=null' style='font-size:1.2em; font-weight: bold; color: #2196f3'>{{recommended_products}}</span>
+                    <span v-show='recommended_products!=null' style='font-size:1.2em; font-weight: bold; color: #2196f3'>
+                      <span v-for='item in recommended_products'>
+                        {{item.products}}
+                      </span>
+                    </span>
 										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
@@ -727,7 +715,7 @@
 
                     <br>
                     <div class="text-xs-center" v-show='page=="profile"'>
-        	           <v-btn color="error" dark large @click='page="lab"; componentUpdate()'>Next</v-btn>
+        	           <v-btn color="error" dark large @click='page="lab";  '>Next</v-btn>
         		        </div>
 			            </v-flex>
 								</v-layout>
@@ -988,13 +976,13 @@
             <br>
 
 						<div class="text-xs-center" v-show='page=="profile"'>
-	           <v-btn color="error" dark large @click='page="lab";  componentUpdate()'>Next</v-btn>
+	           <v-btn color="error" dark large @click='page="lab";   '>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="lab"'>
-	           <v-btn color="error" dark large @click='page="suggestion";  componentUpdate()'>Next</v-btn>
+	           <v-btn color="error" dark large @click='page="suggestion"; model1();'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="suggestion"'>
-	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();  componentUpdate()'>เลือกถุงเลือดที่ต้องการ</v-btn>
+	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();   '>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="confirm"'>
 	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
@@ -1134,13 +1122,46 @@
         post_anemia: null,
         post_other: null,
         post_disease: [
-          "von Willebrand's", 'Hypoproteinemia', 'Low immunoglobulin', 'Hemophelia A', 'Hemophelia B', 'Disseminated intravascular coagulopathy', 'Pancreatitis', 'Liver disease', 'Thrombocytopenia'
+          'ผ่าตัด', 'Anemia', 'Anemia (liver disease)', 'Non-regenerative anemia', 'hypovolemic anemia', 'correction of anemia before surgery',  'Coagulopathy with active bleeding',  'Acute or chronic blood loss','Chronic blood loss (<72 hr)', 'hemorrhage', 'hemolysis','hemophilia A','hemophilia B','IMHA',  'massive acute hemorrhage', 'ineffective erythropoiesis', 'vWFD', 'DIC', 'liver disorder', 'Vit K deficiency', 'Shock and acute blood loss', 'hypoproteinemia', 'hypoglobulinemia', 'acute pancreatitis',  'hypoalbuminemia', 'Warfarin toxicity', 'parvovirosis', 'Wafarin toxication', 'thrombocytopenia', 'hypofibrinogenemia'
         ],
         recommended_products: null
       }
     },
 		methods: {
-      componentUpdate () {
+      model1 () {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        console.log('eiei')
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
+          "Disease": "hypoglobulinemia"
+        },headers)
+        .then(response => {
+          this.recommended_products = response.data
+          console.log(this.recommended_products)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+
+      },
+      model2 () {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
+          "Disease": "hypoglobulinemia"
+        },headers)
+        .then(response => {
+          this.recommended_products = response.data
+          console.log(this.recommended_products)
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+
+      },
+      model3 () {
         var headers = {
             'Content-Type': 'application/json'
         }
