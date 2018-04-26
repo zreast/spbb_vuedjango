@@ -648,8 +648,9 @@
                           {{item.type}}
                         </v-chip>
                       </span>
+                      <br><br>
                     </span>
-                    <br><br>
+
 										<v-layout row v-show='pcv'>
 											<h2 style='padding-top:1em'>Target PCV</h2>
                       <v-text-field
@@ -716,7 +717,20 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
-
+                    <v-container fluid>
+                      <v-checkbox :label="`Fresh Whole Blood`" v-model="chk_fwb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
+                    </v-container>
                     <br>
                     <div class="text-xs-center" v-show='page=="profile"'>
         	           <v-btn color="error" dark large @click='page="lab";  '>Next</v-btn>
@@ -1110,19 +1124,23 @@
         radios3: null,
         radios4: null,
         dialog: false,
-        rec_wb: false,
-        rec_prbc: false,
-        rec_ffp: false,
-        rec_fp: false,
-        rec_cryo: false,
-        rec_colloid: false,
-        rec_plt: false,
         post_diagnosis: [],
         post_select_disease: null,
         post_disease: [
           'ผ่าตัด', 'Anemia', 'Anemia (liver disease)', 'Non-regenerative anemia', 'hypovolemic anemia', 'correction of anemia before surgery',  'Coagulopathy with active bleeding',  'Acute or chronic blood loss','Chronic blood loss (<72 hr)', 'hemorrhage', 'hemolysis','hemophilia A','hemophilia B','IMHA',  'massive acute hemorrhage', 'ineffective erythropoiesis', 'vWFD', 'DIC', 'liver disorder', 'Vit K deficiency', 'Shock and acute blood loss', 'hypoproteinemia', 'hypoglobulinemia', 'acute pancreatitis',  'hypoalbuminemia', 'Warfarin toxicity', 'parvovirosis', 'Wafarin toxication', 'thrombocytopenia', 'hypofibrinogenemia'
         ],
-        recommended_products: null
+        recommended_products: null,
+        chk_fwb: false,
+        chk_swb: false,
+        chk_prbc: false,
+        chk_fp: false,
+        chk_ffp: false,
+        chk_fzp: false,
+        chk_pltr: false,
+        chk_pltc: false,
+        chk_cp: false,
+        chk_cpp: false,
+
       }
     },
 		methods: {
@@ -1149,8 +1167,10 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
-          "Disease": "hypoglobulinemia"
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/2', {
+          "Weight": 6.4,
+          "PCV_patient": 15,
+          "PCV_target": 30.6
         },headers)
         .then(response => {
           this.recommended_products = response.data
@@ -1164,7 +1184,7 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/3', {
           "Disease": "hypoglobulinemia"
         },headers)
         .then(response => {
