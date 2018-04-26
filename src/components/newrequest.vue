@@ -728,10 +728,24 @@
 					  </v-card>
             <v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
             <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
-              <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap style='border-bottom: 1px solid #f4f4f4'>
+                    <v-flex xs12 class='pt-4'>
+                      <h2 style='margin:0em 2em 0em 2em; align:left'>Whole Blood</h2>
+                    </v-flex>
+                    <v-flex xs3>
+
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      <b>ปริมาณที่ต้องการ</b>
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      <b>ปริมาณจากสูตร</b>
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      <b>ปริมาณที่แนะนำจาก AI</b>
+                    </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
                         <v-checkbox :label="`Fresh Whole Blood`" v-model="chk_fwb" hide-details class="shrink mt-4"></v-checkbox>
@@ -743,10 +757,10 @@
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100
+                      100 ml.
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100
+                      100 ml. (SVR)
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
@@ -755,7 +769,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
@@ -763,6 +777,9 @@
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
                       100
+                    </v-flex>
+                    <v-flex xs12 class='pt-4'>
+                      <h2 style='margin:1em 2em 0em 2em; align:left'>Blood Components</h2>
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
@@ -771,7 +788,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -781,7 +798,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -791,7 +808,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -801,7 +818,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -811,7 +828,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -821,7 +838,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -831,7 +848,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3>
@@ -841,7 +858,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
 
@@ -850,7 +867,7 @@
 
               </v-card-actions>
             </v-card>
-						<v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+						<v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ถุงเลือดที่ต้องการ</v-btn>
             <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
               <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
               <v-card-actions>
