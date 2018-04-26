@@ -57,7 +57,7 @@
             <br>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
-                <v-flex xs3>
+                <v-flex xs4 class='animated zoomIn'>
                   <a href='/donation'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/donation.svg' class='img_task'></img>
@@ -65,15 +65,15 @@
                     </v-card>
                   </a>
                 </v-flex>
-                <v-flex xs3>
+                <!-- <v-flex xs3 class='animated zoomIn'>
                   <a href='#'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/calendar.svg' class='img_task'></img>
                       <v-card-text class="px-0 caption_task">ทำนัดหมาย</v-card-text>
                     </v-card>
                   </a>
-                </v-flex>
-                <v-flex xs3>
+                </v-flex> -->
+                <v-flex xs4 class='animated zoomIn'>
                   <a href='/request'>
                     <v-card dark color="secondary">
                       <img src='../assets/index/transfusion.svg' class='img_task'></img>
@@ -81,7 +81,7 @@
                     </v-card>
                   </a>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4 class='animated zoomIn'>
                   <a href='/stock'>
                   <v-card dark color="secondary">
                     <img src='../assets/index/stock.svg' class='img_task'></img>
@@ -199,6 +199,12 @@
   .caption_task{
     font-size: 1.4em;
     font-weight: bold;
+  }
+  .zoomIn {
+    -webkit-animation: zoomIn 0.3s; /* Safari 4+ */
+    -moz-animation:    zoomIn 0.3s; /* Fx 5+ */
+    -o-animation:      zoomIn 0.3s; /* Opera 12+ */
+    animation:         zoomIn 0.3s; /* IE 10+, Fx 29+ */
   }
 
 </style>

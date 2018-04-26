@@ -174,75 +174,77 @@
 							</a>
 						</div>
 						<br>
-	          <v-btn block>Recipient Profile</v-btn>
-						<v-card>
-					    <v-card-title>
-								<v-text-field
-					        append-icon="search"
-					        label="Pet Name, H.N., Owner, Address"
-					        single-line
-					        hide-details
-					        v-model="petID"
-                  @change="getPetID()"
-                  @keyup.enter="getPetID()"
-					      ></v-text-field>
-								<v-btn
-						      color="grey"
-						      class="white--text"
-						    >
-									<v-icon dark>add</v-icon>
-						      Add New Pet
-						    </v-btn>
-                <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
-                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
-                  <v-card>
-                    <v-card-text>
-                      <v-layout row wrap>
-                        <v-flex xs1>
-                          <v-avatar
-                            size="50px"
-                            slot="activator"
-                          >
-                            <img
-                              src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
-                              alt=""
-                              v-if="current_pet_detail.img"
+            <div class='animated slideInUp'>
+  	          <v-btn block>Recipient Profile</v-btn>
+  						<v-card>
+  					    <v-card-title>
+  								<v-text-field
+  					        append-icon="search"
+  					        label="Pet Name, H.N., Owner, Address"
+  					        single-line
+  					        hide-details
+  					        v-model="petID"
+                    @change="getPetID()"
+                    @keyup.enter="getPetID()"
+  					      ></v-text-field>
+  								<v-btn
+  						      color="grey"
+  						      class="white--text"
+  						    >
+  									<v-icon dark>add</v-icon>
+  						      Add New Pet
+  						    </v-btn>
+                  <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
+                  <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
+                    <v-card>
+                      <v-card-text>
+                        <v-layout row wrap>
+                          <v-flex xs1>
+                            <v-avatar
+                              size="50px"
+                              slot="activator"
                             >
-                            <v-icon v-else>{{ current_pet_detail.img }}</v-icon>
-                          </v-avatar>
-                        </v-flex>
-                        <v-flex xs3>
-                          <v-chip
-                            label
-                            small
-                            class="ml-0"
-                            v-if="current_pet_detail.petName"
-                          >{{current_pet_detail.patientSpecies}}</v-chip>
-                          <br>
-                          <h2 v-html="current_pet_detail.petName"/>
-                          <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
-                        </v-flex>
-                        <v-flex xs4>
-                          <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
-                          <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
-                        </v-flex>
-                        <v-flex xs4>
-                          <b>เจ้าของ:</b> {{current_pet_owner.ownerName}}<br>
-                          <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
-                        </v-flex>
-                      </v-layout>
+                              <img
+                                src="https://www.what-dog.net/Images/faces2/scroll007.jpg"
+                                alt=""
+                                v-if="current_pet_detail.img"
+                              >
+                              <v-icon v-else>{{ current_pet_detail.img }}</v-icon>
+                            </v-avatar>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-chip
+                              label
+                              small
+                              class="ml-0"
+                              v-if="current_pet_detail.petName"
+                            >{{current_pet_detail.patientSpecies}}</v-chip>
+                            <br>
+                            <h2 v-html="current_pet_detail.petName"/>
+                            <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
+                          </v-flex>
+                          <v-flex xs4>
+                            <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
+                            <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
+                          </v-flex>
+                          <v-flex xs4>
+                            <b>เจ้าของ:</b> {{current_pet_owner.ownerName}}<br>
+                            <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
+                          </v-flex>
+                        </v-layout>
 
-                    </v-card-text>
-                  </v-card>
-                </v-layout>
-					    </v-card-title>
-						</v-card>
+                      </v-card-text>
+                    </v-card>
+                  </v-layout>
+  					    </v-card-title>
+  						</v-card>
+            </div>
 						<br>
-	          <v-btn block class='bg__mdteal' dark v-show='page=="profile"'>Medical Record</v-btn>
+	          <v-btn block class='bg__mdteal animated slideInUp' dark v-show='page=="profile"'>Medical Record</v-btn>
 						<v-container grid-list-md text-xs-center v-show='page=="profile"'>
 					    <v-layout row wrap>
 					      <v-flex xs6>
-					        <v-card>
+					        <v-card class='animated slideInUp'>
 					          <v-btn block>Physical Exam</v-btn>
 										<v-flex>
 											<v-layout row>
@@ -296,7 +298,7 @@
 					      </v-flex>
 								<v-flex xs6>
 									<v-flex text-xs-left>
-						        <v-card>
+						        <v-card class='animated slideInUp'>
 						          <v-btn block>History Taking</v-btn>
 											<v-card class='pa-2'>
 												เคยได้รับเลือดมาก่อน
@@ -346,7 +348,7 @@
 						      </v-flex>
 
 									<v-flex text-xs-left>
-						        <v-card>
+						        <v-card class='animated slideInUp'>
 						          <v-btn block>Diagnosis</v-btn>
 											<v-card class='pa-2'>
 												สาเหตุของความต้องการเลือด / Diagnosis
@@ -361,7 +363,7 @@
 						      </v-flex>
 
 									<v-flex text-xs-left>
-						        <v-card>
+						        <v-card class='animated slideInUp'>
 						          <v-btn block>Date Use</v-btn>
 											<v-card class='pa-2'>
 												วันที่ต้องการใช้เลือด
@@ -411,7 +413,7 @@
 						      </v-flex>
 
 									<v-flex text-xs-left>
-						        <v-card>
+						        <v-card class='animated slideInUp'>
 						          <v-btn block>Note</v-btn>
 											<v-card class='pa-2'>
 												ความคิดเห็นอื่นๆ
@@ -1769,5 +1771,12 @@
   }
   .custom_card{
     box-shadow: 0px 0px 0px 0px !important;
+  }
+
+  .slideInUp {
+    -webkit-animation: slideInUp 0.5s; /* Safari 4+ */
+    -moz-animation:    slideInUp 0.5s; /* Fx 5+ */
+    -o-animation:      slideInUp 0.5s; /* Opera 12+ */
+    animation:         slideInUp 0.5s; /* IE 10+, Fx 29+ */
   }
 </style>
