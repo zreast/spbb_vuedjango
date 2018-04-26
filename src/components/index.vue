@@ -15,7 +15,7 @@
             <v-list-tile-title v-text="item.text"></v-list-tile-title>
           </v-list-tile>
         </v-list>
-        <v-list-tile v-for="item in items" :key="item.text" @click="">
+        <v-list-tile v-for="item in items" :key="item.text" @click="route(item.link)">
           <v-list-tile-action class="grey--text darken-4">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -131,11 +131,10 @@
           }
         ],
 				items: [
-					{ title: 'Dashboard', icon: 'dashboard' },
-          { title: 'Do it now!', icon: 'extension' },
-          { title: 'Statistic', icon: 'trending_up' },
-          { title: 'Email', icon: 'email' },
-          { title: 'Social', icon: 'message' }
+					{ title: 'Dashboard', icon: 'dashboard', link: '/' },
+          { title: 'บริจาคเลือด', icon: 'add_circle_outline', link: '/donation'  },
+          { title: 'เบิกเลือด', icon: 'local_hospital', link: '/request'  },
+          { title: 'จัดการ Stock เลือด', icon: 'account_balance', link: '/stock'  },
         ],
 	      items2: [
 	        { picture: 28, text: 'โรงพยาบาลสัตว์ สวนผัก' }
@@ -168,6 +167,9 @@
 
         const [month, day, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      },
+      route (page) {
+        window.location.href = page
       },
     }
   }
