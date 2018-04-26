@@ -717,21 +717,6 @@
                         </v-card-text>
                       </v-card>
                     </v-dialog>
-                    <v-container fluid>
-                      <v-checkbox :label="`Fresh Whole Blood`" v-model="chk_fwb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                      <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb"></v-checkbox>
-                    </v-container>
-                    <br>
                     <div class="text-xs-center" v-show='page=="profile"'>
         	           <v-btn color="error" dark large @click='page="lab";  '>Next</v-btn>
         		        </div>
@@ -739,6 +724,130 @@
 								</v-layout>
 							</v-container>
 					  </v-card>
+            <v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+            <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
+              <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
+              <v-card-actions>
+                <v-container grid-list-md text-xs-center>
+                  <v-layout row wrap style='border-bottom: 1px solid #f4f4f4'>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Fresh Whole Blood`" v-model="chk_fwb" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      100
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      100
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Stored Whole Blood`" v-model="chk_swb" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      100
+                    </v-flex>
+                    <v-flex xs3 class='pt-4'>
+                      100
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Packed Red Blood Cells`" v-model="chk_prbc" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Fresh Plasma`" v-model="chk_fp" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Fresh Frozen Plasma`" v-model="chk_ffp" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Frozen Plasma`" v-model="chk_fzp" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Platelet Rich Plasma`" v-model="chk_pltr" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Platelet Concentration`" v-model="chk_pltc" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Cryoprecipitate`" v-model="chk_cp" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-checkbox :label="`Cryopoor plasma`" v-model="chk_cpp" hide-details class="shrink mt-4"></v-checkbox>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-card class='custom_card'>
+                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                      </v-card>
+                    </v-flex>
+
+                  </v-layout>
+                </v-container>
+
+              </v-card-actions>
+            </v-card>
 						<v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
             <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
               <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
@@ -1157,6 +1266,49 @@
         },headers)
         .then(response => {
           this.recommended_products = response.data
+          for(var i in this.recommended_products.products)
+          {
+            if(this.recommended_products.products[i].type == 'Fresh Whole Blood')
+            {
+              this.chk_fwb = true
+            }
+            if(this.recommended_products.products[i].type == 'Stored Whole Blood')
+            {
+              this.chk_swb = true
+            }
+            if(this.recommended_products.products[i].type == 'Packed Red Blood Cells')
+            {
+              this.chk_prbc = true
+            }
+            if(this.recommended_products.products[i].type == 'Fresh Plasma')
+            {
+              this.chk_fp = true
+            }
+            if(this.recommended_products.products[i].type == 'Fresh Frozen Plasma')
+            {
+              this.chk_ffp = true
+            }
+            if(this.recommended_products.products[i].type == 'Frozen Plasma')
+            {
+              this.chk_fzp = true
+            }
+            if(this.recommended_products.products[i].type == 'Platelet Rich Plasma')
+            {
+              this.chk_pltr = true
+            }
+            if(this.recommended_products.products[i].type == 'Platelet Concentration')
+            {
+              this.chk_pltc = true
+            }
+            if(this.recommended_products.products[i].type == 'Cryoprecipitate')
+            {
+              this.chk_cp = true
+            }
+            if(this.recommended_products.products[i].type == 'Cryopoor plasma')
+            {
+              this.chk_cpp = true
+            }
+          }
         })
         .catch(e => {
           this.errors.push(e)
