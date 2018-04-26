@@ -352,7 +352,7 @@
 												สาเหตุของความต้องการเลือด / Diagnosis
                         <v-select
                           :items="post_disease"
-                          v-model="post_other"
+                          v-model="post_select_disease"
                           label="ระบุ"
                           autocomplete
                         ></v-select>
@@ -1061,11 +1061,6 @@
         show_all_exam: true,
         show_recent_exam: false,
         show_spec_exam: false,
-        diagnosis: [
-          { text: 'Anemia' },
-          { text: 'ผ่าตัด' },
-          { text: 'อื่นๆ' },
-        ],
         max25chars: (v) => v.length <= 25 || 'Input too long!',
         tmp: '',
         search: '',
@@ -1119,8 +1114,7 @@
         rec_colloid: false,
         rec_plt: false,
         post_diagnosis: [],
-        post_anemia: null,
-        post_other: null,
+        post_select_disease: null,
         post_disease: [
           'ผ่าตัด', 'Anemia', 'Anemia (liver disease)', 'Non-regenerative anemia', 'hypovolemic anemia', 'correction of anemia before surgery',  'Coagulopathy with active bleeding',  'Acute or chronic blood loss','Chronic blood loss (<72 hr)', 'hemorrhage', 'hemolysis','hemophilia A','hemophilia B','IMHA',  'massive acute hemorrhage', 'ineffective erythropoiesis', 'vWFD', 'DIC', 'liver disorder', 'Vit K deficiency', 'Shock and acute blood loss', 'hypoproteinemia', 'hypoglobulinemia', 'acute pancreatitis',  'hypoalbuminemia', 'Warfarin toxicity', 'parvovirosis', 'Wafarin toxication', 'thrombocytopenia', 'hypofibrinogenemia'
         ],
@@ -1132,9 +1126,9 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        console.log('eiei')
+        console.log(this.post_select_disease)
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/1', {
-          "Disease": "hypoglobulinemia"
+          "Disease": this.post_select_disease
         },headers)
         .then(response => {
           this.recommended_products = response.data
