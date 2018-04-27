@@ -58,19 +58,19 @@
             <br>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
-                <v-flex xs4>
+                <v-flex xs4 class="animated zoomIn">
                   <v-card>
                     <v-card-text class="px-0 caption_task">Success / All Donor Today</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
                   </v-card>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs4 class="animated zoomIn">
                   <v-card>
                     <v-card-text class="px-0 caption_task">Wait for Physical Exam</v-card-text>
                     <span class='stat_task'>N/A</span>
                   </v-card>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs4 class="animated zoomIn">
                   <v-card>
                     <v-card-text class="px-0 caption_task">Wait for Lab Result</v-card-text>
                     <span class='stat_task'>{{requests.requests.length}}</span>
@@ -568,6 +568,12 @@
   }
   .custom_card2{
     box-shadow: 0px 0px 0px 0px !important;
+  }
+  .zoomIn {
+    -webkit-animation: zoomIn 0.3s; /* Safari 4+ */
+    -moz-animation:    zoomIn 0.3s; /* Fx 5+ */
+    -o-animation:      zoomIn 0.3s; /* Opera 12+ */
+    animation:         zoomIn 0.3s; /* IE 10+, Fx 29+ */
   }
 
 </style>

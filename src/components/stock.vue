@@ -154,42 +154,42 @@
 
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FWB</v-card-text>
                     <span class='stat_task'>{{c_fwb}}</span>
                     <v-card-text class="px-0 caption_task">จอง:{{r_fwb}}</v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">SWB</v-card-text>
                     <span class='stat_task'>{{c_swb}}</span>
                     <v-card-text class="px-0 caption_task">จอง:{{r_swb}}</v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">pRBCs</v-card-text>
                     <span class='stat_task'>{{c_prbc}}</span>
                     <v-card-text class="px-0 caption_task">จอง:{{r_prbc}}</v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">PRP</v-card-text>
                     <span class='stat_task'>{{c_prp}}</span>
                     <v-card-text class="px-0 caption_task">จอง:{{r_prp}}</v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FFP</v-card-text>
                     <span class='stat_task'>{{c_ffp}}</span>
                     <v-card-text class="px-0 caption_task">จอง:{{r_ffp}}</v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 class='zoomIn'>
                   <v-card dark color="secondary">
                     <v-card-text class="px-0 caption_task">FP</v-card-text>
                     <span class='stat_task'>{{c_fp}}</span>
@@ -590,6 +590,18 @@
   }
   .custom_card2{
     box-shadow: 0px 0px 0px 0px !important;
+  }
+  .slideInUp {
+    -webkit-animation: slideInUp 0.5s; /* Safari 4+ */
+    -moz-animation:    slideInUp 0.5s; /* Fx 5+ */
+    -o-animation:      slideInUp 0.5s; /* Opera 12+ */
+    animation:         slideInUp 0.5s; /* IE 10+, Fx 29+ */
+  }
+  .zoomIn {
+    -webkit-animation: zoomIn 0.3s; /* Safari 4+ */
+    -moz-animation:    zoomIn 0.3s; /* Fx 5+ */
+    -o-animation:      zoomIn 0.3s; /* Opera 12+ */
+    animation:         zoomIn 0.3s; /* IE 10+, Fx 29+ */
   }
 
 </style>

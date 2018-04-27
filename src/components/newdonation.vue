@@ -173,8 +173,8 @@
 							</a>
 						</div>
 						<br>
-	          <v-btn block>Recipient Profile</v-btn>
-						<v-card>
+	          <v-btn block class='animated slideInUp'>Recipient Profile</v-btn>
+						<v-card class='animated slideInUp'>
 					    <v-card-title>
 								<v-text-field
 					        append-icon="search"
@@ -193,7 +193,7 @@
 						      Add New Pet
 						    </v-btn>
                 <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
-                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
+                <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null' class='animated zoomIn'>
                   <v-card>
                     <v-card-text>
                       <v-layout row wrap>
@@ -237,8 +237,8 @@
 					    </v-card-title>
 						</v-card>
 						<br>
-	          <v-btn block class='bg__mdteal' dark v-show='page=="profile"'>Medical Record</v-btn>
-						<v-container grid-list-md text-xs-center v-show='page=="profile"'>
+	          <v-btn block class='bg__mdteal animated slideInUp' dark v-show='page=="profile"'>Medical Record</v-btn>
+						<v-container grid-list-md text-xs-center v-show='page=="profile"' class='animated slideInUp'>
 					    <v-layout row wrap>
 					      <v-flex xs6>
 					        <v-card>
@@ -366,9 +366,9 @@
 					      </v-flex>
 					    </v-layout>
 					  </v-container>
-            <v-btn block class='bg__mdteal' dark v-show='page=="lab"'>Lab Exam</v-btn>
+            <v-btn block class='bg__mdteal animated slideInUp' dark v-show='page=="lab"'>Lab Exam</v-btn>
 
-            <v-card v-show='page=="lab"' class='bg__grey'>
+            <v-card v-show='page=="lab"' class='bg__grey animated slideInUp'>
 					    <v-card-title>
 					      <h2>Complete Blood Count (CBC)</h2>
 					    </v-card-title>
@@ -417,7 +417,7 @@
               </v-layout>
             </v-card>
             <br>
-            <v-card v-show='page=="lab"'>
+            <v-card v-show='page=="lab"' class='animated slideInUp'>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
 					      <v-spacer></v-spacer>
@@ -571,8 +571,8 @@
                 </template>
               </v-data-table>
 					  </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>สรุปผลการตรวจสุขภาพ</v-btn>
-						<v-card v-show='page=="suggestion"||page=="bloodbag"'>
+            <v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="suggestion"||page=="bloodbag"'>สรุปผลการตรวจสุขภาพ</v-btn>
+						<v-card v-show='page=="suggestion"||page=="bloodbag"' class='animated slideInUp'>
               <v-card class='pa-4'>
                 <h1>Physical Exam</h1>
                 <h2 v-show='physical==1' style='color:green'><v-icon color='green'>done</v-icon> ผ่าน</h2>
@@ -738,7 +738,7 @@
               </v-card-actions>
             </v-card>
 
-            <v-card v-show='page=="lab"' class='bg__grey'>
+            <v-card v-show='page=="lab"' class='bg__grey animated slideInUp'>
 					    <v-card-title>
 					      <h2>Test Kit</h2>
 					    </v-card-title>
@@ -817,8 +817,8 @@
               </v-card>
 
             </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>Blood Bag Label</v-btn>
-            <v-card v-show='page=="confirm"'>
+            <v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="confirm"'>Blood Bag Label</v-btn>
+            <v-card v-show='page=="confirm"' class="animated slideInUp">
               <v-card>
                 <v-card-title>
                   <span class="headline">เพิ่มถุงเลือด</span>
@@ -1588,5 +1588,17 @@
   }
   .custom_card{
     box-shadow: 0px 0px 0px 0px !important;
+  }
+  .slideInUp {
+    -webkit-animation: slideInUp 0.5s; /* Safari 4+ */
+    -moz-animation:    slideInUp 0.5s; /* Fx 5+ */
+    -o-animation:      slideInUp 0.5s; /* Opera 12+ */
+    animation:         slideInUp 0.5s; /* IE 10+, Fx 29+ */
+  }
+  .zoomIn {
+    -webkit-animation: zoomIn 0.3s; /* Safari 4+ */
+    -moz-animation:    zoomIn 0.3s; /* Fx 5+ */
+    -o-animation:      zoomIn 0.3s; /* Opera 12+ */
+    animation:         zoomIn 0.3s; /* IE 10+, Fx 29+ */
   }
 </style>

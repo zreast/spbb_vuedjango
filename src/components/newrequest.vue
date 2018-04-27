@@ -728,8 +728,8 @@
 								</v-layout>
 							</v-container>
 					  </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="product"||page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
-            <v-card style='margin-bottom: 1em' v-show='page=="product"||page=="bloodbag"' >
+            <v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="product"||page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+            <v-card style='margin-bottom: 1em' v-show='page=="product"||page=="bloodbag"' class='animated slideInUp'>
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap style='border-bottom: 1px solid #f4f4f4'>
@@ -878,8 +878,8 @@
 
               </v-card-actions>
             </v-card>
-						<v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ถุงเลือดที่ต้องการ</v-btn>
-            <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
+						<v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="bloodbag"'>ถุงเลือดที่ต้องการ</v-btn>
+            <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' class=' animated slideInUp'>
               <h2 style='margin:2em 2em 0em 2em'>ภายในหน่วยงาน</h2>
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
