@@ -326,7 +326,7 @@
 											          prepend-icon="event"
 											          @blur="date = parseDate(dateFormatted2)"
 											        ></v-text-field>
-											        <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
+											        <!-- <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
 											          <template slot-scope="{ save, cancel }">
 											            <v-card-actions>
 											              <v-spacer></v-spacer>
@@ -334,7 +334,7 @@
 											              <v-btn flat color="primary" @click="save">OK</v-btn>
 											            </v-card-actions>
 											          </template>
-											        </v-date-picker>
+											        </v-date-picker> -->
 											      </v-menu>
 													</v-flex>
 												</v-layout>

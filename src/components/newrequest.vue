@@ -195,7 +195,7 @@
   						      Add New Pet
   						    </v-btn>
                   <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
-                  <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null'>
+                  <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null' class='animated zoomIn'>
                     <v-card>
                       <v-card-text>
                         <v-layout row wrap>
@@ -249,21 +249,22 @@
 										<v-flex>
 											<v-layout row>
 					              <v-text-field
-					                name="input-1"
+					                name="kg"
 					                label="Weight (kg.)"
 					                textarea
 													rows=3
 													class='pa-2'
+                          v-model="phy_weight"
 					              ></v-text-field>
 												<v-text-field
-					                name="input-1"
+					                name="F"
 					                label="Temp (F)"
 					                textarea
 													rows=3
 													class='pa-2'
 					              ></v-text-field>
 												<v-text-field
-					                name="input-1"
+					                name="bmp"
 					                label="HR (bmp)"
 					                textarea
 													rows=3
@@ -272,21 +273,21 @@
 											</v-layout>
 											<v-layout row>
 					              <v-text-field
-					                name="input-1"
+					                name="tpm"
 					                label="RR (tpm)"
 					                textarea
 													rows=3
 													class='pa-2'
 					              ></v-text-field>
 												<v-text-field
-					                name="input-1"
+					                name="sec"
 					                label="CRT (Sec)"
 					                textarea
 													rows=3
 													class='pa-2'
 					              ></v-text-field>
 												<v-text-field
-					                name="input-1"
+					                name="mmhg"
 					                label="BP (mmHg)"
 					                textarea
 													rows=3
@@ -430,9 +431,10 @@
 					      </v-flex>
 					    </v-layout>
 					  </v-container>
-            <v-btn block class='bg__mdteal' dark v-show='page=="lab"'>Lab Exam</v-btn>
 
-            <v-card v-show='page=="lab"' class='bg__grey'>
+            <v-btn block class='bg__mdteal animated slideInUp' dark v-show='page=="lab"'>Lab Exam</v-btn>
+
+            <v-card v-show='page=="lab"' class='bg__grey animated slideInUp'>
 					    <v-card-title>
 					      <h2>Complete Blood Count (CBC)</h2>
 					    </v-card-title>
@@ -441,7 +443,7 @@
                 <v-flex xs2 class='result_box'>
                 </v-flex>
                 <v-flex xs3 class='result_box'>
-                  <v-text-field box label="HCT" v-model="hct" type="number"></v-text-field>
+                  <v-text-field box label="PCV" v-model="phy_pcv" type='number'></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
@@ -481,7 +483,7 @@
               </v-layout>
             </v-card>
             <br>
-            <v-card v-show='page=="lab"'>
+            <v-card v-show='page=="lab"' class='animated slideInUp'>
 					    <v-card-title>
 					      <h2>Blood Chemistry</h2>
 					      <v-spacer></v-spacer>
@@ -635,8 +637,8 @@
                 </template>
               </v-data-table>
 					  </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="suggestion"||page=="bloodbag"'>เป้าหมายของการให้เลือด</v-btn>
-						<v-card v-show='page=="suggestion"||page=="bloodbag"'>
+            <v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="suggestion"||page=="bloodbag"||page=="product"'>เป้าหมายของการให้เลือด</v-btn>
+						<v-card v-show='page=="suggestion"||page=="bloodbag"||page=="product"' class='animated slideInUp'>
 							<v-container fluid>
         				<v-layout row>
 									<v-flex xs4>
@@ -660,7 +662,7 @@
       					        single-line
       					        hide-details
       					        v-model="t_pcv"
-                        type="number"
+                        value=0
                         style="margin-left:2em"
       					      ></v-text-field>
                       <v-icon style='padding-top:0.5em; cursor: pointer' @click='pcv=false'>cancel</v-icon>
@@ -726,8 +728,8 @@
 								</v-layout>
 							</v-container>
 					  </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
-            <v-card style='margin-bottom: 1em' v-show='page=="bloodbag"' >
+            <v-btn block class='bg__mdteal'  dark v-show='page=="product"||page=="bloodbag"'>ผลิตภัณฑ์เลือดที่ต้องการ</v-btn>
+            <v-card style='margin-bottom: 1em' v-show='page=="product"||page=="bloodbag"' >
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap style='border-bottom: 1px solid #f4f4f4'>
@@ -757,10 +759,15 @@
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100 ml.
+                      {{wb_suggest.Formula}}
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100 ml. (SVR)
+                      {{wb_suggest.ML_Vol}}
+                      <v-chip>
+                        <v-avatar class="yellow darken-1">{{wb_suggest.ML}}</v-avatar>
+                        ความเชื่อมั่น: {{wb_suggest.Confident}}
+                      </v-chip>
+
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
@@ -773,10 +780,14 @@
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100
+                      {{wb_suggest.Formula}}
                     </v-flex>
                     <v-flex xs3 class='pt-4'>
-                      100
+                      {{wb_suggest.ML_Vol}}
+                      <v-chip>
+                        <v-avatar class="yellow darken-1">{{wb_suggest.ML}}</v-avatar>
+                        ความเชื่อมั่น: {{wb_suggest.Confident}}
+                      </v-chip>
                     </v-flex>
                     <v-flex xs12 class='pt-4'>
                       <h2 style='margin:1em 2em 0em 2em; align:left'>Blood Components</h2>
@@ -938,7 +949,7 @@
 
               </v-card-actions>
 
-              <h2 style='margin:2em 2em 0em 2em'>ภายนอกหน่วยงาน</h2>
+              <!-- <h2 style='margin:2em 2em 0em 2em'>ภายนอกหน่วยงาน</h2>
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap v-for='item in out_bloodbags' style='border-bottom: 1px solid #f4f4f4'>
@@ -1008,7 +1019,7 @@
                   </v-layout>
                 </v-container>
 
-              </v-card-actions>
+              </v-card-actions> -->
             </v-card>
 
             <v-card v-show='page=="lab"' class='bg__grey'>
@@ -1069,8 +1080,8 @@
 
 
             </v-card>
-            <v-btn block class='bg__mdteal'  dark v-show='page=="confirm"'>ยืนยันการรับถุงเลือด</v-btn>
-            <v-card v-show='page=="confirm"'>
+            <v-btn block class='bg__mdteal animated slideInUp'  dark v-show='page=="confirm"'>ยืนยันการรับถุงเลือด</v-btn>
+            <v-card v-show='page=="confirm"' class='animated slideInUp'>
               <v-container grid-list-md text-xs-center>
                 <v-layout row wrap style='border: 2px solid #e1e1e1; margin: 2em; border-radius: 10px;'>
                   <v-flex xs2>
@@ -1127,10 +1138,13 @@
             <div class="text-xs-center" v-show='page=="lab"'>
 	           <v-btn color="error" dark large @click='page="suggestion"; model1();'>Next</v-btn>
 		        </div>
-            <div class="text-xs-center" v-show='page=="suggestion"'>
+            <div class="text-xs-center animated slideInUp" v-show='page=="suggestion"'>
+	           <v-btn color="info" dark large @click='page="product"; model2();'>เลือกผลิตภัณฑ์เลือด</v-btn>
+		        </div>
+            <div class="text-xs-center animated slideInUp" v-show='page=="product"'>
 	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();   '>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
-            <div class="text-xs-center" v-show='page=="confirm"'>
+            <div class="text-xs-center animated slideInUp" v-show='page=="confirm"'>
 	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
 		        </div>
           </v-layout>
@@ -1242,10 +1256,10 @@
         pp: false,
         plt: false,
         alb: false,
-        t_pcv: null,
-        t_alb: null,
-        t_plt: null,
-        t_pp: null,
+        t_pcv: '',
+        t_alb: 0,
+        t_plt: 0,
+        t_pp: 0,
         radios1: null,
         radios2: null,
         radios3: null,
@@ -1267,6 +1281,9 @@
         chk_pltc: false,
         chk_cp: false,
         chk_cpp: false,
+        wb_suggest: '',
+        phy_weight: '',
+        phy_pcv: '',
 
       }
     },
@@ -1337,13 +1354,18 @@
         var headers = {
             'Content-Type': 'application/json'
         }
+        console.log(this.phy_pcv)
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/2', {
-          "Weight": 6.4,
-          "PCV_patient": 15,
-          "PCV_target": 30.6
+          "data":
+          {
+            "Weight": Number(this.phy_weight),
+            "PCV_patient": Number(this.phy_pcv),
+            "PCV_target": Number(this.t_pcv)
+          }
         },headers)
         .then(response => {
-          this.recommended_products = response.data
+          this.wb_suggest = response.data
+          console.log(response.data)
         })
         .catch(e => {
           this.errors.push(e)
@@ -1355,7 +1377,10 @@
             'Content-Type': 'application/json'
         }
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/3', {
-          "Disease": "hypoglobulinemia"
+          "Weight": 3.4,
+          "PCV_patient": 10,
+          "PCV_target": 23.6,
+          "model":"LR"
         },headers)
         .then(response => {
           this.recommended_products = response.data
@@ -1794,5 +1819,11 @@
     -moz-animation:    slideInUp 0.5s; /* Fx 5+ */
     -o-animation:      slideInUp 0.5s; /* Opera 12+ */
     animation:         slideInUp 0.5s; /* IE 10+, Fx 29+ */
+  }
+  .zoomIn {
+    -webkit-animation: zoomIn 0.3s; /* Safari 4+ */
+    -moz-animation:    zoomIn 0.3s; /* Fx 5+ */
+    -o-animation:      zoomIn 0.3s; /* Opera 12+ */
+    animation:         zoomIn 0.3s; /* IE 10+, Fx 29+ */
   }
 </style>
