@@ -224,6 +224,7 @@
                             <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
                           </v-flex>
                           <v-flex xs4>
+                            <b>กรุ๊ปเลือด:</b> {{current_pet_detail.petBloodType}}<br>
                             <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
                             <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
                           </v-flex>
@@ -755,7 +756,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml)" v-model="qt_fwb"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4' style='font-size:1.2em'>
@@ -776,7 +777,7 @@
                     </v-flex>
                     <v-flex xs3>
                       <v-card class='custom_card'>
-                        <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
+                        <v-text-field label="ระบุปริมาณ (ml.)" v-model="qt_swb"></v-text-field>
                       </v-card>
                     </v-flex>
                     <v-flex xs3 class='pt-4' style='font-size:1.2em'>
@@ -1288,6 +1289,16 @@
         chk_pltc: false,
         chk_cp: false,
         chk_cpp: false,
+        qt_fwb: null,
+        qt_swb: null,
+        qt_prbc: null,
+        qt_fp: null,
+        qt_ffp: null,
+        qt_fzp: null,
+        qt_pltr: null,
+        qt_pltc: null,
+        qt_cp: null,
+        qt_cpp: null,
         wb_suggest: '',
         phy_weight: '',
         phy_pcv: '',
@@ -1393,11 +1404,11 @@
           this.out_bloodbags = []
           for(var i in this.bloodbags.bloodBags)
           {
-            if(this.bloodbags.bloodBags[i].hospital_id=='1')
+            if(this.bloodbags.bloodBags[i].hospital_id=='1' && this.bloodbags.bloodBags[i].bag_status=='active')
             {
               this.in_bloodbags.push(this.bloodbags.bloodBags[i])
             }
-            else if(this.bloodbags.blood_bags[i].hospital_id!='1')
+            else if(this.bloodbags.blood_bags[i].hospital_id!='1' && this.bloodbags.bloodBags[i].bag_status=='active')
             {
               this.out_bloodbags.push(this.bloodbags.bloodBags[i])
             }
@@ -1414,11 +1425,11 @@
         {
           for(var i in this.recommended_bloodbags)
           {
-            if(this.recommended_bloodbags[i].hospital_id=='1')
+            if(this.recommended_bloodbags[i].hospital_id=='1' && this.recommended_bloodbags[i].bag_status=='active')
             {
               this.in_bloodbags.push(this.recommended_bloodbags[i])
             }
-            else if(this.recommended_bloodbags[i].hospital_id!='1')
+            else if(this.recommended_bloodbags[i].hospital_id!='1' && this.recommended_bloodbags[i].bag_status=='active')
             {
               this.out_bloodbags.push(this.recommended_bloodbags[i])
             }
@@ -1513,54 +1524,122 @@
 
         return today
       },
-      sendRequestDetail (){
-        this.today_date = this.getDate()
-        var headers = {
-            'Content-Type': 'application/json'
-        }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodproductrequestdetail/add', {
-          request_date: this.today_date,
-          bloodtype: this.selected_bloodbags.blood_type,
-          product_type: this.selected_bloodbags.product_type,
-          required_quantity: this.selected_bloodbags.quantity,
-          request_id: this.req_id,
-          request_status: "1",
-        },headers)
-        .then(response => {
-					this.prod_req_id = response.data.product_request_detail_id
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
+      getDateOnly() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
 
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodbagrequestdetail/add', {
-          quantity: this.selected_bloodbags.quantity,
-          method: "test",
-          bag_id: this.selected_bloodbags.bag_id,
-          product_request_detail_id: this.prod_req_id
-        },headers)
-        .then(response => {
-					window.location.href = '/success'
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var mn = today.getMinutes();
+        var ss = today.getSeconds();
+        if(dd<10){
+            dd='0'+dd;
+        }
+        if(mm<10){
+            mm='0'+mm;
+        }
+        if(hh<10){
+            hh='0'+hh;
+        }
+        if(mn<10){
+            mn='0'+mn;
+        }
+        if(ss<10){
+            ss='0'+ss;
+        }
+        var today = yyyy+'-'+mm+'-'+dd;
+
+        return today
       },
-      sendRequest () {
-        this.today_date = this.getDate()
+      changeBloodbag (bag_id,status) {
 				var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/bloodrequesthistory/add', {
-          hospital_id: "1",
-          request_reason: this.post_diagnosis,
-          pet_id: this.current_pet_detail.petID,
-          vet_id: "1",
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/change-status', {
+          "bagStatus": status,
+          "bagID": bag_id
+        },headers)
+        .then(response => {
+          this.route('/success')
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+	    },
+      sendBloodbagRequest (prod_req_id) {
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/product/blood-bag/add', {
+          "quantity": this.selected_bloodbags.quantity,
+          "method": "private",
+          "bagID": this.selected_bloodbags.bag_id,
+          "productRequestDetailID": prod_req_id
+        },headers)
+        .then(response => {
+          this.changeBloodbag(this.selected_bloodbags.bag_id,'reserved')
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+	    },
+      sendProductRequest (req_id) {
+        this.today_date = this.getDateOnly()
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        if(this.chk_fwb==true)
+        {
+          axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/product/add', {
+            "requestDate": this.today_date,
+            "bloodtype": this.current_pet_detail.petBloodType,
+            "requiredQuantity": this.qt_fwb,
+            "requestID": req_id,
+            "productType": "FWB",
+            "requestStatus": "1"
+          },headers)
+          .then(response => {
+            this.prod_req_id = response.data.product_request_id
+            this.sendBloodbagRequest(this.prod_req_id)
+  				})
+  		    .catch(e => {
+  		      this.errors.push(e)
+  		    })
+        }
+        if(this.qt_swb==true)
+        {
+          axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/product/add', {
+            "requestDate": this.today_date,
+            "bloodtype": this.current_pet_detail.petBloodType,
+            "requiredQuantity": this.qt_swb,
+            "requestID": req_id,
+            "productType": "SWB",
+            "requestStatus": "1"
+          },headers)
+          .then(response => {
+            console.log(response.data)
+  				})
+  		    .catch(e => {
+  		      this.errors.push(e)
+  		    })
+        }
+	    },
+      sendRequest () {
+        this.today_date = this.getDateOnly()
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/add', {
+          hospitalID: "1",
+          requestReason: this.post_select_disease,
+          petID: this.current_pet_detail.petID,
+          vetID: "1",
           date: this.today_date
         },headers)
         .then(response => {
           this.req_id = response.data.request_id
-          this.sendRequestDetail()
+          this.sendProductRequest(this.req_id)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
