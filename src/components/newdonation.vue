@@ -185,13 +185,6 @@
                   @change="getPetID()"
                   @keyup.enter="getPetID()"
 					      ></v-text-field>
-								<v-btn
-						      color="grey"
-						      class="white--text"
-						    >
-									<v-icon dark>add</v-icon>
-						      Add New Pet
-						    </v-btn>
                 <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
                 <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null' class='animated zoomIn'>
                   <v-card>

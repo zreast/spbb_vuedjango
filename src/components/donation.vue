@@ -114,7 +114,7 @@
                         label
                         small
                         class="white--text"
-                        color="yellow darken-2"
+                        color="green lighten-1"
                       >Donated</v-chip>
                     </v-card-text>
                   </v-card>

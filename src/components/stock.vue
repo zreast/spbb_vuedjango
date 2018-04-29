@@ -210,25 +210,24 @@
           </div>
         </v-alert>
         <br>
-        <div>
+        <v-card>
+          <v-card-title>
+            ผลิตภัณฑ์เลือดทั้งหมดในธนาคาร
+            <v-spacer></v-spacer>
+            <v-text-field
+              append-icon="search"
+              label="Search"
+              single-line
+              hide-details
+              v-model="search"
+            ></v-text-field>
+          </v-card-title>
           <v-data-table
             :headers="bloodbag_headers"
             :items="bloodbag_items.bloodBags"
             :search="search"
-            :pagination.sync="pagination"
-            hide-actions
             class="elevation-1"
           >
-            <template slot="headerCell" slot-scope="props">
-              <v-tooltip bottom>
-                <span slot="activator">
-                  {{ props.header.text }}
-                </span>
-                <span>
-                  {{ props.header.text }}
-                </span>
-              </v-tooltip>
-            </template>
             <template slot="items" slot-scope="props">
               <td>
                 <v-chip v-show='props.item.bag_status!="active"' color="yellow darken-2" text-color="white">{{ props.item.bag_status }}</v-chip>
@@ -245,11 +244,11 @@
                 <v-icon style='cursor:pointer' @click='deletetoggle=true; del_id=props.item.bag_id; del_qt=props.item.quantity; del_type=props.item.product_type'>delete</v-icon>
               </td>
             </template>
+            <v-alert slot="no-results" :value="true" color="error" icon="warning">
+              Your search for "{{ search }}" found no results.
+            </v-alert>
           </v-data-table>
-          <div class="text-xs-center pt-2">
-            <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-          </div>
-        </div>
+        </v-card>
       </v-container>
     </v-content>
 
@@ -465,16 +464,46 @@
           }
         }
       },
+      getDateOnly() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var mn = today.getMinutes();
+        var ss = today.getSeconds();
+        if(dd<10){
+            dd='0'+dd;
+        }
+        if(mm<10){
+            mm='0'+mm;
+        }
+        if(hh<10){
+            hh='0'+hh;
+        }
+        if(mn<10){
+            mn='0'+mn;
+        }
+        if(ss<10){
+            ss='0'+ss;
+        }
+        var today = yyyy+'-'+mm+'-'+dd;
+
+        return today
+      },
       addBloodBag () {
+        this.today_date = this.getDateOnly()
         var headers = {
             'Content-Type': 'application/json'
         }
+
         //bloodbag-add
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
-          "bagDate": "2018-08-08",
+          "bagDate": this.today_date,
           "donationID": this.bag_add.donationID,
           "type": "value",
-          "expDate": "2018-08-08",
+          "expDate": this.date,
           "bagStatus": "active",
           "bloodType": this.bag_add.dea,
           "productType": this.bag_add.product,
@@ -492,63 +521,6 @@
 		    })
 
       },
-      getDetail () {
-				var headers = {
-            'Content-Type': 'application/json'
-        }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
-          petID : this.selected_request.pet_id
-        },headers)
-        .then(response => {
-					this.current_pet = response.data
-          this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
-          petID : this.selected_request.pet_id
-        },headers)
-        .then(response => {
-					this.current_pet_detail = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
-          ownerID : '1'
-        },headers)
-        .then(response => {
-					this.current_pet_owner = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/specificrequestwithrequestdetail', {
-          "RequestID": this.selected_request.request_id
-        },headers)
-        .then(response => {
-          this.selected_bags = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/getbyrequestid', {
-          requestID : this.selected_request.request_id
-        },headers)
-        .then(response => {
-					this.notes = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
-	    },
     },
   }
 </script>

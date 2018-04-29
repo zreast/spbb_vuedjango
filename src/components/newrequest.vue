@@ -187,13 +187,6 @@
                     @change="getPetID()"
                     @keyup.enter="getPetID()"
   					      ></v-text-field>
-  								<v-btn
-  						      color="grey"
-  						      class="white--text"
-  						    >
-  									<v-icon dark>add</v-icon>
-  						      Add New Pet
-  						    </v-btn>
                   <v-spacer v-show='current_pet_detail.petID==null'></v-spacer>
                   <v-layout justify-center column style="margin-left: 2em" v-show='current_pet_detail.petID!=null' class='animated zoomIn'>
                     <v-card>
@@ -1142,7 +1135,7 @@
             <br>
 
 						<div class="text-xs-center" v-show='page=="profile"'>
-	           <v-btn color="error" dark large @click='page="lab";   '>Next</v-btn>
+	           <v-btn color="error" dark large @click='page="lab"; scrollTop()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="lab"'>
 	           <v-btn color="error" dark large @click='page="suggestion"; model1();'>Next</v-btn>
@@ -1782,6 +1775,9 @@
 
 
 	    },
+      scrollTop(){
+        window.scrollTo(0, 0);
+      },
       getSuggestion (bloodbags) {
         var headers = {
             'Content-Type': 'application/json'

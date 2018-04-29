@@ -117,10 +117,32 @@
                     </v-card-text>
                     <v-card-text class="px-0">
                       <v-chip
+                        v-show="item.status=='Request Submit'"
                         label
                         small
                         class="white--text"
                         color="yellow darken-2"
+                      >{{item.status}}</v-chip>
+                      <v-chip
+                        v-show="item.status=='Crossmatch'"
+                        label
+                        small
+                        class="white--text"
+                        color="pink lighten-3"
+                      >{{item.status}}</v-chip>
+                      <v-chip
+                        v-show="item.status=='Transfusion'"
+                        label
+                        small
+                        class="white--text"
+                        color="deep-purple lighten-3"
+                      >{{item.status}}</v-chip>
+                      <v-chip
+                        v-show="item.status=='Success'"
+                        label
+                        small
+                        class="white--text"
+                        color="green lighten-1"
                       >{{item.status}}</v-chip>
                     </v-card-text>
                   </v-card>
@@ -179,12 +201,12 @@
             </v-container>
             <v-layout row justify-center>
               <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
-                <v-btn color="primary" dark slot="activator" @click='selected_request=item; getDetail()'>Detail</v-btn>
+                <v-btn color="primary" dark slot="activator" @click='selected_request=item; e6Update(); getDetail()'>Detail</v-btn>
                 <v-toolbar dark color="primary">
                   <v-btn icon @click.native="dialog = false" dark>
                     <v-icon>close</v-icon>
                   </v-btn>
-                  <v-toolbar-title>Blood Request:{{selected_request.requestID}}</v-toolbar-title>
+                  <v-toolbar-title>Blood Request: {{selected_request.requestID}}</v-toolbar-title>
                 </v-toolbar>
                 <v-card>
                   <v-card-text>
@@ -288,25 +310,21 @@
                             </v-card>
                           </v-flex>
                         </v-layout>
-                        <v-btn color="primary" @click.native="e6 = 2">ปรับสถานะ - Crossmatch</v-btn>
+                        <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Crossmatch'); e6 = 2">ปรับสถานะเป็น Crossmatch</v-btn>
                       </v-stepper-content>
                       <v-stepper-step step="2" :complete="e6 > 2">Crossmatch</v-stepper-step>
                       <v-stepper-content step="2">
                         <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-                        <v-btn color="primary" @click.native="e6 = 3">Continue</v-btn>
-                        <v-btn flat>Cancel</v-btn>
+                        <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Transfusion'); e6 = 3">ปรับสถานะเป็น Transfusion</v-btn>
                       </v-stepper-content>
                       <v-stepper-step step="3" :complete="e6 > 3">Transfusion</v-stepper-step>
                       <v-stepper-content step="3">
                         <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-                        <v-btn color="primary" @click.native="e6 = 4">Continue</v-btn>
-                        <v-btn flat>Cancel</v-btn>
+                        <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Success'); e6 = 4">ปรับสถานะเป็น Success</v-btn>
                       </v-stepper-content>
-                      <v-stepper-step step="4">เสร็จสิ้น</v-stepper-step>
+                      <v-stepper-step step="4">Success</v-stepper-step>
                       <v-stepper-content step="4">
                         <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-                        <v-btn color="primary" @click.native="e6 = 1">Continue</v-btn>
-                        <v-btn flat>Cancel</v-btn>
                       </v-stepper-content>
                     </v-stepper>
                     <v-btn block class='bg__mdteal'  dark >ถุงเลือดที่ใช้</v-btn>
@@ -488,7 +506,7 @@
         current_pet_owner: [],
         current_request: null,
         current_product: null,
-        current_bloodbags: null,
+        current_bloodbags: [],
         selected_request: [],
         selected_bags: [],
         notes: [],
@@ -584,6 +602,34 @@
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
+      },
+      requestChange (req_id,state)
+      {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/change-status', {
+          "requestID":req_id,
+          "status":state
+        },headers)
+        .then(response => {
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+      },
+      e6Update()
+      {
+        if(this.selected_request.status=='Request Submit')
+          this.e6=1
+        if(this.selected_request.status=='Crossmatch')
+          this.e6=2
+        if(this.selected_request.status=='Transfusion')
+        {
+          this.e6=3
+        }
+        if(this.selected_request.status=='Success')
+          this.e6=4
       },
       getDetail () {
 				var headers = {
