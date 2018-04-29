@@ -256,6 +256,7 @@
 													rows=3
 													class='pa-2'
                           v-model="phy_weight"
+                          required
 					              ></v-text-field>
 												<v-text-field
 					                name="F"
@@ -444,7 +445,7 @@
                 <v-flex xs2 class='result_box'>
                 </v-flex>
                 <v-flex xs3 class='result_box'>
-                  <v-text-field box label="PCV" v-model="phy_pcv" type='number'></v-text-field>
+                  <v-text-field box label="PCV" v-model="phy_pcv" type='number' required></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
@@ -1265,9 +1266,9 @@
         plt: false,
         alb: false,
         t_pcv: '',
-        t_alb: 0,
-        t_plt: 0,
-        t_pp: 0,
+        t_alb: '',
+        t_plt: '',
+        t_pp: '',
         radios1: null,
         radios2: null,
         radios3: null,
@@ -1383,7 +1384,6 @@
         },headers)
         .then(response => {
           this.wb_suggest = response.data
-          console.log(response.data)
         })
         .catch(e => {
           this.errors.push(e)
@@ -1450,6 +1450,7 @@
             this.recommended_bloodbags[bb_index].quantity = response.data.quantity
             this.recommended_bloodbags[bb_index].blood_type = response.data.blood_type
             this.recommended_bloodbags[bb_index].product_type = response.data.product_type
+            this.recommended_bloodbags[bb_index].bag_status = response.data.bag_status
             this.bb_detail_recur(bb_index+1)
           })
           .catch(e => {
@@ -1520,7 +1521,7 @@
         if(ss<10){
             ss='0'+ss;
         }
-        var today = yyyy+'-'+mm+'-'+dd+' '+hh+':'+mm+':'+ss;
+        var today = yyyy+'-'+mm+'-'+dd+' '+hh+':'+mn+':'+ss;
 
         return today
       },
@@ -1626,7 +1627,7 @@
         }
 	    },
       sendRequest () {
-        this.today_date = this.getDateOnly()
+        this.today_date = this.getDate()
 				var headers = {
             'Content-Type': 'application/json'
         }
@@ -1635,7 +1636,8 @@
           requestReason: this.post_select_disease,
           petID: this.current_pet_detail.petID,
           vetID: "1",
-          date: this.today_date
+          date: this.today_date,
+          status:"Request Submit"
         },headers)
         .then(response => {
           this.req_id = response.data.request_id

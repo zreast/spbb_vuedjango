@@ -106,7 +106,7 @@
         </v-layout>
         <br>
         <br>
-        <v-card v-for='item in requests.requests' style='margin-bottom: 1em'>
+        <v-card v-for='item in requests.requests.slice().reverse()' style='margin-bottom: 1em'>
           <v-card-actions>
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
@@ -121,7 +121,7 @@
                         small
                         class="white--text"
                         color="yellow darken-2"
-                      >Request Submit</v-chip>
+                      >{{item.status}}</v-chip>
                     </v-card-text>
                   </v-card>
                 </v-flex>
@@ -168,10 +168,10 @@
                 <v-flex xs2>
                   <v-card class='custom_card'>
                     <v-card-text class="px-0 text_grey">
-                      Use Date
+                      Symptom
                     </v-card-text>
                     <v-card-text class="px-0">
-                      {{item.date}}
+                      {{item.requestReason}}
                     </v-card-text>
                   </v-card>
                 </v-flex>

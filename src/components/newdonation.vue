@@ -251,6 +251,7 @@
 					                textarea
 													rows=3
 													class='pa-2'
+                          required
 					              ></v-text-field>
 												<v-text-field
 					                name="input-1"
@@ -377,7 +378,7 @@
                 <v-flex xs2 class='result_box'>
                 </v-flex>
                 <v-flex xs3 class='result_box'>
-                  <v-text-field box label="HCT" v-model="hct" type="number"></v-text-field>
+                  <v-text-field box label="PCV" v-model="bag_add.pcv" type="number" required></v-text-field>
                 </v-flex>
                 <v-flex xs2 class='result_box'>
                 </v-flex>
