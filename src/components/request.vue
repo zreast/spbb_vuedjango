@@ -255,7 +255,7 @@
                     <v-btn block class='bg__mdteal'  dark >สถานะ</v-btn>
                     <v-stepper v-model="e6" vertical>
                       <v-stepper-step step="1" :complete="e6 > 1">
-                        Request Submit
+                        <b>Request Submit</b>
                       </v-stepper-step>
                       <v-stepper-content step="1">
                         <v-layout row wrap>
@@ -312,19 +312,28 @@
                         </v-layout>
                         <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Crossmatch'); e6 = 2">ปรับสถานะเป็น Crossmatch</v-btn>
                       </v-stepper-content>
-                      <v-stepper-step step="2" :complete="e6 > 2">Crossmatch</v-stepper-step>
+                      <v-stepper-step step="2" :complete="e6 > 2"><b>Crossmatch</b></v-stepper-step>
                       <v-stepper-content step="2">
-                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                        <v-card>
+                          อยู่ในระหว่างนำผลิตภัณฑ์ไป Crossmatch
+                        </v-card>
                         <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Transfusion'); e6 = 3">ปรับสถานะเป็น Transfusion</v-btn>
                       </v-stepper-content>
-                      <v-stepper-step step="3" :complete="e6 > 3">Transfusion</v-stepper-step>
+                      <v-stepper-step step="3" :complete="e6 > 3"><b>Transfusion</b></v-stepper-step>
                       <v-stepper-content step="3">
-                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                          อยู่ในระหว่างการถ่ายเลือด
+                          <br><br>
+                          - 30 นาทีแรก ควรให้ WB อย่างช้าๆ (0.25 ml/kg) ร่วมกับสังเกตุอาการอย่างใกล้ชิด<br>
+                          - หากมั่นใจว่าไม่มีอาการของ tranfusion reaction เกิดขึ้น จึงค่อยเพิ่มความเร็วของการให้ WB ขึ้น แต่ไม่เกิน 10-20 ml/kg/hr<br>
+                          - ควรให้ WB ที่เหลืออยู่ให้หมดในเวลา ไม่เกิน 4 ชั่วโมง เพื่อป้องกัน functional loss ของส่วนประกอบของเลือด ณ อุณหภูมิห้อง<br>
+                          - ถ้าคำนวณแล้วเกิน 4 ชั่วโมง อาจต้องแบ่งเลือดเป็นหลายส่วน แล้วแบ่งหลายวัน เพื่อป้องกันอันตรายจากภาวะ hypervolemia<br><br>
                         <v-btn color="primary" @click.native="requestChange(selected_request.requestID,'Success'); e6 = 4">ปรับสถานะเป็น Success</v-btn>
                       </v-stepper-content>
-                      <v-stepper-step step="4">Success</v-stepper-step>
+                      <v-stepper-step step="4"><b>Success</b></v-stepper-step>
                       <v-stepper-content step="4">
-                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                        <v-card>
+                          การถ่ายเลือดเสร็จสมบูรณ์
+                        </v-card>
                       </v-stepper-content>
                     </v-stepper>
                     <v-btn block class='bg__mdteal'  dark >ถุงเลือดที่ใช้</v-btn>
@@ -392,10 +401,16 @@
                           <v-flex xs3>
                             <v-subheader>บันทึกผลโดยย่อ</v-subheader>
                           </v-flex>
-                          <v-flex xs6>
+                          <v-flex xs4>
                             <v-text-field
-                              v-model="comment"
+                              v-model="note_comment"
                               label="ความคิดเห็นจากสัตวแพทย์"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-text-field
+                              v-model="note_pcv"
+                              label="PCV"
                             ></v-text-field>
                           </v-flex>
                           <v-flex xs3>
@@ -408,14 +423,14 @@
                         </v-layout>
                         <v-divider></v-divider>
                         <br>
-                        <v-layout row wrap v-for='item in notes.diagnostic_result' style='border-bottom: 1px solid #f4f4f4'>
+                        <v-layout row wrap v-for='item in notes.bloodRequestResult.slice().reverse()' style='border-bottom: 1px solid #f4f4f4'>
                           <v-flex xs1>
                             <v-card class='custom_card2'>
                               <v-card-text class="px-0 text_grey">
                                 เลขที่บันทึก
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.diagnostic_id}}
+                                {{item.blood_request_result_id}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -425,17 +440,17 @@
                                 สัตวแพทย์ที่ตรวจ
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.doctor_firstname}}
+                                {{item.doctorFirstname}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
                           <v-flex xs3>
                             <v-card class='custom_card2'>
                               <v-card-text class="px-0 text_grey">
-                                โรงพยาบาล
+                                ค่า PCV
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.hospital_name}}
+                                {{item.resultBefore}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -445,8 +460,7 @@
                                 ความคิดเห็น
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.others
-                                }}
+                                {{item.note}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -499,6 +513,8 @@
       return {
         e6: 1,
         requests: [],
+        note_comment: '',
+        note_pcv: '',
         postBody: [],
         errors: [],
         current_pet: [],
@@ -571,15 +587,16 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/add', {
+        console.log(this.note_pcv)
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/result/add', {
+          "requestID": this.selected_request.requestID,
+          "note": this.note_comment,
           "vetID": "1",
-          "hospitalID": "1",
-          "PCV": "11",
-          "others": this.comment,
-          "resultID": id
+          "resultName": "PCV",
+          "resultBefore": this.note_pcv
         },headers)
         .then(response => {
-					window.location.reload()
+					this.getDetail ()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -642,6 +659,16 @@
           this.current_pet = response.data
           this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
           this.getOwner()
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/result/detail', {
+          "requestID" : this.selected_request.requestID
+        },headers)
+        .then(response => {
+          this.notes = response.data
 				})
 		    .catch(e => {
 		      this.errors.push(e)

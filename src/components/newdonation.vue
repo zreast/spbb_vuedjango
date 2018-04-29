@@ -297,39 +297,8 @@
 													<v-flex xs6>
 														<v-radio-group :mandatory="false">
 								              <v-radio label="ไม่เคย" value="radio-1"></v-radio>
-								              <v-radio label="เคย เมื่อ" value="radio-2"></v-radio>
+								              <v-radio label="เคย" value="radio-2"></v-radio>
 								            </v-radio-group>
-													</v-flex>
-													<v-flex xs6>
-														<br><br>
-														<v-menu
-											        lazy
-											        :close-on-content-click="false"
-											        v-model="menu2"
-											        transition="scale-transition"
-											        offset-y
-											        full-width
-											        :nudge-right="40"
-											        max-width="290px"
-											        min-width="290px"
-											      >
-											        <v-text-field
-											          slot="activator"
-											          label="Date in M/D/Y"
-											          v-model="dateFormatted2"
-											          prepend-icon="event"
-											          @blur="date = parseDate(dateFormatted2)"
-											        ></v-text-field>
-											        <!-- <v-date-picker v-model="date" @input="dateFormatted2 = formatDate($event)" no-title scrollable actions>
-											          <template slot-scope="{ save, cancel }">
-											            <v-card-actions>
-											              <v-spacer></v-spacer>
-											              <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-											              <v-btn flat color="primary" @click="save">OK</v-btn>
-											            </v-card-actions>
-											          </template>
-											        </v-date-picker> -->
-											      </v-menu>
 													</v-flex>
 												</v-layout>
 
