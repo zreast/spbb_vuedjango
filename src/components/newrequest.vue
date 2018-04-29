@@ -898,10 +898,10 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0 text_grey">
-                          เลขที่ถุงเลือด
+                          กรุ๊ปเลือด
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.bag_id}}
+                          {{item.blood_type}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -949,7 +949,7 @@
 
               </v-card-actions>
 
-              <!-- <h2 style='margin:2em 2em 0em 2em'>ภายนอกหน่วยงาน</h2>
+              <h2 style='margin:2em 2em 0em 2em'>ภายนอกหน่วยงาน</h2>
               <v-card-actions>
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap v-for='item in out_bloodbags' style='border-bottom: 1px solid #f4f4f4'>
@@ -970,10 +970,10 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0 text_grey">
-                          เลขที่ถุงเลือด
+                          กรุ๊ปเลือด
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.bag_id}}
+                          {{item.blood_type}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -1011,7 +1011,7 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0">
-                          <v-btn @click='selected_bloodbags=item; page="confirm"'>Contact</v-btn>
+                          (ติดต่อทางโรงพยาบาล)
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -1019,7 +1019,7 @@
                   </v-layout>
                 </v-container>
 
-              </v-card-actions> -->
+              </v-card-actions>
             </v-card>
 
             <v-card v-show='page=="lab"' class='bg__grey'>
@@ -1142,7 +1142,7 @@
 	           <v-btn color="info" dark large @click='page="product"; model2();'>เลือกผลิตภัณฑ์เลือด</v-btn>
 		        </div>
             <div class="text-xs-center animated slideInUp" v-show='page=="product"'>
-	           <v-btn color="info" dark large @click='page="bloodbag"; getBloodBag();   '>เลือกถุงเลือดที่ต้องการ</v-btn>
+	           <v-btn color="info" dark large @click='page="bloodbag"; model3(); getBloodBag();   '>เลือกถุงเลือดที่ต้องการ</v-btn>
 		        </div>
             <div class="text-xs-center animated slideInUp" v-show='page=="confirm"'>
 	           <v-btn color="error" dark large @click='sendRequest()'>ยืนยันการรับถุงเลือด</v-btn>
@@ -1284,6 +1284,7 @@
         wb_suggest: '',
         phy_weight: '',
         phy_pcv: '',
+        recommended_bloodbags: null,
 
       }
     },
@@ -1372,18 +1373,90 @@
         })
 
       },
+      getBloodBag () {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        //getAllBag
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/get-all', {
+
+        },headers)
+        .then(response => {
+          this.bloodbags = response.data
+          this.in_bloodbags = []
+          this.out_bloodbags = []
+          for(var i in this.bloodbags.bloodBags)
+          {
+            if(this.bloodbags.bloodBags[i].hospital_id=='1')
+            {
+              this.in_bloodbags.push(this.bloodbags.bloodBags[i])
+            }
+            else if(this.bloodbags.blood_bags[i].hospital_id!='1')
+            {
+              this.out_bloodbags.push(this.bloodbags.bloodBags[i])
+            }
+          }
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+
+
+      },
+      bb_detail_recur (bb_index) {
+        if(bb_index==this.recommended_bloodbags.length)
+        {
+          for(var i in this.recommended_bloodbags)
+          {
+            if(this.recommended_bloodbags[i].hospital_id=='1')
+            {
+              this.in_bloodbags.push(this.bloodbags.bloodBags[i])
+            }
+            else if(this.recommended_bloodbags[i].hospital_id!='1')
+            {
+              this.out_bloodbags.push(this.bloodbags.bloodBags[i])
+            }
+            console.log(this.recommended_bloodbags[i])
+          }
+          return
+        }
+        else {
+          var headers = {
+              'Content-Type': 'application/json'
+          }
+          axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/detail',{
+            "bloodbagID": this.recommended_bloodbags[bb_index].bag_id
+          },headers)
+          .then(response => {
+            this.recommended_bloodbags[bb_index].hospital_id = response.data.hospital_id
+            this.recommended_bloodbags[bb_index].pcv = response.data.pcv
+            this.recommended_bloodbags[bb_index].ExpDate = response.data.ExpDate
+            this.recommended_bloodbags[bb_index].quantity = response.data.quantity
+            this.recommended_bloodbags[bb_index].blood_type = response.data.blood_type
+            this.bb_detail_recur(bb_index+1)
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+        }
+      },
       model3 () {
         var headers = {
             'Content-Type': 'application/json'
         }
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/3', {
-          "Weight": 3.4,
-          "PCV_patient": 10,
-          "PCV_target": 23.6,
-          "model":"LR"
+          "data" :{
+            "Weight": 3.4,
+            "PCV_patient": 10,
+            "PCV_target": 23.6,
+            "model":"LR"
+          }
         },headers)
         .then(response => {
-          this.recommended_products = response.data
+          this.recommended_bloodbags = response.data.result
+          this.in_bloodbags = []
+          this.out_bloodbags = []
+          this.bb_detail_recur(0)
         })
         .catch(e => {
           this.errors.push(e)
@@ -1667,37 +1740,6 @@
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
-	    },
-      getBloodBag () {
-        var headers = {
-            'Content-Type': 'application/json'
-        }
-        //getAllBag
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/get-all', {
-
-        },headers)
-        .then(response => {
-					this.bloodbags = response.data
-          this.in_bloodbags = []
-          this.out_bloodbags = []
-          for(var i in this.bloodbags.bloodBags)
-          {
-            if(this.bloodbags.bloodBags[i].hospital_id=='1')
-            {
-              this.in_bloodbags.push(this.bloodbags.bloodBags[i])
-            }
-            else if(this.bloodbags.blood_bags[i].hospital_id!='1')
-            {
-              this.out_bloodbags.push(this.bloodbags.bloodBags[i])
-            }
-          }
-          this.getSuggestion(this.in_bloodbags)
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
 	    },
       route (page) {
         window.location.href = page
