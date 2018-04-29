@@ -115,7 +115,7 @@
 							  </div>
 							</a>
 						</div>
-            <div class="progress" v-if='page=="suggestion"||page=="bloodbag"'>
+            <div class="progress" v-if='page=="suggestion"||page=="bloodbag"||page=="product"'>
 							<a @click='page="profile";   '>
 							  <div class="circle done">
 							    <span class="label"></span>
@@ -758,14 +758,14 @@
                         <v-text-field label="ระบุปริมาณ (ml)"></v-text-field>
                       </v-card>
                     </v-flex>
-                    <v-flex xs3 class='pt-4'>
-                      {{wb_suggest.Formula}}
+                    <v-flex xs3 class='pt-4' style='font-size:1.2em'>
+                      <b>{{Math.round(wb_suggest.Formula * 100) / 100}}</b>
                     </v-flex>
-                    <v-flex xs3 class='pt-4'>
-                      {{wb_suggest.ML_Vol}}
+                    <v-flex xs3 class='pt-4' style='font-size:1.2em'>
+                      <b>{{Math.round(wb_suggest.ML_Vol * 100) / 100}}</b>
                       <v-chip>
                         <v-avatar class="yellow darken-1">{{wb_suggest.ML}}</v-avatar>
-                        ความเชื่อมั่น: {{wb_suggest.Confident}}
+                        ความเชื่อมั่น: {{Math.round(wb_suggest.Confident * 100) / 100}}
                       </v-chip>
 
                     </v-flex>
@@ -779,15 +779,16 @@
                         <v-text-field label="ระบุปริมาณ (ml.)"></v-text-field>
                       </v-card>
                     </v-flex>
-                    <v-flex xs3 class='pt-4'>
-                      {{wb_suggest.Formula}}
+                    <v-flex xs3 class='pt-4' style='font-size:1.2em'>
+                      <b>{{Math.round(wb_suggest.Formula * 100) / 100}}</b>
                     </v-flex>
-                    <v-flex xs3 class='pt-4'>
-                      {{wb_suggest.ML_Vol}}
+                    <v-flex xs3 class='pt-4' style='font-size:1.2em'>
+                      <b>{{Math.round(wb_suggest.ML_Vol * 100) / 100}}</b>
                       <v-chip>
                         <v-avatar class="yellow darken-1">{{wb_suggest.ML}}</v-avatar>
-                        ความเชื่อมั่น: {{wb_suggest.Confident}}
+                        ความเชื่อมั่น: {{Math.round(wb_suggest.Confident * 100) / 100}}
                       </v-chip>
+
                     </v-flex>
                     <v-flex xs12 class='pt-4'>
                       <h2 style='margin:1em 2em 0em 2em; align:left'>Blood Components</h2>
@@ -1010,6 +1011,9 @@
 
                     <v-flex xs2>
                       <v-card class='custom_card'>
+                        <v-card-text class="px-0">
+
+                        </v-card-text>
                         <v-card-text class="px-0">
                           (ติดต่อทางโรงพยาบาล)
                         </v-card-text>
