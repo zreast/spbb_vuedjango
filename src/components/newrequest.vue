@@ -891,8 +891,8 @@
                           <img src='../assets/request/bloodbag.svg' style='width:40px'>
                           </img>
                         </v-card-text>
-                        <v-card-text class="px-0">
-                          {{item.quantity}}
+                        <v-card-text class="px-0 pink--text darken-6">
+                          {{item.product_type}} <b>{{item.quantity}}</b> ml.
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -909,20 +909,20 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0 text_grey">
-                          Type
+                          PCV
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.product_type}}
+                          {{item.pcv}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs2>
                       <v-card class='custom_card'>
-                        <v-card-text class="px-0 text_grey">
-                          PCV
+                        <v-card-text class="px-0 teal--text">
+                          ปริมาณจากสูตร: <b>{{Math.round(item.Vol_formular * 100) / 100}}</b>
                         </v-card-text>
-                        <v-card-text class="px-0">
-                          {{item.pcv}}
+                        <v-card-text class="px-0 teal--text">
+                          ปริมาณทำนาย: <b>{{Math.round(item.Ml_Vol * 100) / 100}}</b>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -939,6 +939,9 @@
 
                     <v-flex xs2>
                       <v-card class='custom_card'>
+                        <v-card-text class="px-0 orange--text darken-4">
+                          ความเชื่อมั่น: {{Math.round(item.confident * 100) / 100}}
+                        </v-card-text>
                         <v-card-text class="px-0">
                           <v-btn @click='selected_bloodbags=item; page="confirm"'>เลือกถุงเลือด</v-btn>
                         </v-card-text>
@@ -963,8 +966,8 @@
                           <img src='../assets/request/bloodbag.svg' style='width:40px'>
                           </img>
                         </v-card-text>
-                        <v-card-text class="px-0">
-                          {{item.quantity}}
+                        <v-card-text class="px-0 pink--text darken-6">
+                          {{item.product_type}} <b>{{item.quantity}}</b> ml.
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -981,20 +984,20 @@
                     <v-flex xs2>
                       <v-card class='custom_card'>
                         <v-card-text class="px-0 text_grey">
-                          Type
+                          PCV
                         </v-card-text>
                         <v-card-text class="px-0">
-                          {{item.product_type}}
+                          {{item.pcv}}
                         </v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs2>
                       <v-card class='custom_card'>
-                        <v-card-text class="px-0 text_grey">
-                          PCV
+                        <v-card-text class="px-0 teal--text">
+                          ปริมาณจากสูตร: <b>{{Math.round(item.Vol_formular * 100) / 100}}</b>
                         </v-card-text>
-                        <v-card-text class="px-0">
-                          {{item.pcv}}
+                        <v-card-text class="px-0 teal--text">
+                          ปริมาณทำนาย: <b>{{Math.round(item.Ml_Vol * 100) / 100}}</b>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -1359,7 +1362,6 @@
         var headers = {
             'Content-Type': 'application/json'
         }
-        console.log(this.phy_pcv)
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/2', {
           "data":
           {
@@ -1414,13 +1416,12 @@
           {
             if(this.recommended_bloodbags[i].hospital_id=='1')
             {
-              this.in_bloodbags.push(this.bloodbags.bloodBags[i])
+              this.in_bloodbags.push(this.recommended_bloodbags[i])
             }
             else if(this.recommended_bloodbags[i].hospital_id!='1')
             {
-              this.out_bloodbags.push(this.bloodbags.bloodBags[i])
+              this.out_bloodbags.push(this.recommended_bloodbags[i])
             }
-            console.log(this.recommended_bloodbags[i])
           }
           return
         }
@@ -1437,6 +1438,7 @@
             this.recommended_bloodbags[bb_index].ExpDate = response.data.ExpDate
             this.recommended_bloodbags[bb_index].quantity = response.data.quantity
             this.recommended_bloodbags[bb_index].blood_type = response.data.blood_type
+            this.recommended_bloodbags[bb_index].product_type = response.data.product_type
             this.bb_detail_recur(bb_index+1)
           })
           .catch(e => {
@@ -1450,10 +1452,10 @@
         }
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/model/version2/3', {
           "data" :{
-            "Weight": 3.4,
-            "PCV_patient": 10,
-            "PCV_target": 23.6,
-            "model":"LR"
+            "Weight": Number(this.phy_weight),
+            "PCV_patient": Number(this.phy_pcv),
+            "PCV_target": Number(this.t_pcv),
+            "model":this.wb_suggest.ML
           }
         },headers)
         .then(response => {
