@@ -230,49 +230,137 @@
                         </v-card-text>
                       </v-card>
                     </v-layout>
+                    <v-btn block class='bg__mdteal'  dark >สถานะ</v-btn>
+                    <v-stepper v-model="e6" vertical>
+                      <v-stepper-step step="1" :complete="e6 > 1">
+                        Request Submit
+                      </v-stepper-step>
+                      <v-stepper-content step="1">
+                        <v-layout row wrap>
+                          <v-flex xs2>
+                            <v-card class='custom_card' style='padding-left:2em'>
+                              <v-card-text class="px-0 text_grey">
+                                Request Date
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.date}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-card class='custom_card' style='padding-left:2em'>
+                              <v-card-text class="px-0 text_grey">
+                                Recipient
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.petName}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-card class='custom_card' style='padding-left:2em'>
+                              <v-card-text class="px-0 text_grey">
+                                Owner
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.ownerName}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-card class='custom_card' style='padding-left:2em'>
+                              <v-card-text class="px-0 text_grey">
+                                From
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.doctorFirstname}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-card class='custom_card' style='padding-left:2em'>
+                              <v-card-text class="px-0 text_grey">
+                                Symptom
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{item.requestReason}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
+                        <v-btn color="primary" @click.native="e6 = 2">ปรับสถานะ - Crossmatch</v-btn>
+                      </v-stepper-content>
+                      <v-stepper-step step="2" :complete="e6 > 2">Crossmatch</v-stepper-step>
+                      <v-stepper-content step="2">
+                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                        <v-btn color="primary" @click.native="e6 = 3">Continue</v-btn>
+                        <v-btn flat>Cancel</v-btn>
+                      </v-stepper-content>
+                      <v-stepper-step step="3" :complete="e6 > 3">Transfusion</v-stepper-step>
+                      <v-stepper-content step="3">
+                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                        <v-btn color="primary" @click.native="e6 = 4">Continue</v-btn>
+                        <v-btn flat>Cancel</v-btn>
+                      </v-stepper-content>
+                      <v-stepper-step step="4">เสร็จสิ้น</v-stepper-step>
+                      <v-stepper-content step="4">
+                        <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                        <v-btn color="primary" @click.native="e6 = 1">Continue</v-btn>
+                        <v-btn flat>Cancel</v-btn>
+                      </v-stepper-content>
+                    </v-stepper>
                     <v-btn block class='bg__mdteal'  dark >ถุงเลือดที่ใช้</v-btn>
                     <v-card>
                       <v-container grid-list-md text-xs-center>
-                        <v-layout row wrap v-for='item in selected_bags.detail' style='border-bottom: 1px solid #f4f4f4'>
-                          <v-flex xs3>
+                        <v-layout row wrap style='border-bottom: 1px solid #f4f4f4'>
+                          <v-flex xs2>
                             <v-card class='custom_card'>
                               <v-card-text class="px-0 text_grey">
                                 <img src='../assets/request/bloodbag.svg' style='width:40px'>
                                 </img>
                               </v-card-text>
-                              <v-card-text class="px-0">
-                                {{item.required_quantity}}
+                              <v-card-text class="px-0 pink--text darken-6">
+                                {{current_bloodbags.product_type}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
-                          <v-flex xs3>
+                          <v-flex xs2>
                             <v-card class='custom_card'>
                               <v-card-text class="px-0 text_grey">
-                                เลขที่การขอใช้เลือด
+                                กรุ๊ปเลือด
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.product_request_id}}
+                                {{current_bloodbags.blood_type}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
-                          <v-flex xs3>
+                          <v-flex xs2>
                             <v-card class='custom_card'>
                               <v-card-text class="px-0 text_grey">
-                                Type
+                                ปริมาณ
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.product_type}}
+                                <b>{{current_bloodbags.quantity}}</b> ml.
                               </v-card-text>
                             </v-card>
                           </v-flex>
-                          <v-flex xs3>
+                          <v-flex xs2>
                             <v-card class='custom_card'>
                               <v-card-text class="px-0 text_grey">
-                                สถานะ
+                                หมายเลขถุงเลือด
                               </v-card-text>
                               <v-card-text class="px-0">
-                                {{item.request_status
-                                }}
+                                {{current_bloodbags.bag_id}}
+                              </v-card-text>
+                            </v-card>
+                          </v-flex>
+                          <v-flex xs2>
+                            <v-card class='custom_card'>
+                              <v-card-text class="px-0 text_grey">
+                                วันหมดอายุ
+                              </v-card-text>
+                              <v-card-text class="px-0">
+                                {{current_bloodbags.ExpDate}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -391,12 +479,16 @@
     },
     data () {
       return {
+        e6: 1,
         requests: [],
         postBody: [],
         errors: [],
         current_pet: [],
         current_pet_detail: [],
         current_pet_owner: [],
+        current_request: null,
+        current_product: null,
+        current_bloodbags: null,
         selected_request: [],
         selected_bags: [],
         notes: [],
@@ -509,11 +601,29 @@
 		      this.errors.push(e)
 		    })
 
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/owner/detail', {
-          ownerID : '1'
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/product/request-with-product-request-detail', {
+          "RequestID" : this.selected_request.requestID
         },headers)
         .then(response => {
-					this.current_pet_owner = response.data
+					this.current_request = response.data
+          axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/request/product/blood-bag/product-request-with-bloodbag-detail', {
+            "productRequestID" : this.current_request.detail[0].productRequestID
+          },headers)
+          .then(response => {
+  					this.current_product = response.data
+            axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/detail', {
+              "bloodbagID" : this.current_product.detail[0].bag_id
+            },headers)
+            .then(response => {
+    					this.current_bloodbags = response.data
+    				})
+    		    .catch(e => {
+    		      this.errors.push(e)
+    		    })
+  				})
+  		    .catch(e => {
+  		      this.errors.push(e)
+  		    })
 				})
 		    .catch(e => {
 		      this.errors.push(e)
