@@ -184,7 +184,7 @@
                   <v-btn icon @click.native="dialog = false" dark>
                     <v-icon>close</v-icon>
                   </v-btn>
-                  <v-toolbar-title>Blood Request:{{selected_request.request_id}}</v-toolbar-title>
+                  <v-toolbar-title>Blood Request:{{selected_request.requestID}}</v-toolbar-title>
                 </v-toolbar>
                 <v-card>
                   <v-card-text>
@@ -211,17 +211,18 @@
                                 small
                                 class="ml-0"
                                 v-if="current_pet.petName"
-                              >{{current_pet_detail.patient_species}}</v-chip>
+                              >{{current_pet.patientSpecies}}</v-chip>
                               <br>
                               <h2 v-html="current_pet.petName"/>
                               <span class="grey--text" v-if="current_pet.petID">&nbsp;(ID: {{current_pet.petID}})</span>
                             </v-flex>
                             <v-flex xs4>
-                              <b>เพศ:</b> {{current_pet_detail.patient_gender}}<br>
-                              <b>วันเกิด:</b> {{current_pet_detail.patient_birth_dt}}<br>
+                              <b>กรุ๊ปเลือด:</b> {{current_pet.petBloodType}}<br>
+                              <b>เพศ:</b> {{current_pet.patientGender}}<br>
+                              <b>วันเกิด:</b> {{current_pet.patientBirthDt}}<br>
                             </v-flex>
                             <v-flex xs4>
-                              <b>เจ้าของ:</b> {{current_pet_owner.owner_name}}<br>
+                              <b>เจ้าของ:</b> {{current_pet_owner.ownerName}}<br>
                               <b>เบอร์ติดต่อ:</b> {{current_pet_owner.TelNumer}}<br>
                             </v-flex>
                           </v-layout>
@@ -475,32 +476,40 @@
 		    })
 
       },
+      getOwner ()
+      {
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+
+        //owner-detail
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/owner/detail', {
+          ownerID : this.current_pet.ownerID
+        },headers)
+        .then(response => {
+					this.current_pet_owner = response.data
+				})
+		    .catch(e => {
+		      this.errors.push(e)
+		    })
+      },
       getDetail () {
 				var headers = {
             'Content-Type': 'application/json'
         }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results', {
-          petID : this.selected_request.pet_id
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/pet/datail', {
+          petID : this.selected_request.petID
         },headers)
         .then(response => {
-					this.current_pet = response.data
+          this.current_pet = response.data
           this.current_pet.img = 'https://www.what-dog.net/Images/faces2/scroll007.jpg'
+          this.getOwner()
 				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
 
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/pets/detail', {
-          petID : this.selected_request.pet_id
-        },headers)
-        .then(response => {
-					this.current_pet_detail = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/owners/detail', {
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/owner/detail', {
           ownerID : '1'
         },headers)
         .then(response => {
@@ -509,28 +518,6 @@
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/request/specificrequestwithrequestdetail', {
-          "RequestID": this.selected_request.request_id
-        },headers)
-        .then(response => {
-          this.selected_bags = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/diagnosticresult/getbyrequestid', {
-          requestID : this.selected_request.request_id
-        },headers)
-        .then(response => {
-					this.notes = response.data
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
 	    },
     },
   }

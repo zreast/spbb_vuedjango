@@ -1451,6 +1451,7 @@
             this.recommended_bloodbags[bb_index].blood_type = response.data.blood_type
             this.recommended_bloodbags[bb_index].product_type = response.data.product_type
             this.recommended_bloodbags[bb_index].bag_status = response.data.bag_status
+            this.recommended_bloodbags[bb_index].hospital_name = response.data.hospital_name
             this.bb_detail_recur(bb_index+1)
           })
           .catch(e => {
@@ -1660,7 +1661,6 @@
         },headers)
         .then(response => {
 					this.current_pet_owner = response.data
-          console.log(this.current_pet_owner)
 				})
 		    .catch(e => {
 		      this.errors.push(e)
