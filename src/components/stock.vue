@@ -93,10 +93,6 @@
                           v-model=bag_add.pcv required></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="หมายเลขการบริจาคเลือด"
-                          v-model=bag_add.donationID required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12>
                           <v-text-field label="หมายเหตุ"
                           v-model=bag_add.comment></v-text-field>
                         </v-flex>
@@ -501,7 +497,7 @@
         //bloodbag-add
         axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
           "bagDate": this.today_date,
-          "donationID": this.bag_add.donationID,
+          "donationID": '',
           "type": "value",
           "expDate": this.date,
           "bagStatus": "active",

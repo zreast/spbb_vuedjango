@@ -61,19 +61,19 @@
                 <v-flex xs3 class='animated zoomIn'>
                   <v-card>
                     <v-card-text class="px-0 caption_task">New Request</v-card-text>
-                    <span class='stat_task'>{{requests.requests.length}}</span>
+                    <span class='stat_task'>{{badge1}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3 class='animated zoomIn'>
                   <v-card>
                     <v-card-text class="px-0 caption_task">Crossmatch Stage</v-card-text>
-                    <span class='stat_task'>N/A</span>
+                    <span class='stat_task'>{{badge2}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3 class='animated zoomIn'>
                   <v-card>
                     <v-card-text class="px-0 caption_task">จ่ายถุงเลือดแล้ววันนี้</v-card-text>
-                    <span class='stat_task'>{{requests.requests.length}}</span>
+                    <span class='stat_task'>{{badge3}}</span>
                   </v-card>
                 </v-flex>
                 <v-flex xs3 class='animated zoomIn'>
@@ -112,7 +112,7 @@
               <v-layout row wrap>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       สถานะ
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -149,7 +149,7 @@
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       Request Date
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -159,7 +159,7 @@
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       Recipient
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -169,7 +169,7 @@
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       Owner
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -179,7 +179,7 @@
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       From
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -189,7 +189,7 @@
                 </v-flex>
                 <v-flex xs2>
                   <v-card class='custom_card'>
-                    <v-card-text class="px-0 text_grey">
+                    <v-card-text class="px-0 blue--text text--darken-3">
                       Symptom
                     </v-card-text>
                     <v-card-text class="px-0">
@@ -347,7 +347,7 @@
                                 </img>
                               </v-card-text>
                               <v-card-text class="px-0 pink--text darken-6">
-                                {{current_bloodbags.product_type}}
+                                {{current_bloodbags.product_type}} <b>{{current_bloodbags.quantity}}</b> ml.
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -364,10 +364,10 @@
                           <v-flex xs2>
                             <v-card class='custom_card'>
                               <v-card-text class="px-0 text_grey">
-                                ปริมาณ
+                                PCV
                               </v-card-text>
                               <v-card-text class="px-0">
-                                <b>{{current_bloodbags.quantity}}</b> ml.
+                                {{current_bloodbags.pcv}}
                               </v-card-text>
                             </v-card>
                           </v-flex>
@@ -423,7 +423,7 @@
                         </v-layout>
                         <v-divider></v-divider>
                         <br>
-                        <v-layout row wrap v-for='item in notes.bloodRequestResult.slice().reverse()' style='border-bottom: 1px solid #f4f4f4'>
+                        <v-layout row wrap v-for='item in notes.bloodRequestResult' style='border-bottom: 1px solid #f4f4f4'>
                           <v-flex xs1>
                             <v-card class='custom_card2'>
                               <v-card-text class="px-0 text_grey">
@@ -501,6 +501,15 @@
         },headers)
         .then(response => {
 					this.requests = response.data
+          for(var i in this.requests.requests)
+          {
+            if(this.requests.requests[i].status=='Request Submit')
+              this.badge1++
+            if(this.requests.requests[i].status=='Crossmatch')
+              this.badge2++
+            if(this.requests.requests[i].status=='Transfusion'||this.requests.requests[i].status=='Success')
+              this.badge3++
+          }
 				})
 		    .catch(e => {
 		      this.errors.push(e)
@@ -511,6 +520,9 @@
     },
     data () {
       return {
+        badge1: 0,
+        badge2: 0,
+        badge3: 0,
         e6: 1,
         requests: [],
         note_comment: '',

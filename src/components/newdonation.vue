@@ -209,12 +209,13 @@
                             small
                             class="ml-0"
                             v-if="current_pet_detail.petName"
-                          >Shih-Tzu</v-chip>
+                          >{{current_pet_detail.patientSpecies}}</v-chip>
                           <br>
                           <h2 v-html="current_pet_detail.petName"/>
                           <span class="grey--text" v-if="current_pet_detail.petID">&nbsp;(ID: {{current_pet_detail.petID}})</span>
                         </v-flex>
                         <v-flex xs4>
+                          <b>กรุ๊ปเลือด:</b> {{current_pet_detail.petBloodType}}<br>
                           <b>เพศ:</b> {{current_pet_detail.patientGender}}<br>
                           <b>วันเกิด:</b> {{current_pet_detail.patientBirthDt}}<br>
                         </v-flex>
@@ -241,6 +242,7 @@
 					              <v-text-field
 					                name="input-1"
 					                label="Weight (kg.)"
+                          v-model='d_weight'
 					                textarea
 													rows=3
 													class='pa-2'
@@ -807,10 +809,6 @@
                         v-model=bag_add.pcv required></v-text-field>
                       </v-flex>
                       <v-flex xs12>
-                        <v-text-field label="หมายเลขการบริจาคเลือด"
-                        v-model=bag_add.donationID required></v-text-field>
-                      </v-flex>
-                      <v-flex xs12>
                         <v-text-field label="หมายเหตุ"
                         v-model=bag_add.comment></v-text-field>
                       </v-flex>
@@ -861,16 +859,18 @@
             <br>
 
 						<div class="text-xs-center" v-show='page=="profile"'>
-	           <v-btn color="error" dark large @click='page="lab";  componentUpdate()'>Next</v-btn>
+	           <v-btn v-show='d_weight!=null' color="error" dark large @click='page="lab";  componentUpdate();'>Next</v-btn>
+             <v-btn v-show='d_weight==null' color="error" dark large @click='warn("กรุณากรอกน้ำหนักผู้บริจาค (Weight)")'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="lab"'>
-	           <v-btn color="error" dark large @click='page="suggestion";  componentUpdate()'>Next</v-btn>
+	           <v-btn v-show='bag_add.pcv!=null' color="error" dark large @click='page="suggestion";  componentUpdate()'>Next</v-btn>
+             <v-btn v-show='bag_add.pcv==null' color="error" dark large @click='warn("กรุณากรอกค่า PCV ของผู้บริจาค")'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="suggestion"'>
 	           <v-btn color="error" dark large @click='page="confirm"; componentUpdate()'>Next</v-btn>
 		        </div>
             <div class="text-xs-center" v-show='page=="confirm"'>
-	           <v-btn color="info" dark large @click='page="confirm"; addBloodBag();  componentUpdate()'>บันทึกผล</v-btn>
+	           <v-btn color="info" dark large @click='page="confirm"; sendDonation();  componentUpdate()'>บันทึกผล</v-btn>
 		        </div>
           </v-layout>
         </v-slide-y-transition>
@@ -912,6 +912,7 @@
         clipped: false,
         drawer: false,
         clipped: false,
+        d_weight: null,
 				breadcrumbs: [
           {
             text: 'ธนาคารเลือดสัตว์เลี้ยง',
@@ -1005,9 +1006,6 @@
         post_diagnosis: [],
         post_anemia: null,
         post_other: null,
-        post_disease: [
-          "von Willebrand's", 'Hypoproteinemia', 'Low immunoglobulin', 'Hemophelia A', 'Hemophelia B', 'Disseminated intravascular coagulopathy', 'Pancreatitis', 'Liver disease', 'Thrombocytopenia'
-        ],
         recommended_products: null,
         bag_add: [],
         physical: 2,
@@ -1198,55 +1196,6 @@
 
         return today
       },
-      sendBloodbag (donationID){
-        this.today_date = this.getDate()
-        var headers = {
-            'Content-Type': 'application/json'
-        }
-        //bloodbag-add
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
-          bagDate: this.today_date,
-          donationID: donationID,
-          type: "value",
-          expDate: this.today_date,
-          bagStatus: "active",
-          bloodType: "A",
-          productType: "wholeblood",
-          hospitalID: "1",
-          quantity: "500",
-          pcv: "18",
-          vetComment: "good"
-        },headers)
-        .then(response => {
-					console.log(response.data)
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-      },
-      sendDonation () {
-        this.today_date = this.getDate()
-				var headers = {
-            'Content-Type': 'application/json'
-        }
-        //donation-history-add
-        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/donation-history/add', {
-          donationStatus: "test",
-          quantity: "100ml",
-          receiverID: "1",
-          hospitalID: "1",
-          donorID: "1",
-          bagID: "",
-          donationDate: this.today_date
-        },headers)
-        .then(response => {
-          this.sendBloodbag(response.data.donationID)
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-	    },
       getOwner ()
       {
         var headers = {
@@ -1266,6 +1215,7 @@
 		    })
       },
       getPetID () {
+        this.bag_add.comment=' '
 				var headers = {
             'Content-Type': 'application/json'
         }
@@ -1361,6 +1311,59 @@
 
 
 	    },
+      sendBloodbag (donationID){
+        this.today_date = this.getDate()
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        console.log(donationID)
+        //bloodbag-add
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/blood-bag/add', {
+          bagDate: this.today_date,
+          donationID: donationID,
+          type: "value",
+          expDate: this.today_date,
+          bagStatus: "active",
+          bloodType: this.bag_add.dea,
+          productType: this.bag_add.product,
+          hospitalID: "1",
+          quantity: this.bag_add.qt,
+          pcv: this.bag_add.pcv,
+          vetComment: this.bag_add.comment
+        },headers)
+        .then(response => {
+					window.location.href = '/donation'
+				})
+		    .catch(e => {
+          alert('กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบ')
+		      this.errors.push(e)
+		    })
+      },
+      sendDonation () {
+        this.today_date = this.getDate()
+				var headers = {
+            'Content-Type': 'application/json'
+        }
+        //donation-history-add
+        axios.post('https://nqh48rassj.execute-api.ap-southeast-1.amazonaws.com/deploy/blood-bank/donation-history/add', {
+          donationStatus: "Donated",
+          productType: this.bag_add.product,
+          quantity: this.bag_add.qt,
+          receiverID: "1",
+          hospitalID: "1",
+          donorID: this.current_pet_detail.petID,
+          bagID: "",
+          donationDate: this.today_date
+        },headers)
+        .then(response => {
+          this.sendBloodbag(response.data.donationID)
+				})
+		    .catch(e => {
+          console.log(response.data)
+		      this.errors.push(e)
+		    })
+
+	    },
       addBloodBag () {
         var headers = {
             'Content-Type': 'application/json'
@@ -1381,65 +1384,18 @@
         },headers)
         .then(response => {
           console.log(response.data)
-					window.location.href = '/donation'
+					// window.location.href = '/donation'
 				})
 		    .catch(e => {
 		      this.errors.push(e)
 		    })
 
       },
-      getSpecExam (result_id) {
-				var headers = {
-            'Content-Type': 'application/json'
-        }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/results/specific', {
-          resultID: result_id
-        },headers)
-        .then(response => {
-					this.current_result = response.data
-					this.createResult()
-          this.show_spec_exam = true;
-          this.show_recent_exam = false;
-          this.show_all_exam = false;
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
-	    },
-      getBloodBag () {
-        var headers = {
-            'Content-Type': 'application/json'
-        }
-        axios.post('https://odnooein50.execute-api.ap-southeast-1.amazonaws.com/Dev/blood-bag/getall', {
-
-        },headers)
-        .then(response => {
-					this.bloodbags = response.data
-
-          this.in_bloodbags = []
-          this.out_bloodbags = []
-          for(var i in this.bloodbags.blood_bags)
-          {
-            if(this.bloodbags.blood_bags[i].hospital_id=='1')
-            {
-              this.in_bloodbags.push(this.bloodbags.blood_bags[i])
-            }
-            else if(this.bloodbags.blood_bags[i].hospital_id!='1')
-            {
-              this.out_bloodbags.push(this.bloodbags.blood_bags[i])
-            }
-          }
-				})
-		    .catch(e => {
-		      this.errors.push(e)
-		    })
-
-
-	    },
       route (page) {
         window.location.href = page
+      },
+      warn (text) {
+        alert(text)
       },
     }
   }
